@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pintu Jepang — Belajar Bahasa Jepang dari Nol</title>
+<style>
+  :root{
+    --toska:#0e7c7b; --toska-gelap:#0a5f5e; --krem:#fff9f0; --pasir:#f3e7d3;
+    --teks:#263238; --teks-lembut:#607d8b; --aksen:#e2725b; --garis:#e6dcc8;
+    --radius:16px;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  body{margin:0; font-family:-apple-system,"Hiragino Sans","Noto Sans JP","Segoe UI",sans-serif;
+    background:var(--krem); color:var(--teks); line-height:1.55;}
+  .jp{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;}
+  header{background:linear-gradient(135deg,var(--toska),var(--toska-gelap)); color:#fff;
+    padding:20px 18px 26px; border-radius:0 0 24px 24px;}
+  header .merek{font-size:13px; letter-spacing:.14em; opacity:.85; text-transform:uppercase;}
+  header h1{font-size:24px; margin:6px 0 4px; line-height:1.3;}
+  header p{margin:0; font-size:14px; opacity:.92;}
+  main{max-width:560px; margin:0 auto; padding:16px 14px 40px;}
+  .kartu{background:#fff; border:1px solid var(--garis); border-radius:var(--radius);
+    padding:16px; margin-bottom:14px; box-shadow:0 1px 3px rgba(38,50,56,.05);}
+  .kartu h2{font-size:17px; margin:0 0 6px;}
+  .kartu p{margin:0 0 8px; font-size:14px; color:var(--teks-lembut);}
+  .progres{display:flex; gap:10px;}
+  .progres .kotak{flex:1; background:var(--pasir); border-radius:12px; padding:10px; text-align:center;}
+  .progres .angka{font-size:20px; font-weight:700; color:var(--toska-gelap);}
+  .progres .label{font-size:12px; color:var(--teks-lembut);}
+  .tombol{display:block; width:100%; padding:13px; border:none; border-radius:12px;
+    background:var(--toska); color:#fff; font-size:16px; font-weight:600; cursor:pointer; margin-top:8px;}
+  .tombol.aksen{background:var(--aksen);}
+  .tombol.rangka{background:#fff; color:var(--toska-gelap); border:2px solid var(--toska);}
+  .tombol:disabled{background:#cfd8dc; cursor:default;}
+  .jalur{display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px dashed var(--garis);}
+  .jalur:last-child{border-bottom:none;}
+  .jalur .no{width:28px; height:28px; border-radius:50%; background:var(--pasir);
+    display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; flex:none;}
+  .jalur .nama{flex:1; font-size:15px;}
+  .lencana{font-size:11px; padding:3px 8px; border-radius:99px; background:#e0f2f1; color:var(--toska-gelap); font-weight:600;}
+  .lencana.segera{background:#eceff1; color:#78909c;}
+  .tab{display:flex; gap:8px; margin-bottom:12px;}
+  .tab button{flex:1; padding:10px; border-radius:10px; border:2px solid var(--toska);
+    background:#fff; color:var(--toska-gelap); font-size:15px; font-weight:600; cursor:pointer;}
+  .tab button.aktif{background:var(--toska); color:#fff;}
+  .grid-kana{display:grid; grid-template-columns:repeat(5,1fr); gap:7px;}
+  .sel-kana{background:#fff; border:1px solid var(--garis); border-radius:10px; padding:7px 2px;
+    text-align:center; cursor:pointer;}
+  .sel-kana .k{font-size:21px; display:block;}
+  .sel-kana .r{font-size:11px; color:var(--teks-lembut);}
+  .sel-kana.kuasai{border-color:var(--toska); background:#e0f2f1;}
+  .soal-besar{text-align:center; padding:14px 0 6px;}
+  .soal-besar .huruf{font-size:56px; font-weight:700;}
+  .soal-besar .petunjuk{font-size:14px; color:var(--teks-lembut);}
+  .pilihan{display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-top:10px;}
+  .pilihan button{padding:15px; font-size:26px; border-radius:12px; border:2px solid var(--garis);
+    background:#fff; cursor:pointer;}
+  .pilihan button.benar{border-color:#43a047; background:#e8f5e9;}
+  .pilihan button.salah{border-color:#e53935; background:#ffebee;}
+  input.ketik{width:100%; padding:13px; font-size:18px; border:2px solid var(--garis);
+    border-radius:12px; text-align:center;}
+  .umpan-balik{text-align:center; font-size:15px; min-height:24px; margin-top:8px; font-weight:600;}
+  .sembunyi{display:none;}
+  .cerita-teks{font-size:19px; line-height:2; background:var(--krem); border-radius:12px; padding:12px;}
+  .navigasi{display:flex; gap:8px; margin-bottom:14px;}
+  .navigasi button{flex:1; padding:9px; border-radius:10px; border:1px solid var(--garis);
+    background:#fff; font-size:14px; cursor:pointer;}
+  footer{text-align:center; font-size:12px; color:#90a4ae; padding:0 16px 28px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="merek">Pintu Jepang · Beginner</div>
+  <h1>Halo! Yuk, mulai belajar bahasa Jepang dari nol.</h1>
+  <p>Satu pintu terpandu — semua ada di sini, urutannya jelas, berbahasa Indonesia. Tidak perlu bingung pilih aplikasi atau web.</p>
+</header>
+
+<main>
+  <!-- BERANDA -->
+  <section id="layar-beranda">
+    <div class="kartu">
+      <h2>Progresmu</h2>
+      <div class="progres">
+        <div class="kotak"><div class="angka" id="xp">0</div><div class="label">XP</div></div>
+        <div class="kotak"><div class="angka"><span id="kana-kuasai">0</span>/92</div><div class="label">Kana dikuasai</div></div>
+      </div>
+      <button class="tombol" onclick="bukaLayar('kana')">Mulai: Belajar Kana →</button>
+    </div>
+
+    <div class="kartu" id="kartu-nama">
+      <h2>Kenalan dulu, yuk</h2>
+      <p>Isi nama panggilanmu — supaya progres belajarmu tercatat rapi dan bisa dipantau. Cukup sekali ini saja.</p>
+      <input class="ketik" id="input-nama" placeholder="nama panggilan" autocomplete="off">
+      <button class="tombol rangka" onclick="simpanNama()">Simpan</button>
+    </div>
+
+    <div class="kartu">
+      <h2>Jalur belajarmu</h2>
+      <p>Ikuti dari atas, satu per satu. Tidak ada lompat-lompat.</p>
+      <div class="jalur"><div class="no">1</div><div class="nama">Kana — Hiragana & Katakana</div><span class="lencana">Buka</span></div>
+      <div class="jalur"><div class="no">2</div><div class="nama">Salam & Perkenalan Diri</div><span class="lencana segera">Segera</span></div>
+      <div class="jalur"><div class="no">3</div><div class="nama">Angka, Waktu & Harga</div><span class="lencana segera">Segera</span></div>
+      <div class="jalur"><div class="no">4</div><div class="nama">Kalimat Pertamamu</div><span class="lencana segera">Segera</span></div>
+    </div>
+
+    <div class="kartu">
+      <h2>📖 Cerita hari ini</h2>
+      <p>Cerita pendek untuk dibaca santai — bahan input, tanpa soal. Nikmati saja.</p>
+      <div class="cerita-teks jp" lang="ja">
+        わたしは ライです。インドネシアから きました。<br>
+        まいにち にほんごを べんきょうします。<br>
+        すこしずつ、たのしく いきましょう。
+      </div>
+      <button class="tombol rangka" id="tombol-arti" onclick="toggleArti()">Lihat artinya</button>
+      <p id="arti-cerita" class="sembunyi" style="margin-top:10px;">
+        Saya Rai. Saya datang dari Indonesia. Setiap hari saya belajar bahasa Jepang. Sedikit demi sedikit, mari jalani dengan senang.
+      </p>
+    </div>
+  </section>
+
+  <!-- KANA -->
+  <section id="layar-kana" class="sembunyi">
+    <div class="navigasi"><button onclick="bukaLayar('beranda')">← Beranda</button></div>
+    <div class="kartu">
+      <h2>Kana — huruf dasar bahasa Jepang</h2>
+      <p>Ketuk satu huruf untuk mendengar cara bacanya di kepalamu: baca romaji-nya keras-keras. Huruf berubah hijau setelah kamu menguasainya di latihan.</p>
+      <div class="tab">
+        <button id="tab-hira" class="aktif" onclick="setModeKana('hira')">Hiragana</button>
+        <button id="tab-kata" onclick="setModeKana('kata')">Katakana</button>
+      </div>
+      <div class="grid-kana" id="grid-kana"></div>
+      <button class="tombol aksen" onclick="mulaiLatihan()">Latihan sekarang</button>
+    </div>
+  </section>
+
+  <!-- LATIHAN -->
+  <section id="layar-latihan" class="sembunyi">
+    <div class="navigasi"><button onclick="bukaLayar('kana')">← Kembali ke tabel kana</button></div>
+    <div class="kartu">
+      <div class="tab">
+        <button id="tab-pilih" class="aktif" onclick="setModeLatihan('pilih')">Pilih Kana</button>
+        <button id="tab-ketik" onclick="setModeLatihan('ketik')">Ketik Romaji</button>
+      </div>
+      <div class="soal-besar">
+        <div class="petunjuk" id="petunjuk-soal"></div>
+        <div class="huruf jp" id="soal-huruf"></div>
+      </div>
+      <div class="pilihan" id="kotak-pilihan"></div>
+      <div id="kotak-ketik" class="sembunyi">
+        <input class="ketik" id="input-romaji" placeholder="ketik romaji di sini" autocomplete="off">
+        <button class="tombol" onclick="cekKetik()">Cek jawaban</button>
+      </div>
+      <div class="umpan-balik" id="umpan-balik"></div>
+      <button class="tombol rangka sembunyi" id="tombol-lanjut" onclick="soalBaru()">Soal berikutnya →</button>
+    </div>
+  </section>
+</main>
+
+<footer>Pintu Jepang — dibangun pelan-pelan, dibuka untuk siapa pun yang mau mulai. Nama resmi menyusul.</footer>
+
+<script>
+var HIRA = [["あ","a"],["い","i"],["う","u"],["え","e"],["お","o"],["か","ka"],["き","ki"],["く","ku"],["け","ke"],["こ","ko"],["さ","sa"],["し","shi"],["す","su"],["せ","se"],["そ","so"],["た","ta"],["ち","chi"],["つ","tsu"],["て","te"],["と","to"],["な","na"],["に","ni"],["ぬ","nu"],["ね","ne"],["の","no"],["は","ha"],["ひ","hi"],["ふ","fu"],["へ","he"],["ほ","ho"],["ま","ma"],["み","mi"],["む","mu"],["め","me"],["も","mo"],["や","ya"],["ゆ","yu"],["よ","yo"],["ら","ra"],["り","ri"],["る","ru"],["れ","re"],["ろ","ro"],["わ","wa"],["を","wo"],["ん","n"]];
+var KATA = [["ア","a"],["イ","i"],["ウ","u"],["エ","e"],["オ","o"],["カ","ka"],["キ","ki"],["ク","ku"],["ケ","ke"],["コ","ko"],["サ","sa"],["シ","shi"],["ス","su"],["セ","se"],["ソ","so"],["タ","ta"],["チ","chi"],["ツ","tsu"],["テ","te"],["ト","to"],["ナ","na"],["ニ","ni"],["ヌ","nu"],["ネ","ne"],["ノ","no"],["ハ","ha"],["ヒ","hi"],["フ","fu"],["ヘ","he"],["ホ","ho"],["マ","ma"],["ミ","mi"],["ム","mu"],["メ","me"],["モ","mo"],["ヤ","ya"],["ユ","yu"],["ヨ","yo"],["ラ","ra"],["リ","ri"],["ル","ru"],["レ","re"],["ロ","ro"],["ワ","wa"],["ヲ","wo"],["ン","n"]];
+
+var KUNCI = "aplikasi-umum-beginner:progress:v1";
+var TRACK_URL = "https://script.google.com/macros/s/AKfycbzt4lhJu00LrpG_4ped806sh393v0pIfl778SnO6r4gZ75P-FU8N3SFs7jjw2oVh5eI/exec";
+var progres = {xp:0, kuasai:{}, id:"", nama:""};
+try{ var tersimpan = localStorage.getItem(KUNCI); if(tersimpan){ progres = JSON.parse(tersimpan); } }catch(e){}
+if(!progres.id){ progres.id = "u" + Date.now().toString(36) + Math.floor(Math.random()*99999).toString(36); }
+function simpan(){ try{ localStorage.setItem(KUNCI, JSON.stringify(progres)); }catch(e){} }
+simpan();
+
+var timerKirim = null;
+function kirimLaporan(acara){
+  if(!TRACK_URL){ return; }
+  var n = 0; for(var k in progres.kuasai){ if(progres.kuasai[k] >= 2){ n++; } }
+  var muatan = {id:progres.id, nama:progres.nama || "", xp:progres.xp, kana:n, unit:"", acara:acara || "snapshot"};
+  try{
+    fetch(TRACK_URL, {method:"POST", mode:"no-cors", headers:{"Content-Type":"text/plain"}, body:JSON.stringify(muatan)});
+  }catch(e){}
+}
+function jadwalKirim(){
+  if(timerKirim){ clearTimeout(timerKirim); }
+  timerKirim = setTimeout(function(){ kirimLaporan("latihan"); }, 4000);
+}
+function simpanNama(){
+  var v = document.getElementById("input-nama").value.trim();
+  if(v){ progres.nama = v; simpan(); }
+  document.getElementById("kartu-nama").classList.add("sembunyi");
+  kirimLaporan("daftar");
+}
+function segarkanProgres(){
+  document.getElementById("xp").textContent = progres.xp;
+  var n = 0; for(var k in progres.kuasai){ if(progres.kuasai[k] >= 2){ n++; } }
+  document.getElementById("kana-kuasai").textContent = n;
+}
+
+function bukaLayar(nama){
+  var layar = ["beranda","kana","latihan"];
+  for(var i=0;i<layar.length;i++){
+    document.getElementById("layar-"+layar[i]).classList.toggle("sembunyi", layar[i] !== nama);
+  }
+  if(nama === "beranda"){ segarkanProgres(); }
+  window.scrollTo(0,0);
+}
+
+var modeKana = "hira";
+function setModeKana(m){
+  modeKana = m;
+  document.getElementById("tab-hira").classList.toggle("aktif", m === "hira");
+  document.getElementById("tab-kata").classList.toggle("aktif", m === "kata");
+  gambarGrid();
+}
+function dataKana(){ return modeKana === "hira" ? HIRA : KATA; }
+function gambarGrid(){
+  var grid = document.getElementById("grid-kana");
+  grid.innerHTML = "";
+  var data = dataKana();
+  for(var i=0;i<data.length;i++){
+    (function(item){
+      var div = document.createElement("div");
+      div.className = "sel-kana" + (progres.kuasai[modeKana+":"+item[0]] >= 2 ? " kuasai" : "");
+      div.innerHTML = "<span class='k jp'>" + item[0] + "</span><span class='r'>" + item[1] + "</span>";
+      grid.appendChild(div);
+    })(data[i]);
+  }
+}
+
+var modeLatihan = "pilih";
+var soalSaatIni = null;
+function setModeLatihan(m){
+  modeLatihan = m;
+  document.getElementById("tab-pilih").classList.toggle("aktif", m === "pilih");
+  document.getElementById("tab-ketik").classList.toggle("aktif", m === "ketik");
+  soalBaru();
+}
+function acak(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+function mulaiLatihan(){ bukaLayar("latihan"); soalBaru(); }
+function soalBaru(){
+  var data = dataKana();
+  soalSaatIni = acak(data);
+  var kunciKana = modeKana + ":" + soalSaatIni[0];
+  document.getElementById("umpan-balik").textContent = "";
+  document.getElementById("tombol-lanjut").classList.add("sembunyi");
+  var kotakPilihan = document.getElementById("kotak-pilihan");
+  var kotakKetik = document.getElementById("kotak-ketik");
+  if(modeLatihan === "pilih"){
+    kotakPilihan.classList.remove("sembunyi");
+    kotakKetik.classList.add("sembunyi");
+    document.getElementById("petunjuk-soal").textContent = "Kana apa yang dibaca seperti ini?";
+    document.getElementById("soal-huruf").textContent = soalSaatIni[1];
+    var pilihan = [soalSaatIni];
+    while(pilihan.length < 4){
+      var calon = acak(data);
+      var sudah = false;
+      for(var i=0;i<pilihan.length;i++){ if(pilihan[i][0] === calon[0]){ sudah = true; } }
+      if(!sudah){ pilihan.push(calon); }
+    }
+    pilihan.sort(function(){ return Math.random() - 0.5; });
+    kotakPilihan.innerHTML = "";
+    for(var j=0;j<pilihan.length;j++){
+      (function(item){
+        var b = document.createElement("button");
+        b.className = "jp";
+        b.textContent = item[0];
+        b.onclick = function(){ jawabPilih(item, b, kunciKana); };
+        kotakPilihan.appendChild(b);
+      })(pilihan[j]);
+    }
+  } else {
+    kotakPilihan.classList.add("sembunyi");
+    kotakKetik.classList.remove("sembunyi");
+    document.getElementById("petunjuk-soal").textContent = "Bagaimana romaji huruf ini?";
+    document.getElementById("soal-huruf").textContent = soalSaatIni[0];
+    var inp = document.getElementById("input-romaji");
+    inp.value = "";
+    inp.focus();
+  }
+}
+function catatHasil(kunciKana, benar){
+  if(benar){
+    progres.xp += 10;
+    progres.kuasai[kunciKana] = (progres.kuasai[kunciKana] || 0) + 1;
+  }
+  simpan(); segarkanProgres(); jadwalKirim();
+}
+function jawabPilih(item, tombol, kunciKana){
+  var benar = item[0] === soalSaatIni[0];
+  tombol.classList.add(benar ? "benar" : "salah");
+  document.getElementById("umpan-balik").textContent = benar ? "Benar! +10 XP" : "Belum tepat — yang benar " + soalSaatIni[0] + " (" + soalSaatIni[1] + ")";
+  catatHasil(kunciKana, benar);
+  document.getElementById("tombol-lanjut").classList.remove("sembunyi");
+}
+function cekKetik(){
+  var kunciKana = modeKana + ":" + soalSaatIni[0];
+  var jawaban = document.getElementById("input-romaji").value.trim().toLowerCase();
+  var benar = jawaban === soalSaatIni[1];
+  document.getElementById("umpan-balik").textContent = benar ? "Benar! +10 XP" : "Belum tepat — romaji-nya: " + soalSaatIni[1];
+  catatHasil(kunciKana, benar);
+  document.getElementById("tombol-lanjut").classList.remove("sembunyi");
+}
+function toggleArti(){
+  var el = document.getElementById("arti-cerita");
+  el.classList.toggle("sembunyi");
+  document.getElementById("tombol-arti").textContent = el.classList.contains("sembunyi") ? "Lihat artinya" : "Sembunyikan arti";
+}
+gambarGrid();
+segarkanProgres();
+if(progres.nama){ document.getElementById("kartu-nama").classList.add("sembunyi"); }
+kirimLaporan("buka");
+</script>
+</body>
+</html>
