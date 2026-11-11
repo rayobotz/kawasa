@@ -130,8 +130,8 @@
       <div class="tagline-merek">Makin paham, bukan makin bingung</div>
     </div>
   </div>
-  <h1>Halo! Yuk, mulai belajar bahasa Jepang dari nol.</h1>
-  <p>Satu pintu terpandu — semua ada di sini, urutannya jelas, berbahasa Indonesia. Tidak perlu bingung pilih aplikasi atau web.</p>
+  <h1 id="judul-utama">Dari nol, jadi kawasa.</h1>
+  <p id="sub-utama">Ucapkan frasa pertamamu hari ini — huruf dan pola menyusul pelan-pelan, dipandu satu langkah kecil setiap hari.</p>
 </header>
 
 <main>
@@ -526,9 +526,20 @@ function jadwalKirim(){
     kirimCadangan();
   }, 4000);
 }
+function gambarSapaan(){
+  var j = document.getElementById("judul-utama"), sb = document.getElementById("sub-utama");
+  if(!j || !sb){ return; }
+  if(progres.nama){
+    j.textContent = "Halo, " + progres.nama + "!";
+    sb.textContent = "Senang kamu kembali. Lanjut satu langkah kecil hari ini — progresmu tersimpan otomatis.";
+  } else {
+    j.textContent = "Dari nol, jadi kawasa.";
+    sb.textContent = "Ucapkan frasa pertamamu hari ini — huruf dan pola menyusul pelan-pelan, dipandu satu langkah kecil setiap hari.";
+  }
+}
 function simpanNama(){
   var v = document.getElementById("input-nama").value.trim();
-  if(v){ progres.nama = v; simpan(); }
+  if(v){ progres.nama = v; simpan(); gambarSapaan(); }
   document.getElementById("kartu-nama").classList.add("sembunyi");
   kirimLaporan("daftar");
   if(v){ cekCadanganNama(v); }
@@ -1890,6 +1901,7 @@ function latihanDariKenalan(){
 }
 
 segarkanBeranda();
+gambarSapaan();
 gambarFrasa();
 gambarCerita();
 gambarGrid();
