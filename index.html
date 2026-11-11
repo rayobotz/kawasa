@@ -113,7 +113,7 @@
   .batang-teks{font-size:12.5px; color:var(--teks-lembut); margin-top:6px;}
   .kartu-langkah{border-left:5px solid var(--aksen);}
   .kartu-cerita{background:#fffdf6; border-top:4px solid var(--toska);}
-  .tombol-sora{flex:none; width:42px; height:42px; border-radius:50%; border:2px solid var(--toska); background:#fff; font-size:18px; cursor:pointer; font-family:inherit; color:inherit;}
+  .tombol-sora{flex:none; height:30px; padding:0 12px; border-radius:999px; border:1.5px solid var(--toska); background:#fff; font-size:12.5px; font-weight:600; color:var(--toska-gelap); cursor:pointer; font-family:inherit;}
   .pil-sora{padding:6px 14px; border-radius:999px; border:2px solid var(--toska); background:#fff; color:var(--toska-gelap); font-size:13px; font-weight:600; cursor:pointer; font-family:inherit;}
   .pil-sora.aktif{background:var(--toska); color:#fff;}
   .lencana-baru{background:var(--aksen); color:#fff; font-size:10px; font-weight:700; padding:2px 7px; border-radius:999px; vertical-align:middle; margin-left:6px;}
@@ -156,7 +156,7 @@
 
     <div class="kartu" id="kartu-frasa">
       <h2>🗣️ Ngomong dari Hari Pertama</h2>
-      <p>Tidak sabar menunggu kana beres? Wajar. Kuasai frasa ini dan kamu sudah bisa menyapa serta berterima kasih hari ini juga. Frasa baru terbuka otomatis seiring cap yang kamu kumpulkan — sekali-sekali saja, supaya tidak pusing. Tekan 🔊 untuk mendengar ucapannya.</p>
+      <p>Tidak sabar menunggu kana beres? Wajar. Kuasai frasa ini dan kamu sudah bisa menyapa serta berterima kasih hari ini juga. Frasa baru terbuka otomatis seiring cap yang kamu kumpulkan — sekali-sekali saja, supaya tidak pusing. Tekan tombol Dengar untuk mendengar ucapannya.</p>
       <div style="display:flex; gap:8px; align-items:center; margin:10px 0;">
         <span style="font-size:13px; color:var(--teks-lembut);">Suara:</span>
         <button class="pil-sora" id="pil-sora-awewe" onclick="pilihSora('awewe')">Perempuan</button>
@@ -339,7 +339,7 @@
         <div class="soal-besar" style="padding-top:2px;">
           <div class="huruf jp" id="kenalan-huruf"></div>
           <div class="petunjuk" id="kenalan-romaji"></div>
-          <button class="tombol rangka" id="kenalan-sora" style="margin-top:8px;" onclick="putarSora('kana-' + this.dataset.romaji)">🔊 Dengar suaranya</button>
+          <button class="tombol rangka" id="kenalan-sora" style="margin-top:8px;" onclick="putarSora('kana-' + this.dataset.romaji)">▶ Dengar suaranya</button>
         </div>
         <div class="kotak-goresan">
           <svg id="kenalan-svg" viewBox="0 0 109 109" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Animasi urutan goresan"></svg>
@@ -386,7 +386,7 @@
       <div class="soal-besar" style="padding-top:2px;">
         <div class="huruf jp" id="detail-huruf"></div>
         <div class="petunjuk" id="detail-romaji"></div>
-        <button class="tombol rangka" id="detail-sora" style="margin-top:8px;" onclick="putarSora('kana-' + this.dataset.romaji)">🔊 Dengar suaranya</button>
+        <button class="tombol rangka" id="detail-sora" style="margin-top:8px;" onclick="putarSora('kana-' + this.dataset.romaji)">▶ Dengar suaranya</button>
       </div>
       <div class="kotak-goresan">
         <svg id="detail-svg" viewBox="0 0 109 109" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Animasi urutan goresan"></svg>
@@ -983,7 +983,7 @@ function gambarFrasa(){
     var baru = i >= pernah ? "<span class='lencana-baru'>BARU</span>" : "";
     baris.innerHTML = "<div class='nama'><span class='jp' style='font-size:17px;'>" + f.jp + "</span>" + baru + "<br><small>" + f.ro + " — " + f.arti + "</small></div>";
     var tbl = document.createElement("button");
-    tbl.className = "tombol-sora"; tbl.textContent = "\uD83D\uDD0A"; tbl.setAttribute("aria-label", "Dengarkan frasa");
+    tbl.className = "tombol-sora"; tbl.textContent = "\u25B6 Dengar"; tbl.setAttribute("aria-label", "Dengarkan frasa");
     (function(idx){ tbl.onclick = function(){ putarSora("frasa-" + (idx + 1)); }; })(i);
     baris.appendChild(tbl);
     wadah.appendChild(baris);
