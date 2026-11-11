@@ -1087,11 +1087,11 @@ function gambarCerita(){
   if(strip){ strip.classList.add("sembunyi"); strip.innerHTML = ""; }
   kataAktifEl = null;
   document.getElementById("teks-cerita").innerHTML = c.jp.split("。").filter(function(x){ return x.trim(); }).map(function(kal){
-    return kal.split(" ").map(function(tok){
-      var konci = tok.replace(/、/g, "");
-      if(GLOSARIUM[konci]) return '<span class="kt" data-k="' + konci + '" onclick="tapKata(this)">' + tok + '</span>';
-      return tok;
-    }).join(" ") + "。";
+    return kal.split(/(、| )/).map(function(bag){
+      if(!bag || bag === "、" || bag === " ") return bag;
+      if(GLOSARIUM[bag]) return '<span class="kt" data-k="' + bag + '" onclick="tapKata(this)">' + bag + '</span>';
+      return bag;
+    }).join("") + "。";
   }).join("<br>");
   document.getElementById("arti-cerita").textContent = c.id;
   gambarArsip();
