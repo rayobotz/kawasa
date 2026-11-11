@@ -712,7 +712,20 @@ function segarkanProgres(){
   }
 }
 
+var layarAktif = "beranda";
+var dorongAktif = false;
+var tiGestur = false;
 function bukaLayar(nama){
+  var asal = layarAktif;
+  layarAktif = nama;
+  if(!tiGestur){
+    if(asal === "beranda" && nama !== "beranda" && !dorongAktif){
+      try{ history.pushState({kawasa:1}, ""); dorongAktif = true; }catch(e){}
+    }else if(nama === "beranda" && dorongAktif){
+      dorongAktif = false;
+      try{ history.back(); }catch(e){}
+    }
+  }
   var layar = ["beranda","kana","latihan","ringkasan","detail","jalur","jalur-hira","jalur-kata","baris","kenalan","tentang","privasi"];
   if(nama !== "detail"){ berhentiAnimasi(); }
   for(var i=0;i<layar.length;i++){
@@ -725,6 +738,17 @@ function bukaLayar(nama){
   if(nama === "jalur-kata"){ gambarJalurAksara("kata"); }
   window.scrollTo(0,0);
 }
+
+window.addEventListener("popstate", function(){
+  if(dorongAktif){
+    dorongAktif = false;
+    if(layarAktif !== "beranda"){
+      tiGestur = true;
+      bukaLayar("beranda");
+      tiGestur = false;
+    }
+  }
+});
 
 var modeKana = "hira";
 function setModeKana(m){
