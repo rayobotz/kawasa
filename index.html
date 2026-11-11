@@ -355,6 +355,7 @@
       <div class="kartu">
         <h2>Contoh kata</h2>
         <div id="kenalan-kata"></div>
+        <button class="tombol-sora" id="kenalan-kata-sora" style="margin-top:8px;" onclick="putarSoraKata(this.dataset.kata)">▶ Dengar kata ini</button>
       </div>
       <div class="kartu">
         <h2>Coba langsung ✍️</h2>
@@ -398,6 +399,7 @@
     <div class="kartu">
       <h2>Contoh kata</h2>
       <div id="detail-kata"></div>
+      <button class="tombol-sora" id="detail-kata-sora" style="margin-top:8px;" onclick="putarSoraKata(this.dataset.kata)">▶ Dengar kata ini</button>
     </div>
     <div class="navigasi">
       <button id="detail-sebelumnya" onclick="detailGeser(-1)">‹ Sebelumnya</button>
@@ -1016,6 +1018,30 @@ function putarSora(kunciDasar){
     document.body.appendChild(sc);
   }
 }
+var ID_KATA = {" + benarEntri[0]) < 0){ sesi.salah.push(": "w001", " + benarEntri[0]); }\n  simpan(); segarkanProgres(); jadwalKirim();\n  document.getElementById(": "w002", " + k, huruf:kataPertama[k]}); }\n  }\n  for(var i = 0; i < semua.length; i++){\n    var ada = !!progres.capBaris[semua[i].kunci];\n    var sp = document.createElement(": "w003", " + k]){ return {jenis: ": "w004", " + teksKata) < 0){ sesi.salah.push(": "w005", " + teksKata); }\n  simpan(); segarkanProgres(); jadwalKirim();\n}\nfunction jawabKata(pil, tombol, q){\n  var benar = pil[2] === q.kata[2];\n  tombol.classList.add(benar ? ": "w006", " ditampilkan sebagai kata; entri huruf dicari romaji-nya.\n  var data = dataKana(); var perHuruf = {};\n  for(var i = 0; i < data.length; i++){ perHuruf[data[i][0]] = data[i][1]; }\n  var bagian = [];\n  for(var j = 0; j < sesi.salah.length; j++){\n    var e = sesi.salah[j];\n    if(e.indexOf(": "w007", ") === 0){ bagian.push(e.slice(5)); }\n    else { bagian.push(e + ": "w008", "\\u307b\\u3093": "w009", "\\u307b\\u3093\\u3092 \\u3088\\u307f\\u307e\\u3059": "w010", "\\u30d1\\u30f3": "w011", "あい": "w012", "いぬ": "w013", "うみ": "w014", "えき": "w015", "おかね": "w016", "かぜ": "w017", "きのこ": "w018", "くも": "w019", "けさ": "w020", "こめ": "w021", "さかな": "w022", "しか": "w023", "すし": "w024", "せんせい": "w025", "そら": "w026", "たまご": "w027", "ちず": "w028", "つき": "w029", "てがみ": "w030", "とり": "w031", "なつ": "w032", "にわ": "w033", "ぬの": "w034", "ねこ": "w035", "のみもの": "w036", "はな": "w037", "ひる": "w038", "ふね": "w039", "へや": "w040", "ほし": "w041", "まち": "w042", "みず": "w043", "むし": "w044", "めがね": "w045", "もも": "w046", "やま": "w047", "ゆき": "w048", "よる": "w049", "らいねん": "w050", "りんご": "w051", "るす": "w052", "れんしゅう": "w053", "ろうそく": "w054", "わに": "w055", "アメリカ": "w056", "インドネシア": "w057", "ウイルス": "w058", "エアコン": "w059", "オレンジ": "w060", "カメラ": "w061", "キロ": "w062", "クッキー": "w063", "ケーキ": "w064", "コーヒー": "w065", "サッカー": "w066", "シャツ": "w067", "スプーン": "w068", "セーター": "w069", "ソファ": "w070", "タクシー": "w071", "チーズ": "w072", "ツアー": "w073", "テレビ": "w074", "トイレ": "w075", "ナイフ": "w076", "ニュース": "w077", "ヌードル": "w078", "ネクタイ": "w079", "ノート": "w080", "ハンバーガー": "w081", "ヒーター": "w082", "フランス": "w083", "ヘルメット": "w084", "ホテル": "w085", "マスク": "w086", "ミルク": "w087", "ムスリム": "w088", "メール": "w089", "モール": "w090", "ヤクルト": "w091", "ユニフォーム": "w092", "ヨーグルト": "w093", "ラジオ": "w094", "リモコン": "w095", "ルール": "w096", "レストラン": "w097", "ロボット": "w098", "ワンピース": "w099"};
+var soraKataAudio = null, soraKataDimuat = false, soraKataAntre = null;
+function putarSoraKata(kata){
+  if(!kata){ return; }
+  var wid = ID_KATA[kata];
+  if(!wid){ return; }
+  var kunci = "kata-" + wid + "-" + (progres.sora || "awewe");
+  function mainkan(){
+    var uri = window.SORA_KATA_DATA && window.SORA_KATA_DATA[kunci];
+    if(!uri){ return; }
+    if(soraKataAudio){ soraKataAudio.pause(); }
+    soraKataAudio = new Audio(uri);
+    soraKataAudio.play();
+  }
+  if(window.SORA_KATA_DATA){ mainkan(); return; }
+  soraKataAntre = mainkan;
+  if(!soraKataDimuat){
+    soraKataDimuat = true;
+    var sc = document.createElement("script");
+    sc.src = "sora-kata.js";
+    sc.onload = function(){ if(soraKataAntre){ var a = soraKataAntre; soraKataAntre = null; a(); } };
+    document.body.appendChild(sc);
+  }
+}
 function toggleArti(){
   var el = document.getElementById("arti-cerita");
   el.classList.toggle("sembunyi");
@@ -1072,6 +1098,7 @@ function gambarDetail(){
   if(khusus && khusus.catatan){ htmlKata += "<p style='margin-top:8px;'>" + khusus.catatan + "</p>"; }
   if(!htmlKata){ htmlKata = "<p>Contoh kata belum tersedia untuk huruf ini.</p>"; }
   document.getElementById("detail-kata").innerHTML = htmlKata;
+  var tblDetailKata = document.getElementById("detail-kata-sora"); if(tblDetailKata){ tblDetailKata.dataset.kata = isiKata ? isiKata.kata : ""; tblDetailKata.style.display = isiKata ? "" : "none"; }
   window.kembaliDariDetail = function(){
     if(detail && detail.asal === "baris"){ bukaHalamanBaris(detail.aksara, Math.floor(detail.indeks / 5)); }
     else { bukaLayar('kana'); }
@@ -1798,6 +1825,7 @@ function tampilHurufKenalan(){
   var tblKenalanSora = document.getElementById("kenalan-sora"); if(tblKenalanSora){ tblKenalanSora.dataset.romaji = item[1]; }
   document.getElementById("kenalan-jangkar").textContent = JANGKAR_HIRA[item[0]] || "";
   document.getElementById("kenalan-kata").innerHTML = contohKenalanHtml(item[0]);
+  var kcKenalan = KATA_CONTOH[item[0]]; var tblKenalanKata = document.getElementById("kenalan-kata-sora"); if(tblKenalanKata){ tblKenalanKata.dataset.kata = kcKenalan ? kcKenalan[0] : ""; tblKenalanKata.style.display = kcKenalan ? "" : "none"; }
   document.getElementById("kenalan-lanjut").classList.add("sembunyi");
   bangunSoalCoba();
   mulaiAnimasiDetail(item[0], "kenalan-svg", "kenalan-goresan-teks");
