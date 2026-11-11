@@ -1047,6 +1047,17 @@ function gambarCerita(){
   document.getElementById("teks-cerita").innerHTML = c.jp.split("。").filter(function(x){ return x.trim(); }).map(function(x){ return x + "。"; }).join("<br>");
   document.getElementById("arti-cerita").textContent = c.id;
 }
+function muatCeritaFeed(){
+  try{
+    fetch("cerita.json",{cache:"no-store"}).then(function(r){return r.ok?r.json():null;}).then(function(j){
+      if(!j||!Array.isArray(j.cerita))return;
+      var n0=CERITA_HARI.length;
+      j.cerita.forEach(function(c){if(c&&c.jp&&c.id)CERITA_HARI.push(c);});
+      if(CERITA_HARI.length>n0&&document.getElementById("teks-cerita"))gambarCerita();
+    }).catch(function(){});
+  }catch(e){}
+}
+muatCeritaFeed();
 var FRASA = [
   {jp:"おはようございます", ro:"ohayou gozaimasu", arti:"selamat pagi"},
   {jp:"こんにちは", ro:"konnichiwa", arti:"halo / selamat siang"},
