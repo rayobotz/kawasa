@@ -3,11 +3,13 @@
  "cerita": [
   {
    "jp": "ゆきが ふっています。そとは しろいです。こどもが ゆきで あそびます。てが つめたいです。でも、とても たのしいです。",
-   "id": "f1"
+   "id": "Salju sedang turun. Di luar serba putih. Anak-anak bermain dengan salju. Tangan terasa dingin. Tapi, sangat menyenangkan.",
+   "kode": "f1"
   },
   {
    "jp": "ちかくに パンやが あります。あさ、いい においが します。わたしは パンを かいます。あたたかくて、おいしいです。",
-   "id": "f2"
+   "id": "Di dekat sini ada toko roti. Di pagi hari, tercium aroma yang enak. Saya membeli roti. Hangat dan enak.",
+   "kode": "f2"
   }
  ]
 }

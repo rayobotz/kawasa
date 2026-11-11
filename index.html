@@ -1066,7 +1066,7 @@ var CERITA_HARI = [
   {jp:"よるに なりました。ほしが でています。つきも でています。わたしは ねます。おやすみなさい。",
    id:"Hari sudah malam. Bintang-bintang muncul. Bulan juga muncul. Saya tidur. Selamat malam."}
 ];
-CERITA_HARI.forEach(function(c, i){ if(!c.id) c.id = "b" + (i + 1); });
+CERITA_HARI.forEach(function(c, i){ if(!c.kode) c.kode = "b" + (i + 1); });
 var ceritaAktif = null;
 function gambarCerita(){
   var c = CERITA_HARI[Math.floor(Date.now() / 86400000) % CERITA_HARI.length];
@@ -1077,8 +1077,8 @@ function gambarCerita(){
 var soraCeritaCache = {};
 var soraCeritaAudio = null;
 function dengarCerita(){
-  if(!ceritaAktif || !ceritaAktif.id){ bejaPesen("Cerita belum siap — tunggu sebentar, lalu ketuk lagi."); return; }
-  var konci = ceritaAktif.id + "-" + (progres.sora || "awewe");
+  if(!ceritaAktif || !ceritaAktif.kode){ bejaPesen("Cerita belum siap — tunggu sebentar, lalu ketuk lagi."); return; }
+  var konci = ceritaAktif.kode + "-" + (progres.sora || "awewe");
   function mainkeun(uri){
     if(soraAudio){ soraAudio.pause(); }
     if(soraKataAudio){ soraKataAudio.pause(); }
