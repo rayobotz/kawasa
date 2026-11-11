@@ -274,13 +274,82 @@
       <p id="baris-status"></p>
       <div class="grid-kana" id="grid-baris"></div>
       <p style="margin-top:8px;">Ketuk hurufnya untuk melihat cara menulisnya ✍️</p>
-      <button class="tombol aksen" onclick="mulaiLatihanBaris()">Mulai Latihan Baris (10 soal)</button>
+      <div id="baris-kenalan-kotak" class="sembunyi">
+        <p style="margin-top:8px; font-size:13px;">Baru pertama kali melihat huruf-huruf ini? Kenalan dulu satu per satu — ada jangkar ingetnya, cara menulisnya, dan contoh katanya. Santai saja, tanpa nilai dan tanpa hukuman.</p>
+        <button class="tombol" id="tombol-kenalan" onclick="mulaiKenalan()">① Kenalan dulu</button>
+      </div>
+      <button class="tombol aksen" id="tombol-latihan-baris" onclick="mulaiLatihanBaris()">② Latihan Baris (10 soal)</button>
       <p style="margin-top:8px; font-size:13px;">Isi latihannya campuran: pilih kana, ketik romaji, baca kata, dan ketik bacaan kata — bukan cuma menebak huruf. Nilai 8/10 atau lebih memberi <strong>Cap Latihan</strong> baris ini.</p>
     </div>
     <div class="kartu">
       <h2>Kata-kata baris ini</h2>
       <p>Kata-kata ini hanya memakai huruf dari baris ini dan baris-baris sebelumnya — jadi semuanya sudah bisa kamu baca.</p>
       <div class="daftar-kata-baris" id="daftar-kata-baris"></div>
+    </div>
+  </section>
+
+  <!-- KENALAN KANA -->
+  <section id="layar-kenalan" class="sembunyi">
+    <div class="navigasi"><button onclick="kembaliDariKenalan()">← Halaman baris</button><button onclick="bukaLayar('beranda')">Beranda</button></div>
+
+    <div id="kenalan-pemanasan" class="sembunyi">
+      <div class="kartu">
+        <h2>Pemanasan — masih ingat? 🔥</h2>
+        <p>Tiga huruf dari baris-baris sebelumnya, untuk menghangatkan ingatan sebelum berkenalan dengan huruf baru. Santai saja — tidak ada hukuman, dan boleh dilewati.</p>
+        <div class="indikator-sesi" id="pemanasan-indikator"></div>
+        <div class="soal-besar">
+          <div class="petunjuk">Huruf apa yang dibaca seperti ini?</div>
+          <div class="huruf jp" id="pemanasan-soal"></div>
+        </div>
+        <div class="pilihan" id="pemanasan-pilihan"></div>
+        <div class="umpan-balik" id="pemanasan-umpan"></div>
+        <button class="tombol sembunyi" id="pemanasan-lanjut" onclick="lanjutPemanasan()">Lanjut →</button>
+        <button class="tombol rangka" id="pemanasan-lewati" onclick="lewatiPemanasan()">Lewati pemanasan</button>
+      </div>
+    </div>
+
+    <div id="kenalan-isi" class="sembunyi">
+      <div class="indikator-sesi" id="kenalan-indikator"></div>
+      <div class="kartu">
+        <div class="soal-besar" style="padding-top:2px;">
+          <div class="huruf jp" id="kenalan-huruf"></div>
+          <div class="petunjuk" id="kenalan-romaji"></div>
+        </div>
+        <div class="kotak-goresan">
+          <svg id="kenalan-svg" viewBox="0 0 109 109" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Animasi urutan goresan"></svg>
+        </div>
+        <div class="indikator-sesi" id="kenalan-goresan-teks" style="margin-top:8px;"></div>
+        <button class="tombol rangka" onclick="putarLagiKenalan()">↻ Putar lagi</button>
+        <p class="atribusi">Data goresan: KanjiVG · CC BY-SA 3.0</p>
+      </div>
+      <div class="kartu">
+        <h2>🧭 Jangkar inget</h2>
+        <p id="kenalan-jangkar" style="color:var(--teks); font-size:15px;"></p>
+      </div>
+      <div class="kartu">
+        <h2>Contoh kata</h2>
+        <div id="kenalan-kata"></div>
+      </div>
+      <div class="kartu">
+        <h2>Coba langsung ✍️</h2>
+        <p id="kenalan-coba-petunjuk"></p>
+        <div class="soal-besar" style="padding:4px 0 0;">
+          <div class="huruf jp" id="kenalan-coba-soal"></div>
+        </div>
+        <div class="pilihan" id="kenalan-coba-pilihan"></div>
+        <div class="umpan-balik" id="kenalan-coba-umpan"></div>
+        <button class="tombol sembunyi" id="kenalan-lanjut" onclick="lanjutKenalan()">Lanjut →</button>
+      </div>
+    </div>
+
+    <div id="kenalan-penutup" class="sembunyi">
+      <div class="kartu">
+        <h2>Kenalan selesai! 🎉</h2>
+        <p id="kenalan-penutup-teks" style="color:var(--teks); font-size:15px;"></p>
+        <p id="kenalan-penutup-xp" style="font-weight:600;"></p>
+        <button class="tombol" onclick="latihanDariKenalan()">Mulai Latihan Baris →</button>
+        <button class="tombol rangka" onclick="kembaliDariKenalan()">Kembali ke halaman baris</button>
+      </div>
     </div>
   </section>
 
@@ -360,7 +429,7 @@ var KATA = [["ア","a"],["イ","i"],["ウ","u"],["エ","e"],["オ","o"],["カ","
 
 var KUNCI = "aplikasi-umum-beginner:progress:v1";
 var TRACK_URL = "https://script.google.com/macros/s/AKfycbzt4lhJu00LrpG_4ped806sh393v0pIfl778SnO6r4gZ75P-FU8N3SFs7jjw2oVh5eI/exec";
-var progres = {xp:0, kuasai:{}, id:"", nama:"", capBaris:{}};
+var progres = {xp:0, kuasai:{}, id:"", nama:"", capBaris:{}, kenalan:{}};
 try{ var tersimpan = localStorage.getItem(KUNCI); if(tersimpan){ progres = JSON.parse(tersimpan); } }catch(e){}
 if(!progres.id){ progres.id = "u" + Date.now().toString(36) + Math.floor(Math.random()*99999).toString(36); }
 function simpan(){ try{ localStorage.setItem(KUNCI, JSON.stringify(progres)); }catch(e){} }
@@ -405,8 +474,14 @@ function normalisasiCap(){
   // Progres lama belum punya capBaris — buat kosong, jangan sampai error.
   if(!progres.capBaris || typeof progres.capBaris !== "object"){ progres.capBaris = {}; }
 }
+function normalisasiKenalan(){
+  // Progres lama belum punya kenalan — buat kosong, jangan sampai error.
+  // Kenalan ikut tercadangkan karena tinggal di blob progres yang sama.
+  if(!progres.kenalan || typeof progres.kenalan !== "object"){ progres.kenalan = {}; }
+}
 migrasiProgres();
 normalisasiCap();
+normalisasiKenalan();
 simpan();
 
 var timerKirim = null;
@@ -462,6 +537,7 @@ function terapkanCadangan(blobTeks){
     progres = p;
     if(!progres.kuasai){ progres.kuasai = {}; }
     normalisasiCap();
+    normalisasiKenalan();
     if(typeof progres.xp !== "number"){ progres.xp = 0; }
     migrasiProgres();
     simpan(); segarkanProgres(); gambarGrid();
@@ -510,7 +586,7 @@ function segarkanProgres(){
 }
 
 function bukaLayar(nama){
-  var layar = ["beranda","kana","latihan","ringkasan","detail","jalur","jalur-hira","jalur-kata","baris"];
+  var layar = ["beranda","kana","latihan","ringkasan","detail","jalur","jalur-hira","jalur-kata","baris","kenalan"];
   if(nama !== "detail"){ berhentiAnimasi(); }
   for(var i=0;i<layar.length;i++){
     document.getElementById("layar-"+layar[i]).classList.toggle("sembunyi", layar[i] !== nama);
@@ -878,11 +954,11 @@ function gambarDetail(){
   document.getElementById("detail-berikutnya").disabled = detail.indeks >= data.length - 1;
   mulaiAnimasiDetail(item[0]);
 }
-function mulaiAnimasiDetail(huruf){
+function mulaiAnimasiDetail(huruf, idSvg, idTeks){
   berhentiAnimasi();
   var token = tokenAnimasi;
-  var svg = document.getElementById("detail-svg");
-  var teks = document.getElementById("detail-goresan-teks");
+  var svg = document.getElementById(idSvg || "detail-svg");
+  var teks = document.getElementById(idTeks || "detail-goresan-teks");
   var daftar = GORESAN[huruf] || [];
   svg.innerHTML = "";
   var jalur = [];
@@ -1217,6 +1293,7 @@ function bukaHalamanBaris(aksara, indeks){
     baris.innerHTML = "<span class='kw jp'>" + bankSendiri[t][0] + "</span><span class='kr'>" + bankSendiri[t][1] + "</span><span class='ka'>" + bankSendiri[t][2] + "</span>";
     wadahKata.appendChild(baris);
   }
+  segarkanTombolBaris(aksara, indeks);
   bukaLayar("baris");
 }
 function mulaiLatihanBaris(){
@@ -1442,6 +1519,237 @@ function keLangkahBerikutnya(){
   else if(lk.jenis === "jebakan"){ bukaJalurAksara("hira"); }
   else { bukaJalur(); }
 }
+
+// === Fase Kenalan: berkenalan dengan huruf baris ini satu per satu ===
+// Pemula yang membuka halaman baris selama ini langsung latihan — hurufnya
+// belum pernah diajarkan, jadi sesi terasa menebak. Fase kenalan menutup
+// celah itu: tiap huruf dikenali lewat bunyinya, cara menulisnya (animasi
+// goresan yang SAMA dengan layar Detail), jangkar inget, dan satu contoh
+// kata — lalu langsung dicoba sekali lewat soal mikro yang ringan.
+// Fase ini MURNI belajar: tidak mengubah penguasaan kana maupun Cap Latihan;
+// satu-satunya XP adalah bonus +20 saat kenalan satu baris selesai untuk
+// pertama kalinya. Tanpa timer, tanpa kata "gagal", salah boleh coba lagi.
+// Konten jangkar baru ditulis untuk hiragana; baris katakana belum
+// menampilkan fase ini sampai jangkar katakananya ditulis.
+var JANGKAR_HIRA = {"あ":"Ada simpul melingkar di kanan bawah — seperti mulut yang terbuka berteriak 'Aaa!'","い":"Dua garis menggantung berdampingan, seperti dua ikan yang dijemur — ikannya dua, 'i-i'.","う":"Ada tutup di atasnya, seperti kotak yang ditutup rapat — isinya sudah di dalam.","え":"Garisnya berliku seperti orang berlari kencang — 'e' untuk energik.","お":"Ada simpul kecil di kanan, seperti pegolf yang baru memukul bola lalu berteriak 'O!'","か":"Bentuk dasarnya sama dengan kanji 力 (kekuatan) ditambah satu coretan — 'ka' untuk kawasa, mampu!","き":"Seperti kunci antik dengan gerigi di bawah — 'ki' dari key, kunci dalam bahasa Inggris.","く":"Seperti paruh burung yang terbuka — 'ku-kuruyuk', suara ayam jantan.","け":"Seperti tong kayu yang diikat dua tali — tongnya siap dipakai.","こ":"Dua garis membentuk sudut siku — seperti sudut kolam.","さ":"Seperti penari yang memutar badannya — lincah seperti menari salsa.","し":"Satu garis melengkung panjang, seperti kail pancing yang diturunkan ke air.","す":"Ada lingkaran kecil di tengahnya, seperti tali yang digulung — susah dibuka kalau ditarik asal.","せ":"Seperti wajah yang menatap dengan satu mata besar — tatapannya serius.","そ":"Garisnya zig-zag lalu melengkung, seperti benang yang dijahit menembus kain.","た":"Seperti wajah tersenyum lebar dengan mulut terbuka — 'ta-daa!'","ち":"Seperti pemandu sorak yang melompat — 'chi-a!' sambil mengangkat tangan.","つ":"Satu lengkung besar seperti gelombang yang datang — ombak tsu-nami.","て":"Bentuknya seperti telapak tangan yang melambai — dan て memang artinya 'tangan' dalam bahasa Jepang.","と":"Seperti kaki dengan jempol menonjol di bawah — 'to' dari toe, jempol kaki dalam bahasa Inggris.","な":"Ada simpul di tengahnya, seperti tali yang diikat — ikatannya rapat.","に":"Dua garis sejajar, seperti dua jarum jahit yang selalu berpasangan.","ぬ":"Garisnya kusut berputar, seperti mie instan yang lengket jadi satu.","ね":"Ujungnya melingkar seperti kucing yang tidur meringkuk — neko (kucing) sedang bobo.","の":"Satu putaran penuh seperti lingkaran — cukup sekali putar.","は":"Seperti orang tertawa dengan mulut terbuka — 'ha-ha!'","ひ":"Seperti tumit kaki — 'hi' dari heel, tumit dalam bahasa Inggris.","ふ":"Garis-garisnya menurun seperti lereng Gunung Fuji — 'fu' untuk Fuji.","へ":"Satu garis menanjak seperti bukit — ayo naik ke atas, 'he!'","ほ":"Seperti wajah bertopi dengan tali dagu — 'ho-ho', tawanya Santa.","ま":"Ada dua lingkaran kecil bertumpuk, seperti simpul yang diikat mama dua kali supaya kuat.","み":"Garisnya berliku tiga tikungan, seperti jalan pegunungan yang berkelok.","む":"Seperti wajah sapi dengan dua telinga dan hidung di bawah — 'muu', suara sapi.","め":"Ada lingkaran kecil seperti mata — dan め memang artinya 'mata'.","も":"Seperti kail yang berhasil menangkap ikan — momen dapat ikan!","や":"Seperti anak panah — dan や memang artinya 'panah'.","ゆ":"Bentuknya unik seperti ikan berwajah bulat — yuk, lihat ikannya.","よ":"Seperti orang melakukan pose yoga dengan tangan terentang.","ら":"Seperti kelinci yang duduk dengan telinga panjang ke belakang.","り":"Dua garis tegak, seperti dua bilah bambu yang tumbuh berdampingan.","る":"Ujungnya melingkar seperti akar rumput yang menyebar di tanah.","れ":"Seperti orang berlutut dengan satu kaki — posisi siap membantu.","ろ":"Seperti jalan berputar tanpa simpul di tengah — rutenya mulus.","わ":"Seperti angsa dengan leher melengkung anggun.","を":"Huruf khusus penanda objek dalam kalimat — bentuknya seperti panah penunjuk, dibaca 'o'.","ん":"Satu garis pendek berdiri sendiri — huruf istimewa yang tidak pernah mengawali kata."};
+var kenalan = null; // {aksara, indeksBaris, huruf:[item], posisi, salahCoba, cobaSelesai, pemanasan:{kumpul, antrean, indeks}|null}
+function segarkanTombolBaris(aksara, indeks){
+  var kotak = document.getElementById("baris-kenalan-kotak");
+  var tKenalan = document.getElementById("tombol-kenalan");
+  var tLatihan = document.getElementById("tombol-latihan-baris");
+  var huruf = kanaBarisIni(aksara, indeks);
+  var punyaKonten = aksara === "hira" && huruf.length > 0 && !!JANGKAR_HIRA[huruf[0][0]];
+  if(kotak){ kotak.classList.toggle("sembunyi", !punyaKonten); }
+  if(!punyaKonten){
+    if(tLatihan){ tLatihan.className = "tombol aksen"; }
+    return;
+  }
+  var sudah = !!progres.kenalan[aksara + ":" + indeks];
+  if(tKenalan){
+    tKenalan.textContent = sudah ? ("① Ulangi kenalan (" + huruf.length + " huruf) — sudah selesai ✓")
+                                 : ("① Kenalan dulu (" + huruf.length + " huruf)");
+    tKenalan.className = sudah ? "tombol rangka" : "tombol";
+  }
+  if(tLatihan){ tLatihan.className = sudah ? "tombol aksen" : "tombol rangka"; }
+}
+function mulaiKenalan(){
+  if(!barisAktif || barisAktif.aksara !== "hira"){ return; }
+  var huruf = kanaBarisIni("hira", barisAktif.indeks);
+  if(!huruf.length || !JANGKAR_HIRA[huruf[0][0]]){ return; }
+  kenalan = {
+    aksara: "hira", indeksBaris: barisAktif.indeks,
+    huruf: huruf, posisi: 0, salahCoba: 0, cobaSelesai: false,
+    pemanasan: null
+  };
+  if(barisAktif.indeks > 0 && !progres.kenalan["hira:" + barisAktif.indeks]){
+    var kumpul = [];
+    for(var b = 0; b < barisAktif.indeks; b++){ kumpul = kumpul.concat(kanaBarisIni("hira", b)); }
+    if(kumpul.length >= 3){
+      kenalan.pemanasan = {kumpul: kumpul, antrean: acakSusunan(kumpul).slice(0, 3), indeks: 0};
+    }
+  }
+  bukaLayar("kenalan");
+  if(kenalan.pemanasan){ tampilFasePemanasan(); } else { tampilFaseHuruf(); }
+}
+function tampilFasePemanasan(){
+  document.getElementById("kenalan-isi").classList.add("sembunyi");
+  document.getElementById("kenalan-penutup").classList.add("sembunyi");
+  document.getElementById("kenalan-pemanasan").classList.remove("sembunyi");
+  tampilSoalPemanasan();
+}
+function tampilSoalPemanasan(){
+  var pm = kenalan.pemanasan;
+  var item = pm.antrean[pm.indeks];
+  document.getElementById("pemanasan-indikator").textContent = "Soal " + (pm.indeks + 1) + " dari " + pm.antrean.length;
+  document.getElementById("pemanasan-soal").textContent = item[1];
+  document.getElementById("pemanasan-umpan").textContent = "";
+  document.getElementById("pemanasan-lanjut").classList.add("sembunyi");
+  var pengecoh = acakSusunan(pm.kumpul.filter(function(x){ return x[0] !== item[0]; })).slice(0, 3);
+  var opsi = acakSusunan([item].concat(pengecoh));
+  var kotak = document.getElementById("pemanasan-pilihan");
+  kotak.innerHTML = "";
+  for(var i = 0; i < opsi.length; i++){
+    (function(pil){
+      var b = document.createElement("button");
+      b.className = "jp"; b.textContent = pil[0];
+      b.onclick = function(){ jawabPemanasan(pil, b); };
+      kotak.appendChild(b);
+    })(opsi[i]);
+  }
+}
+function jawabPemanasan(pil, tombol){
+  var pm = kenalan.pemanasan;
+  var item = pm.antrean[pm.indeks];
+  if(pil[0] === item[0]){
+    tombol.classList.add("benar");
+    document.getElementById("pemanasan-umpan").textContent = "Betul! " + item[0] + " dibaca \u201C" + item[1] + "\u201D. Ingatanmu masih hangat.";
+    document.getElementById("pemanasan-lanjut").classList.remove("sembunyi");
+  } else {
+    tombol.classList.add("salah");
+    document.getElementById("pemanasan-umpan").textContent = "Belum tepat — tidak apa-apa, coba ingat lagi bentuknya.";
+  }
+}
+function lanjutPemanasan(){
+  if(!kenalan || !kenalan.pemanasan){ return; }
+  kenalan.pemanasan.indeks += 1;
+  if(kenalan.pemanasan.indeks >= kenalan.pemanasan.antrean.length){ tampilFaseHuruf(); }
+  else { tampilSoalPemanasan(); }
+}
+function lewatiPemanasan(){ tampilFaseHuruf(); }
+function tampilFaseHuruf(){
+  document.getElementById("kenalan-pemanasan").classList.add("sembunyi");
+  document.getElementById("kenalan-penutup").classList.add("sembunyi");
+  document.getElementById("kenalan-isi").classList.remove("sembunyi");
+  tampilHurufKenalan();
+}
+function contohKenalanHtml(huruf){
+  // Penampilan contoh kata yang sama persis dengan layar Detail Kana:
+  // memakai ulang data KATA_CONTOH & KASUS_KHUSUS yang sudah ada.
+  var khusus = KASUS_KHUSUS[huruf];
+  var kc = KATA_CONTOH[huruf];
+  var isiKata = null;
+  if(khusus && khusus.kata){ isiKata = khusus; }
+  else if(kc){ isiKata = {kata:kc[0], romaji:kc[1], arti:kc[2]}; }
+  var html = "";
+  if(isiKata){
+    html = "<div class='kata-besar jp'>" + isiKata.kata + "</div>" +
+      "<p class='kata-info'>" + isiKata.romaji + " \u2014 " + isiKata.arti + "</p>";
+  }
+  if(khusus && khusus.catatan){ html += "<p style='margin-top:8px;'>" + khusus.catatan + "</p>"; }
+  if(!html){ html = "<p>Contoh kata belum tersedia untuk huruf ini.</p>"; }
+  return html;
+}
+function tampilHurufKenalan(){
+  var item = kenalan.huruf[kenalan.posisi];
+  kenalan.salahCoba = 0;
+  kenalan.cobaSelesai = false;
+  document.getElementById("kenalan-indikator").textContent = "Huruf " + (kenalan.posisi + 1) + " dari " + kenalan.huruf.length;
+  document.getElementById("kenalan-huruf").textContent = item[0];
+  document.getElementById("kenalan-romaji").textContent = "dibaca: " + item[1];
+  document.getElementById("kenalan-jangkar").textContent = JANGKAR_HIRA[item[0]] || "";
+  document.getElementById("kenalan-kata").innerHTML = contohKenalanHtml(item[0]);
+  document.getElementById("kenalan-lanjut").classList.add("sembunyi");
+  bangunSoalCoba();
+  mulaiAnimasiDetail(item[0], "kenalan-svg", "kenalan-goresan-teks");
+}
+function putarLagiKenalan(){
+  if(!kenalan){ return; }
+  mulaiAnimasiDetail(kenalan.huruf[kenalan.posisi][0], "kenalan-svg", "kenalan-goresan-teks");
+}
+function bangunSoalCoba(){
+  var item = kenalan.huruf[kenalan.posisi];
+  var romajiKeHuruf = (kenalan.posisi % 2 === 0);
+  var petunjuk = document.getElementById("kenalan-coba-petunjuk");
+  var soalEl = document.getElementById("kenalan-coba-soal");
+  // Pengecoh hanya boleh dari huruf baris ini yang SUDAH ditampilkan sampai
+  // huruf ini. Bila baru satu huruf yang terlihat, pilihannya dua saja:
+  // huruf itu + satu huruf lain dari baris yang sama.
+  var calon = kenalan.huruf.slice(0, kenalan.posisi + 1);
+  if(calon.length < 2 && kenalan.huruf.length > 1){ calon.push(kenalan.huruf[kenalan.posisi + 1]); }
+  var opsi = acakSusunan(calon);
+  if(romajiKeHuruf){
+    petunjuk.textContent = "Kamu baru berkenalan dengan bunyi \u201C" + item[1] + "\u201D. Huruf yang mana yang dibaca begitu?";
+    soalEl.textContent = item[1];
+  } else {
+    petunjuk.textContent = "Huruf ini dibaca apa? Ingat lagi jangkarnya di atas.";
+    soalEl.textContent = item[0];
+  }
+  document.getElementById("kenalan-coba-umpan").textContent = "";
+  var kotak = document.getElementById("kenalan-coba-pilihan");
+  kotak.innerHTML = "";
+  for(var i = 0; i < opsi.length; i++){
+    (function(pil){
+      var b = document.createElement("button");
+      if(romajiKeHuruf){ b.className = "jp"; b.textContent = pil[0]; }
+      else { b.textContent = pil[1]; b.style.fontSize = "20px"; }
+      b.onclick = function(){ jawabCobaKenalan(pil, b, romajiKeHuruf); };
+      kotak.appendChild(b);
+    })(opsi[i]);
+  }
+}
+function jawabCobaKenalan(pil, tombol, romajiKeHuruf){
+  if(!kenalan || kenalan.cobaSelesai){ return; }
+  var item = kenalan.huruf[kenalan.posisi];
+  var umpan = document.getElementById("kenalan-coba-umpan");
+  if(pil[0] === item[0]){
+    kenalan.cobaSelesai = true;
+    tombol.classList.add("benar");
+    umpan.textContent = "Betul! \uD83C\uDF89 " + item[0] + " dibaca \u201C" + item[1] + "\u201D.";
+    document.getElementById("kenalan-lanjut").classList.remove("sembunyi");
+    return;
+  }
+  tombol.classList.add("salah");
+  kenalan.salahCoba += 1;
+  if(kenalan.salahCoba >= 2){
+    // Dua kali belum tepat: tunjukkan jawaban yang benar, tetap boleh lanjut.
+    kenalan.cobaSelesai = true;
+    var btns = document.querySelectorAll("#kenalan-coba-pilihan button");
+    for(var i = 0; i < btns.length; i++){
+      var cocok = romajiKeHuruf ? (btns[i].textContent === item[0]) : (btns[i].textContent === item[1]);
+      if(cocok){ btns[i].classList.add("benar"); }
+    }
+    umpan.textContent = "Tidak apa-apa \u2014 yang benar " + item[0] + ", dibaca \u201C" + item[1] + "\u201D. Perhatikan bentuknya sekali lagi, lalu lanjut.";
+    document.getElementById("kenalan-lanjut").classList.remove("sembunyi");
+  } else {
+    umpan.textContent = "Belum tepat — tidak apa-apa. Ingat lagi jangkarnya di atas, lalu coba sekali lagi.";
+  }
+}
+function lanjutKenalan(){
+  if(!kenalan){ return; }
+  kenalan.posisi += 1;
+  if(kenalan.posisi >= kenalan.huruf.length){ tampilPenutupKenalan(); }
+  else { tampilHurufKenalan(); window.scrollTo(0, 0); }
+}
+function kataJumlahHuruf(n){ return n === 3 ? "Tiga" : (n === 5 ? "Lima" : ("" + n)); }
+function tampilPenutupKenalan(){
+  berhentiAnimasi();
+  document.getElementById("kenalan-isi").classList.add("sembunyi");
+  document.getElementById("kenalan-pemanasan").classList.add("sembunyi");
+  var kunci = kenalan.aksara + ":" + kenalan.indeksBaris;
+  document.getElementById("kenalan-penutup-teks").textContent =
+    "Kenalan selesai! " + kataJumlahHuruf(kenalan.huruf.length) + " huruf ini sudah pernah kamu temui \u2014 sekarang latih supaya melekat.";
+  var elXp = document.getElementById("kenalan-penutup-xp");
+  if(!progres.kenalan[kunci]){
+    progres.kenalan[kunci] = true;
+    progres.xp += 20;
+    simpan(); segarkanProgres(); jadwalKirim();
+    elXp.textContent = "Bonus kenalan +20 XP \uD83C\uDF89";
+  } else {
+    elXp.textContent = "Kamu sudah pernah menyelesaikan kenalan baris ini \u2014 mengulang begini justru menguatkan ingatan.";
+  }
+  document.getElementById("kenalan-penutup").classList.remove("sembunyi");
+  window.scrollTo(0, 0);
+}
+function kembaliDariKenalan(){
+  if(kenalan){ bukaHalamanBaris(kenalan.aksara, kenalan.indeksBaris); }
+  else { bukaJalur(); }
+}
+function latihanDariKenalan(){
+  if(!kenalan || !barisAktif){ return; }
+  bukaLayar("latihan");
+  mulaiSesi("baris", null);
+}
+
 segarkanBeranda();
 gambarGrid();
 gambarKelompokBor();
