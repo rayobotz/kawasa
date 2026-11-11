@@ -199,6 +199,13 @@
       <button class="tombol rangka" id="tombol-arti" onclick="toggleArti()">Lihat artinya</button>
       <p id="arti-cerita" class="sembunyi" style="margin-top:10px;"></p>
     </div>
+
+    <p style="text-align:center; margin:18px 0 6px; font-size:13px;">
+      <a href="#" onclick="bukaLayar('tentang'); return false;" style="color:var(--toska-gelap); font-weight:600;">Tentang Kawasa</a>
+      &nbsp;·&nbsp;
+      <a href="#" onclick="bukaLayar('privasi'); return false;" style="color:var(--toska-gelap); font-weight:600;">Kebijakan Privasi</a>
+    </p>
+    <p style="text-align:center; font-size:12px; color:var(--teks-lembut);">Kawasa — Makin paham, bukan makin bingung.</p>
   </section>
 
   <!-- KANA -->
@@ -448,6 +455,58 @@
       <button class="tombol rangka" id="tombol-ringkasan-kembali" onclick="kembaliDariRingkasan()">Kembali</button>
     </div>
   </section>
+
+  <!-- TENTANG -->
+  <section id="layar-tentang" class="sembunyi">
+    <div class="navigasi">
+      <button onclick="bukaLayar('beranda')">&#8249; Kembali</button>
+    </div>
+    <div class="kartu">
+      <h2>Tentang Kawasa</h2>
+      <p><strong>Kawasa</strong> adalah aplikasi belajar bahasa Jepang dari nol, khusus untuk orang Indonesia. Namanya dari bahasa Sunda: <em>kawasa</em> — mampu, bisa.</p>
+      <p style="margin-top:8px;">Di sini kamu tidak disuruh menghabiskan kurikulum. Kamu dibimbing menguasai <strong>kemampuan</strong>, satu-satu: menyapa dan berterima kasih sejak hari pertama, membaca huruf kana pelan-pelan tanpa tekanan, lalu memperkenalkan diri, bertanya harga, naik kereta, dan seterusnya. Materi baru terbuka sedikit-sedikit mengikuti kemajuanmu — bukan ditumpahkan sekaligus.</p>
+      <p style="margin-top:8px;">Prinsip kami sederhana: <strong>pakai dulu, paham sambil jalan.</strong></p>
+    </div>
+    <div class="kartu">
+      <h2>Siapa pembuatnya</h2>
+      <p>Kawasa dibuat oleh <strong>Ray</strong>, orang Indonesia yang tinggal dan bekerja di Jepang — setiap hari hidup di antara dua bahasa, dan bertahun-tahun belajar (serta mengajari orang lain) bahasa Jepang. Aplikasi ini lahir dari kegelisahan yang sama yang mungkin kamu rasakan: terlalu banyak aplikasi dan web, sampai bingung mulai dari mana.</p>
+      <p style="margin-top:8px;">Materi di Kawasa ditulis sendiri. Data urutan goresan huruf kana berasal dari proyek terbuka KanjiVG (CC BY-SA 3.0). Suara pengucapan adalah suara sintetis pilihan pembuat.</p>
+      <p style="margin-top:8px;">Kontak: Instagram <strong>@ray_dewantara</strong></p>
+    </div>
+    <div class="kartu">
+      <p style="text-align:center; font-weight:700;">Dari nol, jadi kawasa.</p>
+      <p style="text-align:center; font-size:12px; color:var(--teks-lembut); margin-top:4px;">Versi 2026.11</p>
+    </div>
+  </section>
+
+  <!-- PRIVASI -->
+  <section id="layar-privasi" class="sembunyi">
+    <div class="navigasi">
+      <button onclick="bukaLayar('beranda')">&#8249; Kembali</button>
+    </div>
+    <div class="kartu">
+      <h2>Kebijakan Privasi</h2>
+      <p>Terakhir diperbarui: 11 November 2026. Ditulis dengan bahasa yang jujur dan sederhana — sesuai cara aplikasi ini benar-benar bekerja.</p>
+    </div>
+    <div class="kartu">
+      <h2>Data di perangkatmu</h2>
+      <p>Progres belajarmu (XP, huruf yang dikuasai, cap latihan), nama panggilan, dan pilihan suara disimpan di penyimpanan lokal peramban di perangkatmu sendiri. Aplikasi ini <strong>tidak</strong> meminta akses ke kontak, lokasi, kamera, atau mikrofonmu, dan tidak merekam suaramu.</p>
+    </div>
+    <div class="kartu">
+      <h2>Data yang dikirim ke pembuat</h2>
+      <p>Setiap aplikasi dibuka dan setiap progresmu berubah, sebuah <strong>ringkasan progres</strong> terkirim otomatis ke pembuat lewat Google Sheets. Isinya: nama panggilan, XP, jumlah huruf yang dikuasai, cap yang terkumpul, dan waktu terakhir kamu belajar. Tujuannya dua: pembuat bisa melihat perkembangan belajarmu untuk memperbaiki aplikasi, dan progresmu tercadangkan.</p>
+      <p style="margin-top:8px;">Selain itu, progresmu juga <strong>dicadangkan atas nama panggilanmu</strong> supaya bisa dipulihkan di perangkat lain. Sistem ini tanpa kata sandi — artinya siapa pun yang tahu nama panggilanmu bisa memulihkan progres atas nama itu. Karena itu, pakailah nama panggilan biasa; jangan gunakan nama lengkap aslimu atau nama yang bersifat pribadi.</p>
+    </div>
+    <div class="kartu">
+      <h2>Yang tidak kami lakukan</h2>
+      <p>Tidak ada iklan. Data tidak dijual atau dibagikan ke pihak lain untuk pemasaran. Tidak ada pelacak pihak ketiga di dalam aplikasi. Aplikasi ini dihosting di GitHub Pages dan cadangannya memakai Google Sheets; kedua layanan itu punya kebijakan privasinya masing-masing.</p>
+    </div>
+    <div class="kartu">
+      <h2>Menghapus datamu</h2>
+      <p>Tombol di bawah menghapus semua progres dari perangkat ini. Cadangan atas nama panggilanmu di server bisa ikut dihapus — hubungi pembuat lewat Instagram <strong>@ray_dewantara</strong>.</p>
+      <button class="tombol rangka" style="margin-top:10px; color:#b3261e; border-color:#b3261e;" onclick="hapusProgres()">Hapus progres di perangkat ini</button>
+    </div>
+  </section>
 </main>
 
 <footer>Kawasa — makin paham, bukan makin bingung. Dibangun pelan-pelan, dibuka untuk siapa pun yang mau mulai.</footer>
@@ -527,6 +586,11 @@ function jadwalKirim(){
     kirimLaporan("latihan");
     kirimCadangan();
   }, 4000);
+}
+function hapusProgres(){
+  if(!confirm("Hapus semua progres di perangkat ini? XP, cap, dan huruf yang dikuasai akan hilang dari perangkat ini.")){ return; }
+  localStorage.removeItem(STORAGE_KEY);
+  location.reload();
 }
 function gambarSapaan(){
   var j = document.getElementById("judul-utama"), sb = document.getElementById("sub-utama");
