@@ -15,13 +15,13 @@
   body{margin:0; font-family:-apple-system,"Hiragino Sans","Noto Sans JP","Segoe UI",sans-serif;
     background:var(--krem); color:var(--teks); line-height:1.55;}
   .jp{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;}
-  header{background:linear-gradient(135deg,var(--toska),var(--toska-gelap)); color:#fff;
+  header{background:var(--pasir); color:var(--teks); border-bottom:3px solid var(--aksen);
     padding:20px 18px 26px; border-radius:0 0 24px 24px;}
   header .merek{display:flex; align-items:center; gap:12px;}
-  header .lencana-logo{width:52px; height:52px; flex:none; border-radius:50%; background:var(--krem);
+  header .lencana-logo{width:52px; height:52px; flex:none; border-radius:50%; background:var(--toska);
     display:flex; align-items:center; justify-content:center;
     font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;
-    font-size:32px; font-weight:700; color:var(--toska); line-height:1;}
+    font-size:32px; font-weight:700; color:#fff; line-height:1;}
   header .kata-merek{font-size:24px; font-weight:700; letter-spacing:-.01em; line-height:1.15;}
   header .tagline-merek{font-size:12.5px; opacity:.92; margin-top:1px;}
   header h1{font-size:24px; margin:6px 0 4px; line-height:1.3;}
@@ -33,11 +33,11 @@
   .kartu p{margin:0 0 8px; font-size:14px; color:var(--teks-lembut);}
   .progres{display:flex; gap:10px;}
   .progres .kotak{flex:1; background:var(--pasir); border-radius:12px; padding:10px; text-align:center;}
-  .progres .angka{font-size:20px; font-weight:700; color:var(--toska-gelap);}
+  .progres .angka{font-size:20px; font-weight:700; color:#c2533c;}
   .progres .label{font-size:12px; color:var(--teks-lembut);}
   .tombol{display:block; width:100%; padding:13px; border:none; border-radius:12px;
-    background:var(--toska); color:#fff; font-size:16px; font-weight:600; cursor:pointer; margin-top:8px;}
-  .tombol.aksen{background:var(--aksen);}
+    background:var(--aksen); color:#fff; font-size:16px; font-weight:600; cursor:pointer; margin-top:8px;}
+  .tombol.aksen{background:#cf5a41;}
   .tombol.rangka{background:#fff; color:var(--toska-gelap); border:2px solid var(--toska);}
   .tombol:disabled{background:#cfd8dc; cursor:default;}
   .jalur{display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px dashed var(--garis);}
@@ -45,7 +45,7 @@
   .jalur .no{width:28px; height:28px; border-radius:50%; background:var(--pasir);
     display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; flex:none;}
   .jalur .nama{flex:1; font-size:15px;}
-  .lencana{font-size:11px; padding:3px 8px; border-radius:99px; background:#e0f2f1; color:var(--toska-gelap); font-weight:600;}
+  .lencana{font-size:11px; padding:3px 8px; border-radius:99px; background:#fdeee9; color:#c2533c; font-weight:600;}
   .lencana.segera{background:#eceff1; color:#78909c;}
   .tab{display:flex; gap:8px; margin-bottom:12px;}
   .tab button{flex:1; padding:10px; border-radius:10px; border:2px solid var(--toska);
@@ -92,7 +92,7 @@
   .baris-jalur .kana-baris{font-size:17px; color:var(--teks-lembut); letter-spacing:2px;}
   .baris-jalur.redup{opacity:.62;}
   .cap-mini{display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; flex:none;
-    border:2px solid var(--toska); color:var(--toska); border-radius:50%; font-size:16px; font-weight:700; background:#e0f2f1;}
+    border:2px solid var(--aksen); color:var(--aksen); border-radius:50%; font-size:16px; font-weight:700; background:#fdeee9;}
   .daftar-kata-baris{display:flex; flex-direction:column; gap:6px;}
   .kata-baris{display:flex; align-items:baseline; gap:10px; padding:8px 10px; background:var(--krem); border-radius:10px;}
   .kata-baris .kw{font-size:20px; font-weight:600;}
