@@ -195,10 +195,10 @@
 
     <div class="kartu kartu-cerita">
       <h2>📖 Cerita hari ini</h2>
-      <p>Cerita pendek untuk dibaca santai — bahan input, tanpa soal. Berganti setiap hari, dan khusus ditulis dengan hiragana saja supaya bisa dibaca sejak tahap kana.</p>
+      <p>Cerita pendek untuk dibaca santai — bahan input, tanpa soal. Berganti setiap hari, dan khusus ditulis dengan hiragana saja supaya bisa dibaca sejak tahap kana. Ketuk ▶ Dengar cerita untuk mendengar sambil membaca; artinya ada di bawah teksnya.</p>
       <div class="cerita-teks jp" lang="ja" id="teks-cerita"></div>
-      <button class="tombol rangka" id="tombol-arti" onclick="toggleArti()">Lihat artinya</button>
-      <p id="arti-cerita" class="sembunyi" style="margin-top:10px;"></p>
+      <button class="tombol rangka" id="tombol-dengar-cerita" onclick="dengarCerita()" style="margin-top:10px;">▶ Dengar cerita</button>
+      <p id="arti-cerita" style="margin-top:10px; color:var(--teks-lembut); font-size:15px;"></p>
     </div>
 
     <p style="text-align:center; margin:18px 0 6px; font-size:13px;">
@@ -1066,10 +1066,35 @@ var CERITA_HARI = [
   {jp:"よるに なりました。ほしが でています。つきも でています。わたしは ねます。おやすみなさい。",
    id:"Hari sudah malam. Bintang-bintang muncul. Bulan juga muncul. Saya tidur. Selamat malam."}
 ];
+CERITA_HARI.forEach(function(c, i){ if(!c.id) c.id = "b" + (i + 1); });
+var ceritaAktif = null;
 function gambarCerita(){
   var c = CERITA_HARI[Math.floor(Date.now() / 86400000) % CERITA_HARI.length];
+  ceritaAktif = c;
   document.getElementById("teks-cerita").innerHTML = c.jp.split("。").filter(function(x){ return x.trim(); }).map(function(x){ return x + "。"; }).join("<br>");
   document.getElementById("arti-cerita").textContent = c.id;
+}
+var soraCeritaCache = {};
+var soraCeritaAudio = null;
+function dengarCerita(){
+  if(!ceritaAktif || !ceritaAktif.id){ bejaPesen("Cerita belum siap — tunggu sebentar, lalu ketuk lagi."); return; }
+  var konci = ceritaAktif.id + "-" + (progres.sora || "awewe");
+  function mainkeun(uri){
+    if(soraAudio){ soraAudio.pause(); }
+    if(soraKataAudio){ soraKataAudio.pause(); }
+    if(soraCeritaAudio){ soraCeritaAudio.pause(); }
+    soraCeritaAudio = new Audio(uri);
+    var janji = soraCeritaAudio.play();
+    if(janji && janji.catch){ janji.catch(function(){ bejaPesen("Suara gagal diputar — ketuk sekali lagi."); }); }
+  }
+  if(soraCeritaCache[konci]){ mainkeun(soraCeritaCache[konci]); return; }
+  bejaPesen("Memuat suara cerita…");
+  fetch("sora-cerita/" + konci + ".b64", {cache:"force-cache"}).then(function(r){ return r.ok ? r.text() : null; }).then(function(t){
+    if(!t){ bejaPesen("Suara cerita ini belum tersedia."); return; }
+    var uri = "data:audio/mpeg;base64," + t.replace(/\s+/g, "");
+    soraCeritaCache[konci] = uri;
+    mainkeun(uri);
+  }).catch(function(){ bejaPesen("Suara gagal dimuat — periksa sambungan internet, lalu ketuk lagi."); });
 }
 function muatCeritaFeed(){
   try{
