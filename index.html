@@ -696,7 +696,7 @@ function segarkanProgres(){
 }
 
 function bukaLayar(nama){
-  var layar = ["beranda","kana","latihan","ringkasan","detail","jalur","jalur-hira","jalur-kata","baris","kenalan"];
+  var layar = ["beranda","kana","latihan","ringkasan","detail","jalur","jalur-hira","jalur-kata","baris","kenalan","tentang","privasi"];
   if(nama !== "detail"){ berhentiAnimasi(); }
   for(var i=0;i<layar.length;i++){
     document.getElementById("layar-"+layar[i]).classList.toggle("sembunyi", layar[i] !== nama);
