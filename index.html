@@ -68,7 +68,8 @@
   .pilihan button.salah{border-color:#e53935; background:#ffebee;}
   input.ketik{width:100%; padding:13px; font-size:18px; border:2px solid var(--garis);
     border-radius:12px; text-align:center;}
-  .umpan-balik{text-align:center; font-size:15px; min-height:24px; margin-top:8px; font-weight:600;}
+  #beja{position:fixed; left:50%; bottom:26px; transform:translateX(-50%); background:#0a5f5e; color:#fff9f0; padding:11px 18px; border-radius:999px; font-size:14px; z-index:60; box-shadow:0 6px 22px rgba(55,49,42,.28); max-width:88vw; text-align:center;}
+.umpan-balik{text-align:center; font-size:15px; min-height:24px; margin-top:8px; font-weight:600;}
   .sembunyi{display:none;}
   .indikator-sesi{text-align:center; font-size:13px; font-weight:700; color:var(--toska-gelap); margin-bottom:2px;}
   .kelompok-bor{display:flex; flex-wrap:wrap; gap:8px; margin-top:4px;}
@@ -416,7 +417,7 @@
 
   <!-- LATIHAN -->
   <section id="layar-latihan" class="sembunyi">
-    <div class="navigasi"><button onclick="bukaLayar('kana')">← Kembali ke tabel kana</button></div>
+    <div class="navigasi"><button id="tombol-balik-latihan" onclick="kembaliDariLatihan()">← Kembali ke tabel kana</button></div>
     <div class="kartu">
       <div class="tab" id="tab-latihan-umum">
         <button id="tab-pilih" class="aktif" onclick="setModeLatihan('pilih')">Pilih Kana</button>
@@ -587,6 +588,13 @@ function jadwalKirim(){
     kirimCadangan();
   }, 4000);
 }
+var bejaTimer = null;
+function bejaPesen(teks){
+  var b = document.getElementById("beja"); if(!b){ return; }
+  b.textContent = teks; b.classList.remove("sembunyi");
+  if(bejaTimer){ clearTimeout(bejaTimer); }
+  bejaTimer = setTimeout(function(){ b.classList.add("sembunyi"); }, 3600);
+}
 function hapusProgres(){
   if(!confirm("Hapus semua progres di perangkat ini? XP, cap, dan huruf yang dikuasai akan hilang dari perangkat ini.")){ return; }
   localStorage.removeItem(KUNCI);
@@ -634,7 +642,9 @@ function ambilCadangan(nama){
 }
 function progresKosong(){
   var n = 0; for(var k in progres.kuasai){ n++; }
-  return progres.xp === 0 && n === 0;
+  var c = 0; for(var k2 in (progres.capBaris || {})){ c++; }
+  var kn = 0; for(var k3 in (progres.kenalan || {})){ kn++; }
+  return progres.xp === 0 && n === 0 && c === 0 && kn === 0;
 }
 function terapkanCadangan(blobTeks){
   try{
@@ -646,7 +656,8 @@ function terapkanCadangan(blobTeks){
     normalisasiKenalan();
     if(typeof progres.xp !== "number"){ progres.xp = 0; }
     migrasiProgres();
-    simpan(); segarkanProgres(); gambarGrid();
+    simpan(); segarkanProgres(); gambarGrid(); gambarSapaan(); segarkanBeranda(); gambarFrasa();
+    bejaPesen("Progresmu berhasil dipulihkan ✓");
     document.getElementById("kartu-nama").classList.add("sembunyi");
     return true;
   }catch(e){ return false; }
@@ -680,7 +691,7 @@ function cekCadanganNama(nama){
   });
 }
 function pakaiProgresServer(){
-  if(cadanganMenunggu && cadanganMenunggu.blob){ terapkanCadangan(cadanganMenunggu.blob); }
+  if(cadanganMenunggu && cadanganMenunggu.blob && !terapkanCadangan(cadanganMenunggu.blob)){ bejaPesen("Progres dari server gagal dibaca — progres di perangkat ini tetap dipakai."); }
   cadanganMenunggu = null;
   document.getElementById("kartu-konfirmasi-progres").classList.add("sembunyi");
 }
@@ -800,6 +811,8 @@ function mulaiSesi(jenis, kelompok){
     kunciCap: jenis === "baris" ? (barisAktif.aksara + ":" + barisAktif.indeks) : (jenis === "jebakan" ? "jebakan" : null),
     labelCap: jenis === "baris" ? ("Baris " + namaBaris(barisAktif.aksara, barisAktif.indeks)) : (jenis === "jebakan" ? "Jebakan Bunyi" : "")
   };
+  var tbl = document.getElementById("tombol-balik-latihan");
+  if(tbl){ tbl.textContent = jenis === "baris" ? "← Kembali ke halaman baris" : (jenis === "jebakan" ? "← Kembali ke jalur hiragana" : "← Kembali ke tabel kana"); }
   tampilSoal();
 }
 function mulaiLatihan(){ bukaLayar("latihan"); mulaiSesi("biasa", null); }
@@ -940,6 +953,7 @@ function catatHasil(kunciKana, benar){
   simpan(); segarkanProgres(); jadwalKirim();
 }
 function jawabPilih(item, tombol, kunciKana){
+  if(dijawabSoalIni){ return; }
   var benar = item[0] === soalSaatIni[0];
   tombol.classList.add(benar ? "benar" : "salah");
   document.getElementById("umpan-balik").textContent = benar ? "Benar! +10 XP" : "Belum tepat — yang benar " + soalSaatIni[0] + " (" + soalSaatIni[1] + ")";
@@ -949,6 +963,7 @@ function jawabPilih(item, tombol, kunciKana){
 function cekKetik(){
   var kunciKana = modeKana + ":" + soalSaatIni[0];
   var jawaban = document.getElementById("input-romaji").value.trim().toLowerCase();
+  if(jawaban === ""){ document.getElementById("umpan-balik").textContent = "Jawaban masih kosong — ketik dulu, lalu cek lagi."; return; }
   var benar = jawaban === soalSaatIni[1];
   document.getElementById("umpan-balik").textContent = benar ? "Benar! +10 XP" : "Belum tepat — romaji-nya: " + soalSaatIni[1];
   catatHasil(kunciKana, benar);
@@ -994,6 +1009,11 @@ function tampilRingkasan(){
   }
   bukaLayar("ringkasan");
   segarkanProgres();
+}
+function kembaliDariLatihan(){
+  if(sesi && sesi.jenis === "jebakan"){ bukaJalurAksara("hira"); }
+  else if(sesi && sesi.jenis === "baris" && barisAktif){ bukaHalamanBaris(barisAktif.aksara, barisAktif.indeks); }
+  else { bukaLayar("kana"); }
 }
 function kembaliDariRingkasan(){
   if(sesi && sesi.jenis === "jebakan"){ bukaJalurAksara("hira"); }
@@ -1073,10 +1093,12 @@ function putarSora(kunciDasar){
   var kunci = kunciDasar + "-" + (progres.sora || "awewe");
   function mainkan(){
     var uri = window.SORA_DATA && window.SORA_DATA[kunci];
-    if(!uri){ return; }
+    if(!uri){ bejaPesen("Suara gagal dimuat — periksa sambungan internet, lalu ketuk lagi."); return; }
     if(soraAudio){ soraAudio.pause(); }
+    if(soraKataAudio){ soraKataAudio.pause(); }
     soraAudio = new Audio(uri);
-    soraAudio.play();
+    var janji = soraAudio.play();
+    if(janji && janji.catch){ janji.catch(function(){ bejaPesen("Suara gagal diputar — ketuk sekali lagi."); }); }
   }
   if(window.SORA_DATA){ mainkan(); return; }
   soraAntre = mainkan;
@@ -1085,6 +1107,7 @@ function putarSora(kunciDasar){
     var sc = document.createElement("script");
     sc.src = "sora.js";
     sc.onload = function(){ if(soraAntre){ var a = soraAntre; soraAntre = null; a(); } };
+    sc.onerror = function(){ soraNujuDimuat = false; soraAntre = null; bejaPesen("Suara gagal dimuat — periksa sambungan internet, lalu ketuk lagi."); };
     document.body.appendChild(sc);
   }
 }
@@ -1097,10 +1120,12 @@ function putarSoraKata(kata){
   var kunci = "kata-" + wid + "-" + (progres.sora || "awewe");
   function mainkan(){
     var uri = window.SORA_KATA_DATA && window.SORA_KATA_DATA[kunci];
-    if(!uri){ return; }
+    if(!uri){ bejaPesen("Suara gagal dimuat — periksa sambungan internet, lalu ketuk lagi."); return; }
     if(soraKataAudio){ soraKataAudio.pause(); }
+    if(soraAudio){ soraAudio.pause(); }
     soraKataAudio = new Audio(uri);
-    soraKataAudio.play();
+    var janji = soraKataAudio.play();
+    if(janji && janji.catch){ janji.catch(function(){ bejaPesen("Suara gagal diputar — ketuk sekali lagi."); }); }
   }
   if(window.SORA_KATA_DATA){ mainkan(); return; }
   soraKataAntre = mainkan;
@@ -1109,6 +1134,7 @@ function putarSoraKata(kata){
     var sc = document.createElement("script");
     sc.src = "sora-kata.js";
     sc.onload = function(){ if(soraKataAntre){ var a = soraKataAntre; soraKataAntre = null; a(); } };
+    sc.onerror = function(){ soraKataDimuat = false; soraKataAntre = null; bejaPesen("Suara gagal dimuat — periksa sambungan internet, lalu ketuk lagi."); };
     document.body.appendChild(sc);
   }
 }
@@ -1691,6 +1717,7 @@ function cekKetikHuruf(kunciKana){
   // (cekKetik lama memakai modeKana global — salah untuk sesi baris aksara lain).
   var q = sesi.antrean[sesi.indeks];
   var jawaban = document.getElementById("input-romaji").value.trim().toLowerCase();
+  if(jawaban === ""){ document.getElementById("umpan-balik").textContent = "Jawaban masih kosong — ketik dulu, lalu cek lagi."; return; }
   var benar = jawaban === q.huruf[1];
   document.getElementById("umpan-balik").textContent = benar ? "Benar! +10 XP" : ("Belum tepat \u2014 romaji-nya: " + q.huruf[1]);
   catatHasil(kunciKana, benar);
@@ -1704,6 +1731,7 @@ function catatSoalKata(benar, teksKata){
   simpan(); segarkanProgres(); jadwalKirim();
 }
 function jawabKata(pil, tombol, q){
+  if(dijawabSoalIni){ return; }
   var benar = pil[2] === q.kata[2];
   tombol.classList.add(benar ? "benar" : "salah");
   document.getElementById("umpan-balik").textContent = benar ? "Benar! +10 XP" : ("Belum tepat \u2014 " + q.kata[0] + " artinya \u201C" + q.kata[2] + "\u201D (" + q.kata[1] + ")");
@@ -1713,6 +1741,7 @@ function jawabKata(pil, tombol, q){
 function cekKetikBacaan(){
   var q = sesi.antrean[sesi.indeks];
   var jawaban = document.getElementById("input-bacaan").value.trim().toLowerCase().replace(/\s+/g, "");
+  if(jawaban === ""){ document.getElementById("umpan-balik").textContent = "Jawaban masih kosong — ketik dulu, lalu cek lagi."; return; }
   var target = (q.kata[1] || "").toLowerCase().replace(/\s+/g, "");
   var benar = jawaban === target;
   document.getElementById("umpan-balik").textContent = benar ? "Benar! +10 XP" : ("Belum tepat \u2014 bacaannya: " + q.kata[1] + " (" + q.kata[2] + ")");
@@ -1720,6 +1749,7 @@ function cekKetikBacaan(){
   document.getElementById("tombol-lanjut").classList.remove("sembunyi");
 }
 function jawabJebakan(pil, tombol, q){
+  if(dijawabSoalIni){ return; }
   var targetTeks = q.target === 0 ? q.pas[0] : q.pas[3];
   var benar = pil[0] === targetTeks;
   tombol.classList.add(benar ? "benar" : "salah");
@@ -2009,5 +2039,6 @@ if(progres.nama){ document.getElementById("kartu-nama").classList.add("sembunyi"
 pulihkanDiamDiam();
 kirimLaporan("buka");
 </script>
+<div id="beja" class="sembunyi"></div>
 </body>
 </html>
