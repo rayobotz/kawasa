@@ -113,6 +113,10 @@
   .batang-teks{font-size:12.5px; color:var(--teks-lembut); margin-top:6px;}
   .kartu-langkah{border-left:5px solid var(--aksen);}
   .kartu-cerita{background:#fffdf6; border-top:4px solid var(--toska);}
+  .tombol-sora{flex:none; width:42px; height:42px; border-radius:50%; border:2px solid var(--toska); background:#fff; font-size:18px; cursor:pointer; font-family:inherit; color:inherit;}
+  .pil-sora{padding:6px 14px; border-radius:999px; border:2px solid var(--toska); background:#fff; color:var(--toska-gelap); font-size:13px; font-weight:600; cursor:pointer; font-family:inherit;}
+  .pil-sora.aktif{background:var(--toska); color:#fff;}
+  .lencana-baru{background:var(--aksen); color:#fff; font-size:10px; font-weight:700; padding:2px 7px; border-radius:999px; vertical-align:middle; margin-left:6px;}
   footer{text-align:center; font-size:12px; color:#a79b84; padding:0 16px 28px;}
 </style>
 </head>
@@ -150,17 +154,16 @@
       <button class="tombol aksen" id="tombol-langkah" onclick="keLangkahBerikutnya()">Mulai</button>
     </div>
 
-    <div class="kartu">
+    <div class="kartu" id="kartu-frasa">
       <h2>🗣️ Ngomong dari Hari Pertama</h2>
-      <p>Tidak sabar menunggu kana beres? Wajar. Hafalkan frasa ini dan kamu sudah bisa menyapa serta berterima kasih hari ini juga — jalur kana tetap jalan pelan-pelan di belakangnya.</p>
-      <div class="jalur"><div class="nama"><span class="jp" style="font-size:17px;">おはようございます</span><br><small>ohayou gozaimasu — selamat pagi</small></div></div>
-      <div class="jalur"><div class="nama"><span class="jp" style="font-size:17px;">こんにちは</span><br><small>konnichiwa — halo / selamat siang</small></div></div>
-      <div class="jalur"><div class="nama"><span class="jp" style="font-size:17px;">ありがとうございます</span><br><small>arigatou gozaimasu — terima kasih banyak</small></div></div>
-      <div class="jalur"><div class="nama"><span class="jp" style="font-size:17px;">すみません</span><br><small>sumimasen — permisi / maaf</small></div></div>
-      <div class="jalur"><div class="nama"><span class="jp" style="font-size:17px;">おねがいします</span><br><small>onegai shimasu — tolong ya</small></div></div>
-      <div class="jalur"><div class="nama"><span class="jp" style="font-size:17px;">わかりません</span><br><small>wakarimasen — saya tidak mengerti</small></div></div>
-      <div class="jalur"><div class="nama"><span class="jp" style="font-size:17px;">もういちど おねがいします</span><br><small>mou ichido onegai shimasu — tolong ulangi sekali lagi</small></div></div>
-      <div class="jalur" style="border-bottom:none;"><div class="nama"><span class="jp" style="font-size:17px;">だいじょうぶです</span><br><small>daijoubu desu — tidak apa-apa</small></div></div>
+      <p>Tidak sabar menunggu kana beres? Wajar. Kuasai frasa ini dan kamu sudah bisa menyapa serta berterima kasih hari ini juga. Frasa baru terbuka otomatis seiring cap yang kamu kumpulkan — sekali-sekali saja, supaya tidak pusing. Tekan 🔊 untuk mendengar ucapannya.</p>
+      <div style="display:flex; gap:8px; align-items:center; margin:10px 0;">
+        <span style="font-size:13px; color:var(--teks-lembut);">Suara:</span>
+        <button class="pil-sora" id="pil-sora-awewe" onclick="pilihSora('awewe')">Perempuan</button>
+        <button class="pil-sora" id="pil-sora-lalaki" onclick="pilihSora('lalaki')">Laki-laki</button>
+      </div>
+      <div id="daftar-frasa"></div>
+      <p id="frasa-konci" style="margin-top:8px;"></p>
     </div>
 
     <div class="kartu" id="kartu-nama">
@@ -178,14 +181,15 @@
     </div>
 
     <div class="kartu">
-      <h2>Jalur belajarmu</h2>
-      <p>Ikuti dari atas, satu per satu. Tidak ada lompat-lompat.</p>
-      <div class="jalur"><div class="no">1</div><div class="nama">Kana ① — Hiragana</div><button class="tombol" style="padding:6px 14px; font-size:13px;" onclick="bukaJalur()">Buka</button></div>
-      <div class="jalur"><div class="no">2</div><div class="nama">Kana ② — Katakana</div><span class="lencana segera">Setelah ①</span></div>
-      <div class="jalur"><div class="no">3</div><div class="nama">Salam & Perkenalan Diri</div><span class="lencana segera">Segera</span></div>
-      <div class="jalur"><div class="no">4</div><div class="nama">Angka, Waktu & Kalender</div><span class="lencana segera">Segera</span></div>
-      <div class="jalur"><div class="no">5</div><div class="nama">Kata Benda & Penunjuk</div><span class="lencana segera">Segera</span></div>
-      <div class="jalur"><div class="no">6</div><div class="nama">Kata Kerja Dasar</div><span class="lencana segera">Segera</span></div>
+      <h2>Hal yang bisa kamu lakukan</h2>
+      <p>Kawasa itu artinya <em>mampu</em>. Ini daftar kemampuanmu — tumbuh satu-satu, bukan tumpukan materi yang harus dihabiskan.</p>
+      <div class="jalur"><div class="no">🗣️</div><div class="nama">Bisa menyapa & berterima kasih</div><button class="tombol" style="padding:6px 14px; font-size:13px;" onclick="document.getElementById('kartu-frasa').scrollIntoView({behavior:'smooth'})">Lihat</button></div>
+      <div class="jalur"><div class="no">あ</div><div class="nama">Bisa baca hiragana</div><button class="tombol" style="padding:6px 14px; font-size:13px;" onclick="bukaJalur()">Buka</button></div>
+      <div class="jalur"><div class="no">ア</div><div class="nama">Bisa baca katakana</div><span class="lencana segera">Setelah hiragana</span></div>
+      <div class="jalur"><div class="no">🙋</div><div class="nama">Bisa memperkenalkan diri</div><span class="lencana segera">Segera</span></div>
+      <div class="jalur"><div class="no">🛒</div><div class="nama">Bisa tanya harga & belanja</div><span class="lencana segera">Segera</span></div>
+      <div class="jalur"><div class="no">🚃</div><div class="nama">Bisa tanya jalan & naik kereta</div><span class="lencana segera">Segera</span></div>
+      <div class="jalur"><div class="no">🍜</div><div class="nama">Bisa pesan makanan</div><span class="lencana segera">Segera</span></div>
     </div>
 
     <div class="kartu kartu-cerita">
@@ -295,7 +299,7 @@
     </div>
     <div class="kartu">
       <h2>Kata-kata baris ini</h2>
-      <p>Baca dulu kata-kata ini — nanti mereka muncul di latihan. Semuanya hanya memakai huruf dari baris ini dan baris-baris sebelumnya, jadi sudah bisa kamu baca.</p>
+      <p>Kenali kata-kata ini pelan-pelan — <strong>tidak harus hafal semua hari ini</strong>. Mereka akan muncul satu-satu di latihan, dan ingatan datang dengan sendirinya. Semuanya hanya memakai huruf dari baris ini dan baris-baris sebelumnya.</p>
       <div class="daftar-kata-baris" id="daftar-kata-baris"></div>
     </div>
     <div class="kartu">
@@ -335,6 +339,7 @@
         <div class="soal-besar" style="padding-top:2px;">
           <div class="huruf jp" id="kenalan-huruf"></div>
           <div class="petunjuk" id="kenalan-romaji"></div>
+          <button class="tombol rangka" id="kenalan-sora" style="margin-top:8px;" onclick="putarSora('kana-' + this.dataset.romaji)">🔊 Dengar suaranya</button>
         </div>
         <div class="kotak-goresan">
           <svg id="kenalan-svg" viewBox="0 0 109 109" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Animasi urutan goresan"></svg>
@@ -381,6 +386,7 @@
       <div class="soal-besar" style="padding-top:2px;">
         <div class="huruf jp" id="detail-huruf"></div>
         <div class="petunjuk" id="detail-romaji"></div>
+        <button class="tombol rangka" id="detail-sora" style="margin-top:8px;" onclick="putarSora('kana-' + this.dataset.romaji)">🔊 Dengar suaranya</button>
       </div>
       <div class="kotak-goresan">
         <svg id="detail-svg" viewBox="0 0 109 109" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Animasi urutan goresan"></svg>
@@ -620,6 +626,7 @@ function bukaLayar(nama){
   }
   if(nama === "beranda"){ segarkanProgres(); segarkanBeranda(); }
   if(nama === "jalur"){ gambarHub(); }
+  if(nama === "beranda"){ gambarFrasa(); }
   if(nama === "jalur-hira"){ gambarJalurAksara("hira"); }
   if(nama === "jalur-kata"){ gambarJalurAksara("kata"); }
   window.scrollTo(0,0);
@@ -937,6 +944,67 @@ function gambarCerita(){
   document.getElementById("teks-cerita").innerHTML = c.jp.split("。").filter(function(x){ return x.trim(); }).map(function(x){ return x + "。"; }).join("<br>");
   document.getElementById("arti-cerita").textContent = c.id;
 }
+var FRASA = [
+  {jp:"おはようございます", ro:"ohayou gozaimasu", arti:"selamat pagi"},
+  {jp:"こんにちは", ro:"konnichiwa", arti:"halo / selamat siang"},
+  {jp:"ありがとうございます", ro:"arigatou gozaimasu", arti:"terima kasih banyak"},
+  {jp:"すみません", ro:"sumimasen", arti:"permisi / maaf"},
+  {jp:"おねがいします", ro:"onegai shimasu", arti:"tolong ya"},
+  {jp:"わかりません", ro:"wakarimasen", arti:"saya tidak mengerti"},
+  {jp:"もういちど おねがいします", ro:"mou ichido onegai shimasu", arti:"tolong ulangi sekali lagi"},
+  {jp:"だいじょうぶです", ro:"daijoubu desu", arti:"tidak apa-apa"}
+];
+var AMBANG_FRASA = [1, 3, 5, 8, 11];
+function jumlahCap(){ var n = 0; for(var k in progres.capBaris){ if(progres.capBaris[k]){ n++; } } return n; }
+function frasaTerbuka(){ var c = jumlahCap(), n = 3; for(var i = 0; i < AMBANG_FRASA.length; i++){ if(c >= AMBANG_FRASA[i]){ n++; } } return n; }
+function gambarFrasa(){
+  var wadah = document.getElementById("daftar-frasa"); if(!wadah){ return; }
+  var g = progres.sora || "awewe";
+  var pilA = document.getElementById("pil-sora-awewe"), pilL = document.getElementById("pil-sora-lalaki");
+  if(pilA && pilL){ pilA.classList.toggle("aktif", g === "awewe"); pilL.classList.toggle("aktif", g === "lalaki"); }
+  var n = frasaTerbuka();
+  var pernah = progres.frasaTerbuka || 3;
+  wadah.innerHTML = "";
+  for(var i = 0; i < n; i++){
+    var f = FRASA[i];
+    var baris = document.createElement("div");
+    baris.className = "jalur";
+    var baru = i >= pernah ? "<span class='lencana-baru'>BARU</span>" : "";
+    baris.innerHTML = "<div class='nama'><span class='jp' style='font-size:17px;'>" + f.jp + "</span>" + baru + "<br><small>" + f.ro + " — " + f.arti + "</small></div>";
+    var tbl = document.createElement("button");
+    tbl.className = "tombol-sora"; tbl.textContent = "\uD83D\uDD0A"; tbl.setAttribute("aria-label", "Dengarkan frasa");
+    (function(idx){ tbl.onclick = function(){ putarSora("frasa-" + (idx + 1)); }; })(i);
+    baris.appendChild(tbl);
+    wadah.appendChild(baris);
+  }
+  if(n > pernah){ progres.frasaTerbuka = n; simpan(); }
+  var kunci = document.getElementById("frasa-konci");
+  if(kunci){
+    var sisa = FRASA.length - n;
+    kunci.textContent = sisa > 0 ? ("\uD83D\uDD12 " + sisa + " frasa lagi — terbuka otomatis seiring cap yang kamu kumpulkan (sekarang " + jumlahCap() + " cap). Cukup lanjut belajar, tidak perlu diapa-apakan.") : "Semua frasa sudah terbuka \uD83C\uDF89 — tinggal dipakai ngomong beneran.";
+  }
+}
+function pilihSora(g){ progres.sora = g; simpan(); gambarFrasa(); putarSora("frasa-1"); }
+var soraAudio = null, soraNujuDimuat = false, soraAntre = null;
+function putarSora(kunciDasar){
+  var kunci = kunciDasar + "-" + (progres.sora || "awewe");
+  function mainkan(){
+    var uri = window.SORA_DATA && window.SORA_DATA[kunci];
+    if(!uri){ return; }
+    if(soraAudio){ soraAudio.pause(); }
+    soraAudio = new Audio(uri);
+    soraAudio.play();
+  }
+  if(window.SORA_DATA){ mainkan(); return; }
+  soraAntre = mainkan;
+  if(!soraNujuDimuat){
+    soraNujuDimuat = true;
+    var sc = document.createElement("script");
+    sc.src = "sora.js";
+    sc.onload = function(){ if(soraAntre){ var a = soraAntre; soraAntre = null; a(); } };
+    document.body.appendChild(sc);
+  }
+}
 function toggleArti(){
   var el = document.getElementById("arti-cerita");
   el.classList.toggle("sembunyi");
@@ -979,6 +1047,7 @@ function gambarDetail(){
   var item = data[detail.indeks];
   document.getElementById("detail-huruf").textContent = item[0];
   document.getElementById("detail-romaji").textContent = "dibaca: " + item[1];
+  var tblDetailSora = document.getElementById("detail-sora"); if(tblDetailSora){ tblDetailSora.dataset.romaji = item[1]; }
   var khusus = KASUS_KHUSUS[item[0]];
   var kc = KATA_CONTOH[item[0]];
   var isiKata = null;
@@ -1335,11 +1404,32 @@ function bukaHalamanBaris(aksara, indeks){
   if(!bankSendiri.length){
     wadahKata.innerHTML = "<p>Belum ada kata baru yang terbuka di baris ini — kata dari baris sebelumnya tetap muncul di latihan.</p>";
   }
+  var wadahSisa = null;
   for(var t = 0; t < bankSendiri.length; t++){
     var baris = document.createElement("div");
     baris.className = "kata-baris";
     baris.innerHTML = "<span class='kw jp'>" + bankSendiri[t][0] + "</span><span class='kr'>" + bankSendiri[t][1] + "</span><span class='ka'>" + bankSendiri[t][2] + "</span>";
-    wadahKata.appendChild(baris);
+    if(t < 4){ wadahKata.appendChild(baris); }
+    else {
+      if(!wadahSisa){
+        wadahSisa = document.createElement("div");
+        wadahSisa.className = "sembunyi";
+        wadahSisa.style.display = "none";
+        wadahSisa.style.flexDirection = "column";
+        wadahSisa.style.gap = "6px";
+      }
+      wadahSisa.appendChild(baris);
+    }
+  }
+  if(wadahSisa){
+    wadahKata.appendChild(wadahSisa);
+    var sisa = bankSendiri.length - 4;
+    var tblSisa = document.createElement("button");
+    tblSisa.className = "tombol rangka";
+    tblSisa.style.marginTop = "8px";
+    tblSisa.textContent = "+ Lihat " + sisa + " kata lagi (kalau mau)";
+    tblSisa.onclick = function(){ wadahSisa.style.display = "flex"; tblSisa.remove(); };
+    wadahKata.appendChild(tblSisa);
   }
   segarkanTombolBaris(aksara, indeks);
   bukaLayar("baris");
@@ -1694,6 +1784,7 @@ function tampilHurufKenalan(){
   document.getElementById("kenalan-indikator").textContent = "Huruf " + (kenalan.posisi + 1) + " dari " + kenalan.huruf.length;
   document.getElementById("kenalan-huruf").textContent = item[0];
   document.getElementById("kenalan-romaji").textContent = "dibaca: " + item[1];
+  var tblKenalanSora = document.getElementById("kenalan-sora"); if(tblKenalanSora){ tblKenalanSora.dataset.romaji = item[1]; }
   document.getElementById("kenalan-jangkar").textContent = JANGKAR_HIRA[item[0]] || "";
   document.getElementById("kenalan-kata").innerHTML = contohKenalanHtml(item[0]);
   document.getElementById("kenalan-lanjut").classList.add("sembunyi");
@@ -1799,6 +1890,7 @@ function latihanDariKenalan(){
 }
 
 segarkanBeranda();
+gambarFrasa();
 gambarCerita();
 gambarGrid();
 gambarKelompokBor();
