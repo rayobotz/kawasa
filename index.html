@@ -91,9 +91,16 @@
 
     <div class="kartu" id="kartu-nama">
       <h2>Kenalan dulu, yuk</h2>
-      <p>Isi nama panggilanmu — supaya progres belajarmu tercatat rapi dan bisa dipantau. Cukup sekali ini saja.</p>
+      <p>Isi nama panggilanmu — tanpa kata sandi, cukup nama panggilan saja. Progresmu dicadangkan otomatis atas nama itu, jadi kalau kamu ganti HP atau membuka di alat lain, progresmu bisa dipulihkan dengan nama yang sama.</p>
       <input class="ketik" id="input-nama" placeholder="nama panggilan" autocomplete="off">
       <button class="tombol rangka" onclick="simpanNama()">Simpan</button>
+    </div>
+
+    <div class="kartu sembunyi" id="kartu-konfirmasi-progres">
+      <h2>Progres ditemukan 🎉</h2>
+      <p id="teks-konfirmasi-progres"></p>
+      <button class="tombol" onclick="pakaiProgresServer()">Pakai progres itu</button>
+      <button class="tombol rangka" onclick="tetapProgresIni()">Tetap yang ini</button>
     </div>
 
     <div class="kartu">
@@ -183,13 +190,88 @@ function kirimLaporan(acara){
 }
 function jadwalKirim(){
   if(timerKirim){ clearTimeout(timerKirim); }
-  timerKirim = setTimeout(function(){ kirimLaporan("latihan"); }, 4000);
+  timerKirim = setTimeout(function(){
+    kirimLaporan("latihan");
+    kirimCadangan();
+  }, 4000);
 }
 function simpanNama(){
   var v = document.getElementById("input-nama").value.trim();
   if(v){ progres.nama = v; simpan(); }
   document.getElementById("kartu-nama").classList.add("sembunyi");
   kirimLaporan("daftar");
+  if(v){ cekCadanganNama(v); }
+}
+
+// === Cadangan progres atas nama panggilan ===
+// Identitas = nama panggilan saja (tanpa login/kode). Blob progres penuh
+// dicadangkan ke server; nama yang sama di alat mana pun memulihkannya.
+var cadanganMenunggu = null; // {blob, diperbarui} dari server, menunggu pilihan pengguna
+function kirimCadangan(){
+  // Api-dan-lupakan (no-cors, sama seperti laporan event); hanya bila nama terisi.
+  if(!TRACK_URL || !progres.nama){ return; }
+  var muatan = {aksi:"cadangkan", nama:progres.nama, blob:JSON.stringify(progres)};
+  try{
+    fetch(TRACK_URL, {method:"POST", mode:"no-cors", headers:{"Content-Type":"text/plain"}, body:JSON.stringify(muatan)});
+  }catch(e){}
+}
+function ambilCadangan(nama){
+  // GET ?pulihkan=<nama> -> janji berisi objek jawaban server, atau null bila gagal.
+  if(!TRACK_URL || !nama){ return Promise.resolve(null); }
+  return fetch(TRACK_URL + "?pulihkan=" + encodeURIComponent(nama))
+    .then(function(r){ return r.json(); })
+    .catch(function(){ return null; });
+}
+function progresKosong(){
+  var n = 0; for(var k in progres.kuasai){ n++; }
+  return progres.xp === 0 && n === 0;
+}
+function terapkanCadangan(blobTeks){
+  try{
+    var p = JSON.parse(blobTeks);
+    if(!p || typeof p !== "object"){ return false; }
+    progres = p;
+    if(!progres.kuasai){ progres.kuasai = {}; }
+    if(typeof progres.xp !== "number"){ progres.xp = 0; }
+    simpan(); segarkanProgres(); gambarGrid();
+    document.getElementById("kartu-nama").classList.add("sembunyi");
+    return true;
+  }catch(e){ return false; }
+}
+function cadanganBedaDariLokal(p){
+  if(!p){ return false; }
+  return (p.xp || 0) !== progres.xp || JSON.stringify(p.kuasai || {}) !== JSON.stringify(progres.kuasai || {});
+}
+function pulihkanDiamDiam(){
+  // Saat mulai: lokal kosong tapi nama dikenal alat ini -> pulihkan tanpa tanya.
+  if(!progres.nama || !progresKosong()){ return; }
+  ambilCadangan(progres.nama).then(function(hasil){
+    if(hasil && hasil.ada && hasil.blob){ terapkanCadangan(hasil.blob); }
+  });
+}
+function cekCadanganNama(nama){
+  // Setelah nama diisi: bila nama ini sudah punya cadangan yang isinya beda,
+  // tawarkan konfirmasi satu ketuk. Bila belum punya, tanam cadangan awal.
+  ambilCadangan(nama).then(function(hasil){
+    if(!hasil || !hasil.ada || !hasil.blob){ kirimCadangan(); return; }
+    var p = null; try{ p = JSON.parse(hasil.blob); }catch(e){}
+    if(!cadanganBedaDariLokal(p)){ return; }
+    cadanganMenunggu = hasil;
+    document.getElementById("teks-konfirmasi-progres").textContent =
+      "Progres atas nama " + nama + " ditemukan (terakhir diperbarui " + (hasil.diperbarui || "-") + "). Pakai progres itu?";
+    document.getElementById("kartu-konfirmasi-progres").classList.remove("sembunyi");
+  });
+}
+function pakaiProgresServer(){
+  if(cadanganMenunggu && cadanganMenunggu.blob){ terapkanCadangan(cadanganMenunggu.blob); }
+  cadanganMenunggu = null;
+  document.getElementById("kartu-konfirmasi-progres").classList.add("sembunyi");
+}
+function tetapProgresIni(){
+  // Pilihan pengguna: versi lokal yang berlaku -> timpa cadangan server dengannya.
+  cadanganMenunggu = null;
+  document.getElementById("kartu-konfirmasi-progres").classList.add("sembunyi");
+  kirimCadangan();
 }
 function segarkanProgres(){
   document.getElementById("xp").textContent = progres.xp;
@@ -309,6 +391,7 @@ function toggleArti(){
 gambarGrid();
 segarkanProgres();
 if(progres.nama){ document.getElementById("kartu-nama").classList.add("sembunyi"); }
+pulihkanDiamDiam();
 kirimLaporan("buka");
 </script>
 </body>
