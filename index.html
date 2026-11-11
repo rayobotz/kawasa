@@ -589,7 +589,7 @@ function jadwalKirim(){
 }
 function hapusProgres(){
   if(!confirm("Hapus semua progres di perangkat ini? XP, cap, dan huruf yang dikuasai akan hilang dari perangkat ini.")){ return; }
-  localStorage.removeItem(STORAGE_KEY);
+  localStorage.removeItem(KUNCI);
   location.reload();
 }
 function gambarSapaan(){
@@ -615,9 +615,11 @@ function simpanNama(){
 // Identitas = nama panggilan saja (tanpa login/kode). Blob progres penuh
 // dicadangkan ke server; nama yang sama di alat mana pun memulihkannya.
 var cadanganMenunggu = null; // {blob, diperbarui} dari server, menunggu pilihan pengguna
+var tahanKirimCadangan = false; // true bila cek cadangan terakhir gagal total: jangan menimpa apa pun dulu
 function kirimCadangan(){
   // Api-dan-lupakan (no-cors, sama seperti laporan event); hanya bila nama terisi.
   if(!TRACK_URL || !progres.nama){ return; }
+  if(tahanKirimCadangan){ return; }
   var muatan = {aksi:"cadangkan", nama:progres.nama, blob:JSON.stringify(progres)};
   try{
     fetch(TRACK_URL, {method:"POST", mode:"no-cors", headers:{"Content-Type":"text/plain"}, body:JSON.stringify(muatan)});
@@ -657,14 +659,18 @@ function pulihkanDiamDiam(){
   // Saat mulai: lokal kosong tapi nama dikenal alat ini -> pulihkan tanpa tanya.
   if(!progres.nama || !progresKosong()){ return; }
   ambilCadangan(progres.nama).then(function(hasil){
-    if(hasil && hasil.ada && hasil.blob){ terapkanCadangan(hasil.blob); }
+    if(!hasil || hasil.ok === false){ tahanKirimCadangan = true; return; }
+    if(hasil.ada && hasil.blob){ terapkanCadangan(hasil.blob); }
   });
 }
 function cekCadanganNama(nama){
   // Setelah nama diisi: bila nama ini sudah punya cadangan yang isinya beda,
   // tawarkan konfirmasi satu ketuk. Bila belum punya, tanam cadangan awal.
   ambilCadangan(nama).then(function(hasil){
-    if(!hasil || !hasil.ada || !hasil.blob){ kirimCadangan(); return; }
+    if(!hasil || hasil.ok === false){ return; } // gagal terhubung/server galat: jangan menimpa apa pun
+    tahanKirimCadangan = false;
+    if(!hasil.ada){ kirimCadangan(); return; } // server eksplisit: nama ini belum punya cadangan
+    if(!hasil.blob){ return; }
     var p = null; try{ p = JSON.parse(hasil.blob); }catch(e){}
     if(!cadanganBedaDariLokal(p)){ return; }
     cadanganMenunggu = hasil;
