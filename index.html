@@ -77,6 +77,10 @@
     background:#fff; color:var(--toska-gelap); font-size:17px; font-weight:600; cursor:pointer;}
   .daftar-salah{font-size:16px; line-height:2;}
   .cerita-teks{font-size:19px; line-height:2; background:var(--krem); border-radius:12px; padding:12px;}
+  .kt{border-bottom:2px dotted #147D74; cursor:pointer;}
+  .kt.aktif{background:#F3E3B3; border-radius:4px;}
+  #glos-strip{margin-top:10px; background:#EAF4F1; border:1px solid #147D74; border-radius:12px; padding:10px 12px; font-size:15px;}
+  .arsip-item{display:block; width:100%; text-align:left; margin-top:8px;}
   .navigasi{display:flex; gap:8px; margin-bottom:14px;}
   .navigasi button{flex:1; padding:9px; border-radius:10px; border:1px solid var(--garis);
     background:#fff; font-size:14px; cursor:pointer;}
@@ -195,10 +199,12 @@
 
     <div class="kartu kartu-cerita">
       <h2>📖 Cerita hari ini</h2>
-      <p>Cerita pendek untuk dibaca santai — bahan input, tanpa soal. Berganti setiap hari, dan khusus ditulis dengan hiragana saja supaya bisa dibaca sejak tahap kana. Ketuk ▶ Dengar cerita untuk mendengar sambil membaca; artinya ada di bawah teksnya.</p>
+      <p>Cerita pendek untuk dibaca santai — bahan input, tanpa soal. Berganti setiap hari, dan khusus ditulis dengan hiragana saja supaya bisa dibaca sejak tahap kana. Ketuk ▶ Dengar cerita untuk mendengar sambil membaca; artinya ada di bawah teksnya. Ketuk kata bergaris bawah titik-titik untuk melihat arti kata itu.</p>
       <div class="cerita-teks jp" lang="ja" id="teks-cerita"></div>
+      <div id="glos-strip" class="sembunyi"></div>
       <button class="tombol rangka" id="tombol-dengar-cerita" onclick="dengarCerita()" style="margin-top:10px;">▶ Dengar cerita</button>
       <p id="arti-cerita" style="margin-top:10px; color:var(--teks-lembut); font-size:15px;"></p>
+      <div id="cerita-arsip"></div>
     </div>
 
     <p style="text-align:center; margin:18px 0 6px; font-size:13px;">
@@ -1067,12 +1073,63 @@ var CERITA_HARI = [
    id:"Hari sudah malam. Bintang-bintang muncul. Bulan juga muncul. Saya tidur. Selamat malam."}
 ];
 CERITA_HARI.forEach(function(c, i){ if(!c.kode) c.kode = "b" + (i + 1); });
+var GLOSARIUM = {"あいます": "bertemu", "あおいです": "biru", "あさ": "pagi", "あさごはんを": "sarapan (objek)", "あさです": "sudah pagi", "あそびます": "bermain", "あたたかい": "hangat", "あたたかくて": "hangat, dan…", "あめが": "hujan (subjek)", "あめの": "hujan punya / dari hujan", "あります": "ada (benda)", "あるきます": "berjalan kaki", "いい": "baik; enak; bagus", "いえで": "di rumah", "いっしょに": "bersama-sama", "いっぱいです": "kenyang; penuh", "います": "ada (makhluk hidup)", "うたいます": "bernyanyi", "うみは": "laut (topik)", "おいしいです": "enak", "おおきいです": "besar", "おきます": "bangun (dari tidur)", "おちゃを": "teh (objek)", "おとが": "suara (subjek)", "おなかが": "perut (subjek)", "おやすみなさい": "selamat malam (sebelum tidur)", "およいでいます": "sedang berenang", "かいます": "membeli", "かえります": "kembali; pulang", "かぜが": "angin (subjek)", "きて": "datang, lalu…", "きもちいいです": "terasa nyaman", "きょうも": "hari ini pun; juga", "こどもが": "anak-anak (subjek)", "ごはんと": "nasi dan…", "さかなが": "ikan (subjek)", "さむいです": "dingin (cuaca)", "します": "melakukan; terasa (〜が します = tercium/terdengar)", "しろいです": "putih", "すきです": "suka", "そとは": "di luar (topik)", "そらは": "langit (topik)", "そらを": "langit (objek)", "たくさん": "banyak", "たのしいです": "menyenangkan", "たべます": "makan", "たまごです": "(adalah) telur", "ちかくに": "di dekat (sini)", "つきも": "bulan juga", "つめたいです": "dingin (benda/sentuhan)", "てが": "tangan (subjek)", "でています": "sedang muncul; sedang keluar", "でも": "tapi", "とても": "sangat", "とびます": "terbang", "ともだちに": "kepada teman", "とりが": "burung (subjek)", "なかで": "di dalam", "なみが": "ombak (subjek)", "なりました": "menjadi (sudah…)", "においが": "aroma (subjek)", "ねこが": "kucing (subjek)", "ねこは": "kucing (topik)", "ねます": "tidur", "のみます": "minum", "はなして": "berbicara, lalu…", "ひです": "hari (…adalah hari yang…)", "ふっています": "sedang turun (hujan/salju)", "ほしが": "bintang (subjek)", "また": "lagi; kembali", "まちを": "kota (objek)", "ゆきが": "salju (subjek)", "ゆきで": "dengan salju", "ゆめの": "mimpi punya / dalam mimpi", "よく": "sering", "よるに": "di malam hari", "わたしは": "saya (topik)", "わらいます": "tertawa", "パンやが": "toko roti (subjek)", "パンを": "roti (objek)"};
 var ceritaAktif = null;
+var ceritaManual = null;
+function ceritaPilihan(){
+  if(ceritaManual != null && CERITA_HARI[ceritaManual]) return CERITA_HARI[ceritaManual];
+  return CERITA_HARI[Math.floor(Date.now() / 86400000) % CERITA_HARI.length];
+}
 function gambarCerita(){
-  var c = CERITA_HARI[Math.floor(Date.now() / 86400000) % CERITA_HARI.length];
+  var c = ceritaPilihan();
   ceritaAktif = c;
-  document.getElementById("teks-cerita").innerHTML = c.jp.split("。").filter(function(x){ return x.trim(); }).map(function(x){ return x + "。"; }).join("<br>");
+  var strip = document.getElementById("glos-strip");
+  if(strip){ strip.classList.add("sembunyi"); strip.innerHTML = ""; }
+  kataAktifEl = null;
+  document.getElementById("teks-cerita").innerHTML = c.jp.split("。").filter(function(x){ return x.trim(); }).map(function(kal){
+    return kal.split(" ").map(function(tok){
+      var konci = tok.replace(/、/g, "");
+      if(GLOSARIUM[konci]) return '<span class="kt" data-k="' + konci + '" onclick="tapKata(this)">' + tok + '</span>';
+      return tok;
+    }).join(" ") + "。";
+  }).join("<br>");
   document.getElementById("arti-cerita").textContent = c.id;
+  gambarArsip();
+}
+var kataAktifEl = null;
+function tapKata(el){
+  var strip = document.getElementById("glos-strip");
+  if(kataAktifEl === el){
+    el.classList.remove("aktif"); kataAktifEl = null;
+    strip.classList.add("sembunyi"); strip.innerHTML = "";
+    return;
+  }
+  if(kataAktifEl) kataAktifEl.classList.remove("aktif");
+  kataAktifEl = el; el.classList.add("aktif");
+  var k = el.getAttribute("data-k");
+  strip.innerHTML = "<b>" + k + "</b> — " + (GLOSARIUM[k] || "");
+  strip.classList.remove("sembunyi");
+}
+function gambarArsip(){
+  var wadah = document.getElementById("cerita-arsip");
+  if(!wadah) return;
+  var idxAktif = CERITA_HARI.indexOf(ceritaAktif);
+  var html = "";
+  if(ceritaManual != null) html += '<button class="tombol rangka arsip-item" onclick="pilihCerita(null)">↩ Cerita hari ini</button>';
+  if(CERITA_HARI.length > 1){
+    html += '<p style="margin:14px 0 2px; font-size:13px; color:var(--teks-lembut);">Cerita-cerita lain — bisa dibaca ulang kapan saja:</p>';
+    CERITA_HARI.forEach(function(c, i){
+      if(i === idxAktif) return;
+      html += '<button class="tombol rangka arsip-item" onclick="pilihCerita(' + i + ')">' + c.jp.split("。")[0] + "。</button>";
+    });
+  }
+  wadah.innerHTML = html;
+}
+function pilihCerita(i){
+  ceritaManual = i;
+  gambarCerita();
+  var el = document.getElementById("teks-cerita");
+  if(el && el.scrollIntoView) el.scrollIntoView({behavior:"smooth", block:"center"});
 }
 var soraCeritaCache = {};
 var soraCeritaAudio = null;
@@ -1107,6 +1164,14 @@ function muatCeritaFeed(){
   }catch(e){}
 }
 muatCeritaFeed();
+function muatGlosariumFeed(){
+  try{
+    fetch("glosarium.json",{cache:"no-store"}).then(function(r){return r.ok?r.json():null;}).then(function(j){
+      if(j && j.kata){ for(var k in j.kata){ GLOSARIUM[k] = j.kata[k]; } if(document.getElementById("teks-cerita")) gambarCerita(); }
+    }).catch(function(){});
+  }catch(e){}
+}
+muatGlosariumFeed();
 var FRASA = [
   {jp:"おはようございます", ro:"ohayou gozaimasu", arti:"selamat pagi"},
   {jp:"こんにちは", ro:"konnichiwa", arti:"halo / selamat siang"},
