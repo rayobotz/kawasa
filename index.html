@@ -105,6 +105,14 @@
   .angka-hub{font-size:20px; font-weight:700; color:#c2533c;}
   .kata-besar{font-size:32px; text-align:center; padding:4px 0 2px;}
   .kata-info{text-align:center; margin:0;}
+  .kartu{border-radius:16px; box-shadow:0 2px 10px rgba(94,64,40,.08);}
+  .kartu-utama{background:linear-gradient(155deg,#fff9f0 0%,#fdeee9 100%); border-color:#f0d9cf;}
+  .batang-bungkus{margin:12px 0 4px;}
+  .batang{height:12px; background:#efe4d0; border-radius:999px; overflow:hidden;}
+  .batang-isi{height:100%; width:0%; background:linear-gradient(90deg,var(--toska),var(--toska-terang)); border-radius:999px; transition:width .6s ease;}
+  .batang-teks{font-size:12.5px; color:var(--teks-lembut); margin-top:6px;}
+  .kartu-langkah{border-left:5px solid var(--aksen);}
+  .kartu-cerita{background:#fffdf6; border-top:4px solid var(--toska);}
   footer{text-align:center; font-size:12px; color:#a79b84; padding:0 16px 28px;}
 </style>
 </head>
@@ -125,16 +133,17 @@
 <main>
   <!-- BERANDA -->
   <section id="layar-beranda">
-    <div class="kartu">
+    <div class="kartu kartu-utama">
       <h2>Progresmu</h2>
       <div class="progres">
         <div class="kotak"><div class="angka" id="xp">0</div><div class="label">XP</div></div>
         <div class="kotak"><div class="angka"><span id="kana-kuasai">0</span>/92</div><div class="label">Kana dikuasai</div></div>
       </div>
+      <div class="batang-bungkus"><div class="batang"><div class="batang-isi" id="batang-kana"></div></div><div class="batang-teks" id="batang-kana-teks">Perjalanan kana: 0%</div></div>
       <button class="tombol" onclick="bukaJalur()">Mulai: Jalur Kana →</button>
     </div>
 
-    <div class="kartu">
+    <div class="kartu kartu-langkah">
       <h2>Langkah Berikutnya</h2>
       <p id="teks-langkah">Satu langkah kecil dulu — ikuti urutannya, tidak usah lompat-lompat.</p>
       <div class="koleksi-cap" id="koleksi-cap-beranda"></div>
@@ -158,24 +167,21 @@
     <div class="kartu">
       <h2>Jalur belajarmu</h2>
       <p>Ikuti dari atas, satu per satu. Tidak ada lompat-lompat.</p>
-      <div class="jalur"><div class="no">1</div><div class="nama">Kana — Hiragana & Katakana</div><span class="lencana">Buka</span></div>
-      <div class="jalur"><div class="no">2</div><div class="nama">Salam & Perkenalan Diri</div><span class="lencana segera">Segera</span></div>
-      <div class="jalur"><div class="no">3</div><div class="nama">Angka, Waktu & Harga</div><span class="lencana segera">Segera</span></div>
-      <div class="jalur"><div class="no">4</div><div class="nama">Kalimat Pertamamu</div><span class="lencana segera">Segera</span></div>
+      <div class="jalur"><div class="no">1</div><div class="nama">Kana ① — Hiragana (kenalan, latihan, cap baris, Jebakan Bunyi)</div><button class="tombol" style="padding:6px 14px; font-size:13px;" onclick="bukaJalur()">Buka</button></div>
+      <div class="jalur"><div class="no">2</div><div class="nama">Kana ② — Katakana (terbuka setelah Hiragana beres)</div><span class="lencana segera">Setelah ①</span></div>
+      <div class="jalur"><div class="no">3</div><div class="nama">Salam & Perkenalan Diri — nama, asal, pekerjaan</div><span class="lencana segera">Segera</span></div>
+      <div class="jalur"><div class="no">4</div><div class="nama">Angka, Waktu & Kalender — bilangan, jam, tanggal, harga</div><span class="lencana segera">Segera</span></div>
+      <div class="jalur"><div class="no">5</div><div class="nama">Kata Benda & Kata Penunjuk — ini/itu, kepemilikan</div><span class="lencana segera">Segera</span></div>
+      <div class="jalur"><div class="no">6</div><div class="nama">Kata Kerja Dasar — aktivitas harian</div><span class="lencana segera">Segera</span></div>
+      <div class="jalur"><div class="no">7</div><div class="nama">Partikel & Pola Kalimat Inti N5</div><span class="lencana segera">Segera</span></div>
     </div>
 
-    <div class="kartu">
+    <div class="kartu kartu-cerita">
       <h2>📖 Cerita hari ini</h2>
-      <p>Cerita pendek untuk dibaca santai — bahan input, tanpa soal. Nikmati saja.</p>
-      <div class="cerita-teks jp" lang="ja">
-        わたしは ライです。インドネシアから きました。<br>
-        まいにち にほんごを べんきょうします。<br>
-        すこしずつ、たのしく いきましょう。
-      </div>
+      <p>Cerita pendek untuk dibaca santai — bahan input, tanpa soal. Berganti setiap hari, dan khusus ditulis dengan hiragana saja supaya bisa dibaca sejak tahap kana.</p>
+      <div class="cerita-teks jp" lang="ja" id="teks-cerita"></div>
       <button class="tombol rangka" id="tombol-arti" onclick="toggleArti()">Lihat artinya</button>
-      <p id="arti-cerita" class="sembunyi" style="margin-top:10px;">
-        Saya Rai. Saya datang dari Indonesia. Setiap hari saya belajar bahasa Jepang. Sedikit demi sedikit, mari jalani dengan senang.
-      </p>
+      <p id="arti-cerita" class="sembunyi" style="margin-top:10px;"></p>
     </div>
   </section>
 
@@ -586,6 +592,12 @@ function tetapProgresIni(){
 function segarkanProgres(){
   document.getElementById("xp").textContent = progres.xp;
   document.getElementById("kana-kuasai").textContent = jumlahKuat();
+  var bk = document.getElementById("batang-kana");
+  if(bk){
+    var nj = jumlahKuat();
+    bk.style.width = (nj / 92 * 100) + "%";
+    document.getElementById("batang-kana-teks").textContent = "Perjalanan kana: " + Math.round(nj / 92 * 100) + "% — " + nj + " dari 92 huruf dikuasai";
+  }
 }
 
 function bukaLayar(nama){
@@ -891,6 +903,27 @@ function sesiLagi(){
   var kelompok = sesi ? sesi.kelompok : null;
   bukaLayar("latihan");
   mulaiSesi(jenis, kelompok);
+}
+var CERITA_HARI = [
+  {jp:"あさです。そらは あおいです。とりが うたいます。わたしは おきます。きょうも いい ひです。",
+   id:"Sudah pagi. Langitnya biru. Burung bernyanyi. Saya bangun. Hari ini pun hari yang baik."},
+  {jp:"ねこが います。ねこは よく ねます。ゆめの なかで、ねこは そらを とびます。",
+   id:"Ada seekor kucing. Kucing itu sering tidur. Di dalam mimpi, kucing itu terbang di langit."},
+  {jp:"あめが ふっています。そとは さむいです。いえで あたたかい おちゃを のみます。あめの おとが すきです。",
+   id:"Hujan sedang turun. Di luar dingin. Di rumah, saya minum teh hangat. Saya suka suara hujan."},
+  {jp:"うみは おおきいです。なみが きて、また かえります。さかなが およいでいます。かぜが きもちいいです。",
+   id:"Laut itu besar. Ombak datang, lalu kembali lagi. Ikan-ikan berenang. Anginnya terasa nyaman."},
+  {jp:"あさごはんを たべます。ごはんと たまごです。とても おいしいです。おなかが いっぱいです。",
+   id:"Saya makan sarapan: nasi dan telur. Sangat enak. Perut saya kenyang."},
+  {jp:"ともだちに あいます。いっしょに まちを あるきます。たくさん はなして、たくさん わらいます。",
+   id:"Saya bertemu teman. Kami berjalan bersama menyusuri kota. Banyak mengobrol, banyak tertawa."},
+  {jp:"よるに なりました。ほしが でています。つきも でています。わたしは ねます。おやすみなさい。",
+   id:"Hari sudah malam. Bintang-bintang muncul. Bulan juga muncul. Saya tidur. Selamat malam."}
+];
+function gambarCerita(){
+  var c = CERITA_HARI[Math.floor(Date.now() / 86400000) % CERITA_HARI.length];
+  document.getElementById("teks-cerita").innerHTML = c.jp.split("。").filter(function(x){ return x.trim(); }).map(function(x){ return x + "。"; }).join("<br>");
+  document.getElementById("arti-cerita").textContent = c.id;
 }
 function toggleArti(){
   var el = document.getElementById("arti-cerita");
@@ -1754,6 +1787,7 @@ function latihanDariKenalan(){
 }
 
 segarkanBeranda();
+gambarCerita();
 gambarGrid();
 gambarKelompokBor();
 segarkanProgres();
