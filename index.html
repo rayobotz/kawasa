@@ -101,6 +101,7 @@
   .koleksi-cap{display:flex; flex-wrap:wrap; gap:6px; margin-top:4px;}
   .koleksi-cap .cap-mini{width:26px; height:26px; font-size:13px;}
   .koleksi-cap .cap-kosong{border-color:var(--garis); color:#cfd8dc; background:#fff;}
+  .angka-hub{font-size:20px; font-weight:700; color:#c2533c;}
   .kata-besar{font-size:32px; text-align:center; padding:4px 0 2px;}
   .kata-info{text-align:center; margin:0;}
   footer{text-align:center; font-size:12px; color:#90a4ae; padding:0 16px 28px;}
@@ -201,27 +202,26 @@
   </section>
 
 
-  <!-- JALUR KANA -->
+  <!-- JALUR KANA (HUB) -->
   <section id="layar-jalur" class="sembunyi">
     <div class="navigasi"><button onclick="bukaLayar('beranda')">← Beranda</button></div>
     <div class="kartu">
       <h2>Jalur Kana 🧭</h2>
-      <p>Belajar kana baris demi baris — tidak sekaligus 92 huruf. Selesaikan latihan satu baris dengan nilai 8/10 untuk mendapat <strong>Cap Latihan</strong> baris itu. Urutannya dianjurkan dari atas, tapi semua baris tetap bisa dibuka kapan saja.</p>
-      <h3 style="margin:12px 0 4px;">Koleksi cap</h3>
-      <div class="koleksi-cap" id="koleksi-cap-jalur"></div>
+      <p>Belajar kana baris demi baris — tidak sekaligus 92 huruf. Selesaikan latihan satu baris dengan nilai 8/10 untuk mendapat <strong>Cap Latihan</strong> baris itu. Katakana dipelajari sesudah hiragana — tapi tidak ada gembok di sini: kedua jalur bisa dibuka kapan saja, sesuai urutan yang kamu mau.</p>
     </div>
     <div class="kartu">
-      <h2>Hiragana</h2>
-      <div id="daftar-baris-hira"></div>
+      <h2>① Hiragana</h2>
+      <p>Huruf dasar untuk kata-kata asli Jepang, 10 baris dari あ行 sampai わ行, ditutup langkah khusus Jebakan Bunyi.</p>
+      <p><span class="angka-hub" id="hub-hira-angka">0 dari 10</span> cap baris hiragana sudah didapat.<span id="hub-hira-jebakan"></span></p>
+      <div class="koleksi-cap" id="koleksi-cap-hub-hira"></div>
+      <button class="tombol" onclick="bukaJalurAksara('hira')">Buka Jalur Hiragana →</button>
     </div>
     <div class="kartu">
-      <h2>Langkah khusus</h2>
-      <div id="daftar-jebakan"></div>
-    </div>
-    <div class="kartu">
-      <h2>Katakana</h2>
-      <p>Huruf untuk kata serapan. Urutannya sama seperti hiragana.</p>
-      <div id="daftar-baris-kata"></div>
+      <h2>② Katakana</h2>
+      <p>Huruf untuk kata serapan asing, 10 baris dengan urutan yang sama seperti hiragana. Biasanya dipelajari sesudah hiragana beres.</p>
+      <p><span class="angka-hub" id="hub-kata-angka">0 dari 10</span> cap baris katakana sudah didapat.</p>
+      <div class="koleksi-cap" id="koleksi-cap-hub-kata"></div>
+      <button class="tombol" onclick="bukaJalurAksara('kata')">Buka Jalur Katakana →</button>
     </div>
     <div class="kartu">
       <h2>Tabel lengkap</h2>
@@ -230,9 +230,43 @@
     </div>
   </section>
 
+  <!-- JALUR HIRAGANA -->
+  <section id="layar-jalur-hira" class="sembunyi">
+    <div class="navigasi"><button onclick="bukaJalur()">← Jalur Kana</button><button onclick="bukaLayar('beranda')">Beranda</button></div>
+    <div class="kartu">
+      <h2>Jalur Hiragana</h2>
+      <p>Sepuluh baris hiragana, satu per satu. Selesaikan latihan satu baris dengan nilai 8/10 untuk mendapat <strong>Cap Latihan</strong> baris itu. Urutannya dianjurkan dari atas, tapi semua baris tetap bisa dibuka kapan saja.</p>
+      <h3 style="margin:12px 0 4px;">Koleksi cap hiragana</h3>
+      <div class="koleksi-cap" id="koleksi-cap-jalur-hira"></div>
+    </div>
+    <div class="kartu">
+      <h2>Baris hiragana</h2>
+      <div id="daftar-baris-hira"></div>
+    </div>
+    <div class="kartu">
+      <h2>Langkah khusus</h2>
+      <div id="daftar-jebakan"></div>
+    </div>
+  </section>
+
+  <!-- JALUR KATAKANA -->
+  <section id="layar-jalur-kata" class="sembunyi">
+    <div class="navigasi"><button onclick="bukaJalur()">← Jalur Kana</button><button onclick="bukaLayar('beranda')">Beranda</button></div>
+    <div class="kartu">
+      <h2>Jalur Katakana</h2>
+      <p>Sepuluh baris katakana — huruf untuk kata serapan asing. Selesaikan latihan satu baris dengan nilai 8/10 untuk mendapat <strong>Cap Latihan</strong> baris itu. Urutannya sama seperti hiragana dan dianjurkan dari atas, tapi semua baris tetap bisa dibuka kapan saja.</p>
+      <h3 style="margin:12px 0 4px;">Koleksi cap katakana</h3>
+      <div class="koleksi-cap" id="koleksi-cap-jalur-kata"></div>
+    </div>
+    <div class="kartu">
+      <h2>Baris katakana</h2>
+      <div id="daftar-baris-kata"></div>
+    </div>
+  </section>
+
   <!-- HALAMAN BARIS -->
   <section id="layar-baris" class="sembunyi">
-    <div class="navigasi"><button onclick="bukaJalur()">← Jalur Kana</button></div>
+    <div class="navigasi"><button id="baris-kembali" onclick="bukaJalur()">← Jalur Kana</button></div>
     <div class="kartu">
       <h2 id="baris-judul">Baris</h2>
       <p id="baris-status"></p>
@@ -250,7 +284,7 @@
 
   <!-- DETAIL KANA -->
   <section id="layar-detail" class="sembunyi">
-    <div class="navigasi"><button onclick="bukaLayar('kana')">← Kembali ke tabel kana</button></div>
+    <div class="navigasi"><button onclick="kembaliDariDetail()">← Kembali ke tabel kana</button></div>
     <div class="kartu">
       <div class="soal-besar" style="padding-top:2px;">
         <div class="huruf jp" id="detail-huruf"></div>
@@ -474,13 +508,15 @@ function segarkanProgres(){
 }
 
 function bukaLayar(nama){
-  var layar = ["beranda","kana","latihan","ringkasan","detail","jalur","baris"];
+  var layar = ["beranda","kana","latihan","ringkasan","detail","jalur","jalur-hira","jalur-kata","baris"];
   if(nama !== "detail"){ berhentiAnimasi(); }
   for(var i=0;i<layar.length;i++){
     document.getElementById("layar-"+layar[i]).classList.toggle("sembunyi", layar[i] !== nama);
   }
   if(nama === "beranda"){ segarkanProgres(); segarkanBeranda(); }
-  if(nama === "jalur"){ gambarJalur(); }
+  if(nama === "jalur"){ gambarHub(); }
+  if(nama === "jalur-hira"){ gambarJalurAksara("hira"); }
+  if(nama === "jalur-kata"){ gambarJalurAksara("kata"); }
   window.scrollTo(0,0);
 }
 
@@ -765,7 +801,7 @@ function tampilRingkasan(){
   segarkanProgres();
 }
 function kembaliDariRingkasan(){
-  if(sesi && sesi.jenis === "jebakan"){ bukaJalur(); }
+  if(sesi && sesi.jenis === "jebakan"){ bukaJalurAksara("hira"); }
   else if(sesi && sesi.jenis === "baris" && barisAktif){ bukaHalamanBaris(barisAktif.aksara, barisAktif.indeks); }
   else { bukaLayar("kana"); }
 }
@@ -830,6 +866,10 @@ function gambarDetail(){
   if(khusus && khusus.catatan){ htmlKata += "<p style='margin-top:8px;'>" + khusus.catatan + "</p>"; }
   if(!htmlKata){ htmlKata = "<p>Contoh kata belum tersedia untuk huruf ini.</p>"; }
   document.getElementById("detail-kata").innerHTML = htmlKata;
+  window.kembaliDariDetail = function(){
+    if(detail && detail.asal === "baris"){ bukaHalamanBaris(detail.aksara, Math.floor(detail.indeks / 5)); }
+    else { bukaLayar('kana'); }
+  };
   var tmblDetailKembali = document.querySelector("#layar-detail .navigasi button");
   if(tmblDetailKembali){ tmblDetailKembali.textContent = (detail.asal === "baris") ? "\u2190 Kembali ke halaman baris" : "\u2190 Kembali ke tabel kana"; }
   document.getElementById("detail-sebelumnya").disabled = detail.indeks <= 0;
@@ -1011,17 +1051,36 @@ function statusBaris(aksara, indeksBaris){
   return "belum";
 }
 function bukaJalur(){ bukaLayar("jalur"); }
-function gambarJalur(){
-  gambarDaftarBaris("hira", document.getElementById("daftar-baris-hira"));
-  gambarDaftarBaris("kata", document.getElementById("daftar-baris-kata"));
-  var kotakJebakan = document.getElementById("daftar-jebakan");
-  kotakJebakan.innerHTML = "";
-  kotakJebakan.appendChild(buatBarisJalur({
-    no: "\u2605", nama: "Jebakan Bunyi — vokal panjang & sokuon",
-    kanaTeks: "\u304A\u3070\u3055\u3093 / \u304A\u3070\u3042\u3055\u3093 \u00B7 \u304D\u3066 / \u304D\u3063\u3066",
-    status: progres.capBaris["jebakan"] ? "cap" : "belum", kunci: "jebakan", redup: false
-  }));
-  gambarKoleksiCap(document.getElementById("koleksi-cap-jalur"));
+function bukaJalurAksara(aksara){ bukaLayar(aksara === "kata" ? "jalur-kata" : "jalur-hira"); }
+function hitungCapAksara(aksara){
+  var n = 0;
+  for(var b = 0; b < BARIS_GY.length; b++){ if(progres.capBaris[aksara + ":" + b]){ n++; } }
+  return n;
+}
+function gambarHub(){
+  // Ringkasan hub dihitung langsung dari capBaris: jumlah cap baris per
+  // aksara + status Cap Jebakan Bunyi pada kartu hiragana.
+  document.getElementById("hub-hira-angka").textContent = hitungCapAksara("hira") + " dari 10";
+  document.getElementById("hub-kata-angka").textContent = hitungCapAksara("kata") + " dari 10";
+  document.getElementById("hub-hira-jebakan").textContent = progres.capBaris["jebakan"] ? " Cap Jebakan Bunyi juga sudah didapat \u2713." : " Cap Jebakan Bunyi belum didapat.";
+  gambarKoleksiCap(document.getElementById("koleksi-cap-hub-hira"), "hira");
+  gambarKoleksiCap(document.getElementById("koleksi-cap-hub-kata"), "kata");
+}
+function gambarJalurAksara(aksara){
+  if(aksara === "hira"){
+    gambarDaftarBaris("hira", document.getElementById("daftar-baris-hira"));
+    var kotakJebakan = document.getElementById("daftar-jebakan");
+    kotakJebakan.innerHTML = "";
+    kotakJebakan.appendChild(buatBarisJalur({
+      no: "\u2605", nama: "Jebakan Bunyi — vokal panjang & sokuon",
+      kanaTeks: "\u304A\u3070\u3055\u3093 / \u304A\u3070\u3042\u3055\u3093 \u00B7 \u304D\u3066 / \u304D\u3063\u3066",
+      status: progres.capBaris["jebakan"] ? "cap" : "belum", kunci: "jebakan", redup: false
+    }));
+    gambarKoleksiCap(document.getElementById("koleksi-cap-jalur-hira"), "hira");
+  } else {
+    gambarDaftarBaris("kata", document.getElementById("daftar-baris-kata"));
+    gambarKoleksiCap(document.getElementById("koleksi-cap-jalur-kata"), "kata");
+  }
 }
 function gambarDaftarBaris(aksara, wadah){
   if(!wadah){ return; }
@@ -1051,17 +1110,20 @@ function buatBarisJalur(o){
   };
   return b;
 }
-function gambarKoleksiCap(wadah){
+function gambarKoleksiCap(wadah, aksara){
   if(!wadah){ return; }
   wadah.innerHTML = "";
+  // Tanpa aksara: semua 21 cap (Beranda). Dengan aksara: hanya cap aksara itu
+  // — hiragana 11 slot (10 baris + jebakan), katakana 10 slot. Warna cap
+  // selalu dari kelas .cap-mini (terracotta) / .cap-kosong (abu-abu pucat).
   var semua = [];
-  for(var b = 0; b < BARIS_GY.length; b++){ semua.push({kunci:"hira:" + b, huruf:BARIS_GY[b].pertama}); }
-  semua.push({kunci:"jebakan", huruf:"\u3063"});
-  for(var k = 0; k < BARIS_GY.length; k++){ semua.push({kunci:"kata:" + k, huruf:"\u30AB"}); }
-  // huruf katakana mengikuti huruf pertama tiap baris katakana
-  var kataPertama = ["\u30A2","\u30AB","\u30B5","\u30BF","\u30CA","\u30CF","\u30DE","\u30E4","\u30E9","\u30EF"];
-  for(var m = 0; m < semua.length; m++){
-    if(semua[m].kunci.indexOf("kata:") === 0){ semua[m].huruf = kataPertama[parseInt(semua[m].kunci.split(":")[1], 10)]; }
+  if(aksara !== "kata"){
+    for(var b = 0; b < BARIS_GY.length; b++){ semua.push({kunci:"hira:" + b, huruf:BARIS_GY[b].pertama}); }
+    semua.push({kunci:"jebakan", huruf:"\u3063"});
+  }
+  if(aksara !== "hira"){
+    var kataPertama = ["\u30A2","\u30AB","\u30B5","\u30BF","\u30CA","\u30CF","\u30DE","\u30E4","\u30E9","\u30EF"];
+    for(var k = 0; k < BARIS_GY.length; k++){ semua.push({kunci:"kata:" + k, huruf:kataPertama[k]}); }
   }
   for(var i = 0; i < semua.length; i++){
     var ada = !!progres.capBaris[semua[i].kunci];
@@ -1075,6 +1137,11 @@ function gambarKoleksiCap(wadah){
 var barisAktif = null; // {aksara, indeks}
 function bukaHalamanBaris(aksara, indeks){
   barisAktif = {aksara: aksara, indeks: indeks};
+  var tmblKembaliBaris = document.getElementById("baris-kembali");
+  if(tmblKembaliBaris){
+    tmblKembaliBaris.textContent = aksara === "kata" ? "\u2190 Jalur Katakana" : "\u2190 Jalur Hiragana";
+    tmblKembaliBaris.onclick = function(){ bukaJalurAksara(aksara); };
+  }
   var info = BARIS_GY[indeks];
   document.getElementById("baris-judul").textContent = "Baris " + namaBaris(aksara, indeks) + " — " + (aksara === "hira" ? "Hiragana" : "Katakana");
   var st = statusBaris(aksara, indeks);
@@ -1347,7 +1414,7 @@ function segarkanBeranda(){
 function keLangkahBerikutnya(){
   var lk = langkahBerikutnya();
   if(lk.jenis === "baris"){ bukaHalamanBaris(lk.aksara, lk.indeks); }
-  else if(lk.jenis === "jebakan"){ bukaJalur(); }
+  else if(lk.jenis === "jebakan"){ bukaJalurAksara("hira"); }
   else { bukaJalur(); }
 }
 segarkanBeranda();
