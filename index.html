@@ -207,7 +207,7 @@
     <div class="navigasi"><button onclick="bukaLayar('beranda')">← Beranda</button></div>
     <div class="kartu">
       <h2>Jalur Kana 🧭</h2>
-      <p>Belajar kana baris demi baris — tidak sekaligus 92 huruf. Selesaikan latihan satu baris dengan nilai 8/10 untuk mendapat <strong>Cap Latihan</strong> baris itu. Katakana dipelajari sesudah hiragana — tapi tidak ada gembok di sini: kedua jalur bisa dibuka kapan saja, sesuai urutan yang kamu mau.</p>
+      <p>Belajar kana baris demi baris — tidak sekaligus 92 huruf. Selesaikan latihan satu baris dengan nilai 8/10 untuk mendapat <strong>Cap Latihan</strong> baris itu. Jalur Katakana terbuka setelah kamu menguasai hiragana — yaitu setelah semua Cap Latihan hiragana (10 baris + Jebakan Bunyi) sudah di tangan.</p>
     </div>
     <div class="kartu">
       <h2>① Hiragana</h2>
@@ -221,7 +221,8 @@
       <p>Huruf untuk kata serapan asing, 10 baris dengan urutan yang sama seperti hiragana. Biasanya dipelajari sesudah hiragana beres.</p>
       <p><span class="angka-hub" id="hub-kata-angka">0 dari 10</span> cap baris katakana sudah didapat.</p>
       <div class="koleksi-cap" id="koleksi-cap-hub-kata"></div>
-      <button class="tombol" onclick="bukaJalurAksara('kata')">Buka Jalur Katakana →</button>
+      <p id="hub-kata-kunci" style="display:none"></p>
+      <button class="tombol" id="hub-kata-tombol" onclick="bukaJalurAksara('kata')">Buka Jalur Katakana →</button>
     </div>
     <div class="kartu">
       <h2>Tabel lengkap</h2>
@@ -1051,7 +1052,15 @@ function statusBaris(aksara, indeksBaris){
   return "belum";
 }
 function bukaJalur(){ bukaLayar("jalur"); }
-function bukaJalurAksara(aksara){ bukaLayar(aksara === "kata" ? "jalur-kata" : "jalur-hira"); }
+function katakanaTerbuka(){
+  // Katakana muka sanggeus hiragana dikuasai: 10 cap baris + Cap Jebakan Bunyi.
+  // Anu geus mimiti katakana samemeh aturan ieu (cap kata > 0) teu dikonci deui.
+  return hitungCapAksara("kata") > 0 || (hitungCapAksara("hira") >= 10 && !!progres.capBaris["jebakan"]);
+}
+function bukaJalurAksara(aksara){
+  if(aksara === "kata" && !katakanaTerbuka()){ gambarHub(); return; }
+  bukaLayar(aksara === "kata" ? "jalur-kata" : "jalur-hira");
+}
 function hitungCapAksara(aksara){
   var n = 0;
   for(var b = 0; b < BARIS_GY.length; b++){ if(progres.capBaris[aksara + ":" + b]){ n++; } }
@@ -1065,6 +1074,21 @@ function gambarHub(){
   document.getElementById("hub-hira-jebakan").textContent = progres.capBaris["jebakan"] ? " Cap Jebakan Bunyi juga sudah didapat \u2713." : " Cap Jebakan Bunyi belum didapat.";
   gambarKoleksiCap(document.getElementById("koleksi-cap-hub-hira"), "hira");
   gambarKoleksiCap(document.getElementById("koleksi-cap-hub-kata"), "kata");
+  var tombolKata = document.getElementById("hub-kata-tombol");
+  var kunciKata = document.getElementById("hub-kata-kunci");
+  if(tombolKata && kunciKata){
+    if(katakanaTerbuka()){
+      tombolKata.disabled = false;
+      tombolKata.textContent = "Buka Jalur Katakana \u2192";
+      kunciKata.style.display = "none";
+    } else {
+      var jumlah = hitungCapAksara("hira") + (progres.capBaris["jebakan"] ? 1 : 0);
+      tombolKata.disabled = true;
+      tombolKata.textContent = "\uD83D\uDD12 Terkunci — selesaikan Hiragana dulu";
+      kunciKata.style.display = "";
+      kunciKata.textContent = "Jalur ini terbuka setelah semua Cap Latihan hiragana di tangan. Sekarang: " + jumlah + " dari 11 — kurang " + (11 - jumlah) + " lagi.";
+    }
+  }
 }
 function gambarJalurAksara(aksara){
   if(aksara === "hira"){
