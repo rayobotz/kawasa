@@ -1267,6 +1267,11 @@ function gambarFrasa(){
     tbl.className = "tombol-sora"; tbl.textContent = "\u25B6 Dengar"; tbl.setAttribute("aria-label", "Dengarkan frasa");
     (function(idx){ tbl.onclick = function(){ putarSora("frasa-" + (idx + 1)); }; })(i);
     baris.appendChild(tbl);
+    var tblM = document.createElement("button");
+    tblM.className = "tombol-sora"; tblM.textContent = "\uD83C\uDFA4 Ucapkan";
+    tblM.setAttribute("aria-label", "Rekam dan periksa ucapanmu");
+    (function(idx, el){ tblM.onclick = function(){ rekamUcapFrasa(idx, el); }; })(i, tblM);
+    baris.appendChild(tblM);
     var tblU = document.createElement("button");
     var geusU = progres.frasaUcap && progres.frasaUcap[i];
     tblU.className = "tombol-sora" + (geusU ? " geus-ucap" : "");
@@ -1280,7 +1285,7 @@ function gambarFrasa(){
   if(elU){
     var cntU = 0;
     for(var u2 = 0; u2 < n; u2++){ if(progres.frasaUcap && progres.frasaUcap[u2]){ cntU++; } }
-    elU.textContent = "Sudah kamu ucapkan: " + cntU + " dari " + n + " frasa terbuka — dengarkan, ucapkan keras-keras, lalu tandai \u2713.";
+    elU.textContent = "Sudah kamu ucapkan: " + cntU + " dari " + n + " frasa terbuka — ketuk \uD83C\uDFA4 Ucapkan untuk merekam dan memeriksa ucapanmu.";
   }
   if(n > pernah){ progres.frasaTerbuka = n; simpan(); }
   var kunci = document.getElementById("frasa-konci");
@@ -1301,6 +1306,108 @@ function tandaiUcap(i){
   if(!progres.frasaXp[i]){ progres.frasaXp[i] = 1; progres.xp += 5; }
   simpan(); segarkanProgres(); gambarFrasa();
   bejaPesen("Bagus! Frasa ini sudah kamu ucapkan. +5 XP");
+}
+function normalisasiKana(teks){
+  var hasil = "";
+  for(var i = 0; i < teks.length; i++){
+    var kode = teks.charCodeAt(i);
+    if(kode >= 0x30A1 && kode <= 0x30F6){ kode -= 0x60; }
+    hasil += String.fromCharCode(kode);
+  }
+  return hasil.replace(/[\s\u3002\u3001\uFF01\uFF1F!?\u30FB\uFF0E.\uFF09)\uFF08(]/g, "");
+}
+function kasaruaan(a, b){
+  if(!a.length || !b.length){ return 0; }
+  var barisSamemeh = [], barisAyeuna = [], i, j;
+  for(j = 0; j <= b.length; j++){ barisSamemeh[j] = j; }
+  for(i = 1; i <= a.length; i++){
+    barisAyeuna[0] = i;
+    for(j = 1; j <= b.length; j++){
+      var biaya = a.charAt(i - 1) === b.charAt(j - 1) ? 0 : 1;
+      barisAyeuna[j] = Math.min(barisSamemeh[j] + 1, barisAyeuna[j - 1] + 1, barisSamemeh[j - 1] + biaya);
+    }
+    var tmp = barisSamemeh; barisSamemeh = barisAyeuna; barisAyeuna = tmp;
+  }
+  return 1 - barisSamemeh[b.length] / Math.max(a.length, b.length);
+}
+function lulusUcap(i){
+  if(!progres.frasaUcap){ progres.frasaUcap = {}; }
+  if(!progres.frasaXp){ progres.frasaXp = {}; }
+  progres.frasaUcap[i] = 1;
+  if(!progres.frasaXp[i]){ progres.frasaXp[i] = 1; progres.xp += 5; }
+  simpan(); segarkanProgres(); gambarFrasa();
+}
+var rekamManual = null;
+function rekamUcapFrasa(i, el){
+  var f = FRASA[i];
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SR){ rekamDengeSorangan(i, el); return; }
+  var rec;
+  try{ rec = new SR(); }catch(e){ rekamDengeSorangan(i, el); return; }
+  rec.lang = "ja-JP"; rec.interimResults = false; rec.maxAlternatives = 3;
+  if(el){ el.textContent = "\uD83C\uDFA4 Ngad\u00E9ng\u00E9keun\u2026"; }
+  bejaPesen("Ucapkan sekarang: " + f.jp);
+  var geusHasil = false;
+  rec.onresult = function(ev){
+    geusHasil = true;
+    var target = normalisasiKana(f.jp);
+    var pangalusna = 0, teksPangalusna = "";
+    var hasil = ev.results[0];
+    for(var a = 0; a < hasil.length; a++){
+      var t = (hasil[a].transcript || "").trim();
+      var sami = kasaruaan(normalisasiKana(t), target);
+      if(sami > pangalusna){ pangalusna = sami; teksPangalusna = t; }
+    }
+    gambarFrasa();
+    if(pangalusna >= 0.65){
+      lulusUcap(i);
+      bejaPesen("Terdengar benar \u2713 \u2014 \u201C" + teksPangalusna + "\u201D");
+    } else {
+      bejaPesen("Yang terdengar: \u201C" + teksPangalusna + "\u201D \u2014 belum cocok, dengarkan contohnya lalu coba lagi.");
+    }
+  };
+  rec.onerror = function(ev){
+    gambarFrasa();
+    if(ev.error === "not-allowed" || ev.error === "service-not-allowed"){
+      bejaPesen("Izin mikrofon diperlukan untuk memeriksa ucapan.");
+    } else if(ev.error === "no-speech"){
+      bejaPesen("Tidak terdengar suara \u2014 coba lagi, dekatkan HP ke mulut.");
+    } else if(!geusHasil){
+      rekamDengeSorangan(i, el);
+    }
+  };
+  rec.onend = function(){ if(!geusHasil){ gambarFrasa(); } };
+  try{ rec.start(); }catch(e){ rekamDengeSorangan(i, el); }
+}
+function rekamDengeSorangan(i, el){
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || typeof MediaRecorder === "undefined"){
+    bejaPesen("Browser ini belum mendukung rekam suara \u2014 pakai tombol \u2713 setelah berlatih keras-keras.");
+    return;
+  }
+  if(rekamManual && rekamManual.state === "recording"){
+    rekamManual.stop();
+    return;
+  }
+  navigator.mediaDevices.getUserMedia({audio: true}).then(function(aliran){
+    var potongan = [];
+    var rekorder = new MediaRecorder(aliran);
+    rekamManual = rekorder;
+    rekorder.ondataavailable = function(ev){ if(ev.data && ev.data.size){ potongan.push(ev.data); } };
+    rekorder.onstop = function(){
+      aliran.getTracks().forEach(function(t){ t.stop(); });
+      rekamManual = null;
+      gambarFrasa();
+      var blob = new Blob(potongan, {type: rekorder.mimeType || "audio/mp4"});
+      var sora = new Audio(URL.createObjectURL(blob));
+      sora.play().catch(function(){});
+      bejaPesen("Itu suaramu \u2014 bandingkan dengan \u25B6 Dengar, lalu tandai \u2713 kalau sudah mirip.");
+    };
+    rekorder.start();
+    if(el){ el.textContent = "\u23F9 Berhenti & dengar"; }
+    bejaPesen("Merekam\u2026 ucapkan frasanya, lalu ketuk berhenti.");
+  }).catch(function(){
+    bejaPesen("Izin mikrofon diperlukan untuk merekam.");
+  });
 }
 function pilihSora(g){ progres.sora = g; simpan(); gambarFrasa(); putarSora("frasa-1"); }
 var soraAudio = null, soraNujuDimuat = false, soraAntre = null;
