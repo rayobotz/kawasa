@@ -1397,12 +1397,15 @@ function mulaiAnimasiDetail(huruf, idSvg, idTeks){
     timerAnimasi.push(setTimeout(function(){ gambarSatu(0); }, 250));
   }
 }
-var nulisCtx = null, nulisNgagambar = false, nulisLast = null, nulisKosong = true;
+var nulisCtx = null, nulisNgagambar = false, nulisLast = null, nulisMid = null, nulisKosong = true;
 function nulisKanaKey(){ return detail ? (detail.aksara + "-" + dataAksara(detail.aksara)[detail.indeks][1]) : ""; }
 function nulisSiapkan(){
   var cv = document.getElementById("nulis-canvas");
   if(!cv || !detail){ return; }
   nulisCtx = cv.getContext("2d");
+  var dprNulis = Math.min(window.devicePixelRatio || 1, 3);
+  cv.width = 300 * dprNulis; cv.height = 300 * dprNulis;
+  nulisCtx.setTransform(dprNulis, 0, 0, dprNulis, 0, 0);
   nulisGambarPituduh();
   var st = document.getElementById("nulis-status");
   var geus = progres.nulis && progres.nulis[nulisKanaKey()];
@@ -1442,18 +1445,37 @@ function nulisMimitian(e){
   e.preventDefault();
   var cv = document.getElementById("nulis-canvas");
   if(cv.setPointerCapture && e.pointerId != null){ try{ cv.setPointerCapture(e.pointerId); }catch(err){} }
-  nulisNgagambar = true; nulisLast = nulisPos(e);
+  nulisNgagambar = true; nulisLast = nulisPos(e); nulisMid = nulisLast;
+  if(nulisCtx){
+    nulisCtx.fillStyle = "#3A332A";
+    nulisCtx.beginPath(); nulisCtx.arc(nulisLast.x, nulisLast.y, 3.5, 0, Math.PI * 2); nulisCtx.fill();
+    nulisKosong = false;
+  }
 }
 function nulisGerak(e){
   if(!nulisNgagambar || !nulisCtx){ return; }
   e.preventDefault();
-  var titik = nulisPos(e);
   var ctx = nulisCtx;
   ctx.strokeStyle = "#3A332A"; ctx.lineWidth = 7; ctx.lineCap = "round"; ctx.lineJoin = "round";
-  ctx.beginPath(); ctx.moveTo(nulisLast.x, nulisLast.y); ctx.lineTo(titik.x, titik.y); ctx.stroke();
-  nulisLast = titik; nulisKosong = false;
+  var evs = [e];
+  try{ if(e.getCoalescedEvents){ var kabeh = e.getCoalescedEvents(); if(kabeh && kabeh.length){ evs = kabeh; } } }catch(err){}
+  for(var i = 0; i < evs.length; i++){
+    var titik = nulisPos(evs[i]);
+    var midX = (nulisLast.x + titik.x) / 2, midY = (nulisLast.y + titik.y) / 2;
+    ctx.beginPath(); ctx.moveTo(nulisMid.x, nulisMid.y);
+    ctx.quadraticCurveTo(nulisLast.x, nulisLast.y, midX, midY); ctx.stroke();
+    nulisMid = {x: midX, y: midY}; nulisLast = titik;
+  }
+  nulisKosong = false;
 }
-function nulisAnggeus(){ nulisNgagambar = false; }
+function nulisAnggeus(){
+  if(nulisNgagambar && nulisCtx && nulisLast && nulisMid){
+    var ctx = nulisCtx;
+    ctx.strokeStyle = "#3A332A"; ctx.lineWidth = 7; ctx.lineCap = "round"; ctx.lineJoin = "round";
+    ctx.beginPath(); ctx.moveTo(nulisMid.x, nulisMid.y); ctx.lineTo(nulisLast.x, nulisLast.y); ctx.stroke();
+  }
+  nulisNgagambar = false;
+}
 function nulisHapus(){ nulisGambarPituduh(); }
 function nulisSelesai(){
   if(nulisKosong){ bejaPesen("Tulis dulu hurufnya di kotak, baru ketuk selesai."); return; }
