@@ -169,24 +169,13 @@
       <div class="batang-bungkus"><div class="batang"><div class="batang-isi" id="batang-kana"></div></div><div class="batang-teks" id="batang-kana-teks">Perjalanan kana: 0%</div></div>
       <button class="tombol" onclick="bukaJalur()">Mulai: Jalur Kana →</button>
     </div>
-
     <p style="text-align:center; font-size:13.5px; color:var(--teks-lembut); margin:0 6px 14px;">Mulai di sini: ucapkan <b>frasa pertamamu</b> di bawah ini → lalu kana, tema di tab <b>Belajar</b>, dan cerita di tab <b>Baca</b>.</p>
-
-    <div class="kartu">
-      <h2>🔤 Huruf Kana</h2>
-      <div style="display:flex; gap:8px;">
-        <button class="tombol" style="flex:1;" onclick="bukaJalur()">🧭 Jalur Kana</button>
-        <button class="tombol rangka" style="flex:1;" onclick="bukaLayar('kana')">Tabel 92 Kana</button>
-      </div>
+    <div class="kartu" id="kartu-nama">
+      <h2>Kenalan dulu, yuk</h2>
+      <p>Tanpa kata sandi. Progres dicadangkan otomatis atas nama ini — bisa dipulihkan di alat lain dengan nama yang sama.</p>
+      <input class="ketik" id="input-nama" placeholder="nama panggilan" autocomplete="off">
+      <button class="tombol rangka" onclick="simpanNama()">Simpan</button>
     </div>
-
-    <div class="kartu kartu-langkah">
-      <h2>Langkah Berikutnya</h2>
-      <p id="teks-langkah">Satu langkah kecil dulu — ikuti urutannya, tidak usah lompat-lompat.</p>
-      <div class="koleksi-cap" id="koleksi-cap-beranda"></div>
-      <button class="tombol aksen" id="tombol-langkah" onclick="keLangkahBerikutnya()">Mulai</button>
-    </div>
-
     <div class="kartu" id="kartu-frasa">
       <h2>🗣️ Ngomong dari Hari Pertama</h2>
       <p>Frasa baru terbuka otomatis seiring cap yang kamu kumpulkan. Tekan ▶ Dengar untuk mendengar ucapannya.</p>
@@ -198,33 +187,30 @@
       <div id="daftar-frasa"></div>
       <p id="frasa-konci" style="margin-top:8px;"></p>
     </div>
-
-    
-
-    <div class="kartu" id="kartu-nama">
-      <h2>Kenalan dulu, yuk</h2>
-      <p>Tanpa kata sandi. Progres dicadangkan otomatis atas nama ini — bisa dipulihkan di alat lain dengan nama yang sama.</p>
-      <input class="ketik" id="input-nama" placeholder="nama panggilan" autocomplete="off">
-      <button class="tombol rangka" onclick="simpanNama()">Simpan</button>
+    <div class="kartu">
+      <h2>🔤 Huruf Kana</h2>
+      <div style="display:flex; gap:8px;">
+        <button class="tombol" style="flex:1;" onclick="bukaJalur()">🧭 Jalur Kana</button>
+        <button class="tombol rangka" style="flex:1;" onclick="bukaLayar('kana')">Tabel 92 Kana</button>
+      </div>
     </div>
-
+    <div class="kartu kartu-langkah">
+      <h2>Langkah Berikutnya</h2>
+      <p id="teks-langkah">Satu langkah kecil dulu — ikuti urutannya, tidak usah lompat-lompat.</p>
+      <div class="koleksi-cap" id="koleksi-cap-beranda"></div>
+      <button class="tombol aksen" id="tombol-langkah" onclick="keLangkahBerikutnya()">Mulai</button>
+    </div>
     <div class="kartu sembunyi" id="kartu-konfirmasi-progres">
       <h2>Progres ditemukan 🎉</h2>
       <p id="teks-konfirmasi-progres"></p>
       <button class="tombol" onclick="pakaiProgresServer()">Pakai progres itu</button>
       <button class="tombol rangka" onclick="tetapProgresIni()">Tetap yang ini</button>
     </div>
-
-    
-
-    
-
     <p style="text-align:center; margin:18px 0 6px; font-size:13px;">
       <a href="#" onclick="bukaLayar('tentang'); return false;" style="color:var(--toska-gelap); font-weight:600;">Tentang Kawasa</a>
       &nbsp;·&nbsp;
       <a href="#" onclick="bukaLayar('privasi'); return false;" style="color:var(--toska-gelap); font-weight:600;">Kebijakan Privasi</a>
     </p>
-    <p style="text-align:center; font-size:12px; color:var(--teks-lembut);">Kawasa — Makin paham, bukan makin bingung.</p>
   </section>
 
   <!-- BELAJAR (TEMA) -->
