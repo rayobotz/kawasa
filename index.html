@@ -90,6 +90,8 @@
   #tabbar button{position:relative; z-index:1; flex:1; background:none; border:none; font-size:20px; line-height:1.15; display:flex; flex-direction:column; align-items:center; gap:1px; color:var(--teks-lembut); padding:5px 0; border-radius:999px; cursor:pointer; transition:color .25s;}
   #tabbar button span{font-size:12px; font-weight:700;}
   #tabbar button.aktif{color:#FFFFFF;}
+  #tabbar button svg{width:25px; height:25px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round;}
+  #tabbar button.aktif svg{fill:currentColor;}
   body.tab-aktif main{padding-bottom:106px;}
   #cerita-arsip .arsip-item{border-left:6px solid #147D74; background:#FFFDF6;}
   .navigasi{display:flex; gap:8px; margin-bottom:14px;}
@@ -568,9 +570,9 @@
 
 <nav id="tabbar" class="sembunyi" aria-label="Navigasi utama">
   <div id="tabbar-sorot"></div>
-  <button data-tab="beranda" onclick="bukaLayar('beranda')">🏠<span>Beranda</span></button>
-  <button data-tab="belajar" onclick="bukaLayar('belajar')">📚<span>Belajar</span></button>
-  <button data-tab="cerita" onclick="bukaLayar('cerita')">📖<span>Baca</span></button>
+  <button data-tab="beranda" aria-label="Beranda" onclick="bukaLayar('beranda')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11.2 12 4l8 7.2"/><path d="M6.2 9.4V20h11.6V9.4"/><path d="M10 20v-5.2h4V20"/></svg></button>
+  <button data-tab="belajar" aria-label="Belajar" onclick="bukaLayar('belajar')"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4.8" width="17" height="12.2" rx="3.2"/><path d="M8.2 17v3.6l5.6-3.6"/></svg></button>
+  <button data-tab="cerita" aria-label="Baca" onclick="bukaLayar('cerita')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.2C10 4.7 7.5 4.2 4 4.2v14c3.5 0 6 .5 8 2 2-1.5 4.5-2 8-2v-14c-3.5 0-6 .5-8 2Z"/><path d="M12 6.2v14"/></svg></button>
 </nav>
 
 <footer>Kawasa — makin paham, bukan makin bingung. Dibangun pelan-pelan, dibuka untuk siapa pun yang mau mulai.</footer>
