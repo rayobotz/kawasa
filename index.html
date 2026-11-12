@@ -534,6 +534,12 @@
         </ul>
       </details>
     </div>
+    <div class="kartu">
+      <h2>Latihan — langsung praktik</h2>
+      <p>Dengarkan dan pahami pesannya. Tanpa aturan, tanpa hafalan pola.</p>
+      <div id="unit-latihan"></div>
+      <p id="unit-latihan-teks" class="petunjuk" style="margin-top:8px;"></p>
+    </div>
   </section>
 
   <!-- TENTANG -->
@@ -2259,6 +2265,81 @@ function gambarUnit(){
     var cnt = 0;
     UNIT1_POTONGAN.forEach(function(f, i){ if(progres.unitUcap && progres.unitUcap["u1-" + i]){ cnt++; } });
     elT.textContent = "Sudah kamu ucapkan: " + cnt + " dari " + UNIT1_POTONGAN.length + " potongan.";
+  }
+  gambarLatihanUnit();
+}
+var UNIT1_LATIHAN = [
+  {audio:"u1-2", tanya:"Orang ini bilang apa?", pilihan:["Namanya Rina", "Dia datang dari Indonesia", "Dia sedang belajar bahasa Jepang"], bener:0, alas:"[Nama] です adalah cara orang Jepang menyebut namanya."},
+  {audio:"u1-v2", tanya:"Orang ini bilang apa?", pilihan:["Dia datang dari Indonesia", "Asalnya dari Indonesia", "Dia tinggal di Indonesia"], bener:1, alas:"しゅっしんは 〜です = 'asal saya …'."},
+  {audio:"u1-full", tanya:"Dengarkan perkenalan lengkapnya. Rina sedang belajar apa?", pilihan:["Bahasa Jepang", "Memasak", "Mengemudi"], bener:0, alas:"Ada kata にほんご (bahasa Jepang) dan べんきょう しています (sedang belajar)."},
+  {audio:"u1-v4", tanya:"Kalimat ini dipakai untuk apa?", pilihan:["Membalas perkenalan orang lain", "Meminta maaf", "Bertanya nama orang"], bener:0, alas:"こちらこそ dipakai saat membalas — 'saya juga, mohon bantuannya'."},
+  {audio:null, tanya:"Kamu pertama kali bertemu rekan kerja baru. Kalimat pertama yang kamu ucapkan?", pilihan:["はじめまして", "こちらこそ、よろしく おねがいします", "おなまえは？"], bener:0, alas:"はじめまして hanya untuk pertemuan pertama — itulah momennya."}
+];
+function gambarLatihanUnit(){
+  var wadah = document.getElementById("unit-latihan");
+  if(!wadah){ return; }
+  wadah.innerHTML = "";
+  UNIT1_LATIHAN.forEach(function(soal, qi){
+    var blok = document.createElement("div");
+    blok.className = "unit-potongan";
+    var judul = document.createElement("p");
+    judul.style.margin = "0 0 8px";
+    judul.innerHTML = "<strong>Soal " + (qi + 1) + ".</strong> " + soal.tanya + " ";
+    blok.appendChild(judul);
+    if(soal.audio){
+      var tblD = document.createElement("button");
+      tblD.className = "tombol-sora"; tblD.textContent = "\u25B6 Dengar";
+      tblD.setAttribute("aria-label", "Dengarkan soal ini");
+      (function(k){ tblD.onclick = function(){ putarUnit(k); }; })(soal.audio);
+      judul.appendChild(tblD);
+    }
+    var geusBener = progres.unitXp && progres.unitXp["q" + (qi + 1)];
+    soal.pilihan.forEach(function(pil, pi){
+      var tbl = document.createElement("button");
+      tbl.className = "tombol rangka";
+      tbl.style.cssText = "display:block; width:100%; text-align:left; margin-top:6px;";
+      tbl.textContent = pil;
+      if(geusBener && pi === soal.bener){
+        tbl.classList.add("geus-ucap");
+        tbl.style.background = "#147D74"; tbl.style.color = "#FFFFFF"; tbl.style.borderColor = "#147D74";
+      }
+      (function(q, p2, el){ tbl.onclick = function(){ jawabLatihanUnit(q, p2, el); }; })(qi, pi, tbl);
+      blok.appendChild(tbl);
+    });
+    var fb = document.createElement("p");
+    fb.className = "petunjuk";
+    fb.id = "latihan-fb-" + qi;
+    fb.style.marginTop = "6px";
+    if(geusBener){ fb.textContent = "\u2713 " + soal.alas; }
+    blok.appendChild(fb);
+    wadah.appendChild(blok);
+  });
+  var elT = document.getElementById("unit-latihan-teks");
+  if(elT){
+    var cnt = 0;
+    UNIT1_LATIHAN.forEach(function(soal, qi){ if(progres.unitXp && progres.unitXp["q" + (qi + 1)]){ cnt++; } });
+    elT.textContent = "Latihan selesai: " + cnt + " dari " + UNIT1_LATIHAN.length + " soal.";
+  }
+}
+function jawabLatihanUnit(qi, pi, el){
+  var soal = UNIT1_LATIHAN[qi];
+  var fb = document.getElementById("latihan-fb-" + qi);
+  if(!progres.unitXp){ progres.unitXp = {}; }
+  var konci = "q" + (qi + 1);
+  if(pi === soal.bener){
+    if(!progres.unitXp[konci]){
+      progres.unitXp[konci] = 1;
+      progres.xp += 10;
+      simpan(); segarkanProgres();
+      bejaPesen("Benar! +10 XP");
+    }
+    if(fb){ fb.textContent = "\u2713 " + soal.alas; }
+    gambarLatihanUnit();
+  } else {
+    el.style.background = "#F6DCD2";
+    el.style.borderColor = "#E2725B";
+    el.disabled = true;
+    if(fb){ fb.textContent = "Belum tepat — dengarkan lagi, lalu coba pilihan lain."; }
   }
 }
 function tandaiUcapUnit(i){
