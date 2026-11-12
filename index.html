@@ -1552,7 +1552,7 @@ function nulisSiapkan(){
   hwWriter = HanziWriter.create("hw-wadah", huruf, {
     width: 260, height: 260, padding: 6,
     showOutline: true, showCharacter: false,
-    strokeColor: "#33302A", outlineColor: "#DCD2B8", drawingColor: "#147D74", highlightColor: "#7FB8AF",
+    strokeColor: "#33302A", outlineColor: "#DCD2B8", drawingColor: "#147D74", highlightColor: "#7FB8AF", drawingWidth: 38,
     charDataLoader: charDataKana,
     onLoadCharDataError: function(){ if(status){ status.textContent = "Data huruf ini belum tersedia untuk latihan menulis."; } }
   });
