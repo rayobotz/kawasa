@@ -85,6 +85,11 @@
   .arsip-item{display:block; width:100%; text-align:left; margin-top:8px;}
   .sampul-cerita{width:100%; height:auto; border-radius:14px; display:block; margin-bottom:12px;}
   .tombol-sora.geus-ucap{background:#147D74; color:#FFFFFF; border-color:#147D74;}
+  .unit-potongan{border-top:1px solid #EFE3CB; padding:10px 0;}
+  .unit-potongan:first-child{border-top:none; padding-top:2px;}
+  .unit-jajar{display:flex; align-items:center; gap:8px;}
+  .unit-jajar .nama{flex:1;}
+  .unit-varian{margin-top:6px; padding:8px 10px; background:var(--krem); border-radius:10px;}
   #tabbar{position:fixed; left:14px; right:14px; bottom:calc(12px + env(safe-area-inset-bottom)); max-width:430px; margin:0 auto; display:flex; gap:0; background:#FFFDF6; border:1.5px solid #F0E4C8; border-radius:999px; padding:6px; box-shadow:0 10px 28px rgba(90,64,20,.18); z-index:60;}
   #tabbar.sembunyi{display:none;}
   #tabbar-sorot{position:absolute; top:6px; bottom:6px; left:6px; width:calc((100% - 12px) / 3); background:#147D74; border-radius:999px; transition:transform .32s cubic-bezier(.35,1.3,.4,1);}
@@ -221,7 +226,7 @@
       <div class="jalur"><div class="no">🗣️</div><div class="nama">Bisa menyapa & berterima kasih</div><button class="tombol" style="padding:6px 14px; font-size:13px;" onclick="document.getElementById('kartu-frasa').scrollIntoView({behavior:'smooth'})">Lihat</button></div>
       <div class="jalur"><div class="no">あ</div><div class="nama">Bisa baca hiragana</div><button class="tombol" style="padding:6px 14px; font-size:13px;" onclick="bukaJalur()">Buka</button></div>
       <div class="jalur"><div class="no">ア</div><div class="nama">Bisa baca katakana</div><span class="lencana segera">Setelah hiragana</span></div>
-      <div class="jalur"><div class="no">🙋</div><div class="nama">Bisa memperkenalkan diri</div><span class="lencana segera">Segera</span></div>
+      <div class="jalur"><div class="no">🙋</div><div class="nama">Bisa memperkenalkan diri</div><button class="tombol" onclick="bukaUnit()">Mulai</button></div>
       <div class="jalur"><div class="no">🛒</div><div class="nama">Bisa tanya harga & belanja</div><span class="lencana segera">Segera</span></div>
       <div class="jalur"><div class="no">🚃</div><div class="nama">Bisa tanya jalan & naik kereta</div><span class="lencana segera">Segera</span></div>
       <div class="jalur"><div class="no">🍜</div><div class="nama">Bisa pesan makanan</div><span class="lencana segera">Segera</span></div>
@@ -500,6 +505,37 @@
     </div>
   </section>
 
+  <!-- UNIT TEMA: PERKENALAN DIRI -->
+  <section id="layar-unit" class="sembunyi">
+    <div class="navigasi"><button onclick="bukaLayar('belajar')">← Kembali ke Belajar</button></div>
+    <div class="kartu">
+      <h2>🙋 Memperkenalkan Diri</h2>
+      <p>Setelah unit ini, kamu bisa memperkenalkan diri seperti yang benar-benar dipakai orang Jepang. Dengarkan, lalu ucapkan.</p>
+      <div id="unit-potongan"></div>
+      <p id="unit-ucap-teks" class="petunjuk" style="margin-top:8px;"></p>
+    </div>
+    <div class="kartu">
+      <h2>Contoh lengkapnya</h2>
+      <p class="jp" id="unit-full-jp" style="font-size:17px; line-height:1.9;"></p>
+      <p style="margin-top:0;"><small id="unit-full-ro"></small></p>
+      <button class="tombol-sora" onclick="putarUnit('u1-full')">▶ Dengar contoh lengkap</button>
+      <p class="petunjuk" style="margin-top:8px;">Ganti "Rina" dengan namamu sendiri.</p>
+    </div>
+    <div class="kartu">
+      <h2>Balasan yang akan kamu dengar</h2>
+      <div id="unit-balas"></div>
+      <p class="petunjuk" style="margin-top:8px;">Kalau ditanya nama, orang Jepang cukup bertanya <span class="jp">おなまえは？</span> (onamae wa?) — jawab saja dengan potongan nomor 2.</p>
+      <details style="margin-top:10px;">
+        <summary style="font-weight:700; cursor:pointer;">💡 Catatan: yang tidak dipakai orang Jepang</summary>
+        <ul style="margin:8px 0 0; padding-left:18px; font-size:14px; line-height:1.7;">
+          <li><span class="jp">わたしの なまえは 〜です</span> — gaya buku teks; cukup [nama] です.</li>
+          <li><span class="jp">あなたのお名前は何ですか</span> — terlalu kaku; cukup <span class="jp">おなまえは？</span></li>
+          <li>Jangan beri akhiran -san pada namamu sendiri.</li>
+        </ul>
+      </details>
+    </div>
+  </section>
+
   <!-- TENTANG -->
   <section id="layar-tentang" class="sembunyi">
     <div class="navigasi">
@@ -569,7 +605,7 @@ var KATA = [["ア","a"],["イ","i"],["ウ","u"],["エ","e"],["オ","o"],["カ","
 
 var KUNCI = "aplikasi-umum-beginner:progress:v1";
 var TRACK_URL = "https://script.google.com/macros/s/AKfycbzt4lhJu00LrpG_4ped806sh393v0pIfl778SnO6r4gZ75P-FU8N3SFs7jjw2oVh5eI/exec";
-var progres = {xp:0, kuasai:{}, id:"", nama:"", capBaris:{}, kenalan:{}, nulis:{}, frasaUcap:{}, frasaXp:{}};
+var progres = {xp:0, kuasai:{}, id:"", nama:"", capBaris:{}, kenalan:{}, nulis:{}, frasaUcap:{}, frasaXp:{}, unitUcap:{}, unitXp:{}};
 try{ var tersimpan = localStorage.getItem(KUNCI); if(tersimpan){ progres = JSON.parse(tersimpan); } }catch(e){}
 if(!progres.id){ progres.id = "u" + Date.now().toString(36) + Math.floor(Math.random()*99999).toString(36); }
 function simpan(){ try{ localStorage.setItem(KUNCI, JSON.stringify(progres)); }catch(e){} }
@@ -697,7 +733,8 @@ function progresKosong(){
   var kn = 0; for(var k3 in (progres.kenalan || {})){ kn++; }
   var nw = 0; for(var k4 in (progres.nulis || {})){ nw++; }
   var fu = 0; for(var k5 in (progres.frasaUcap || {})){ fu++; }
-  return progres.xp === 0 && n === 0 && c === 0 && kn === 0 && nw === 0 && fu === 0;
+  var uu = 0; for(var k6 in (progres.unitUcap || {})){ uu++; }
+  return progres.xp === 0 && n === 0 && c === 0 && kn === 0 && nw === 0 && fu === 0 && uu === 0;
 }
 function terapkanCadangan(blobTeks){
   try{
@@ -2110,7 +2147,7 @@ function segarkanBeranda(){
     teks.textContent = "Semua baris hiragana beres! Sekarang jebakan bunyi: vokal panjang & sokuon.";
   } else {
     tombol.textContent = "Semua jalur kana selesai \uD83C\uDF89";
-    teks.textContent = "Semua jalur kana selesai — Unit 1 menyusul. Sambil menunggu, ulangi baris mana pun atau berlatih bebas di tabel lengkap.";
+    teks.textContent = "Semua jalur kana selesai — lanjutkan ke Unit Memperkenalkan Diri di tab Belajar, atau ulangi baris mana pun di sini.";
   }
   gambarKoleksiCap(document.getElementById("koleksi-cap-beranda"));
 }
@@ -2119,7 +2156,124 @@ function keLangkahBerikutnya(){
   if(lk.jenis === "awal"){ var elF = document.getElementById("daftar-frasa"); if(elF && elF.closest){ var kartF = elF.closest(".kartu"); if(kartF){ kartF.scrollIntoView({behavior: "smooth", block: "start"}); } } }
   else if(lk.jenis === "baris"){ bukaHalamanBaris(lk.aksara, lk.indeks); }
   else if(lk.jenis === "jebakan"){ bukaJalurAksara("hira"); }
-  else { bukaJalur(); }
+  else { bukaUnit(); }
+}
+
+// === Unit tema 1: Memperkenalkan Diri ===
+// Eusina dumasar riset basa sapopoé (polite-natural): rangka perkenalan anu
+// beneran dipaké urang Jepang — tanpa watashi wa, panutup douzo yoroshiku,
+// unggal potongan boga versi luyu kaayaanana.
+var UNIT1_POTONGAN = [
+  {konci:"u1-1", jp:"はじめまして。", ro:"hajimemashite", arti:"salam kenal", cat:"hanya untuk pertemuan pertama"},
+  {konci:"u1-2", jp:"リナ です。", ro:"Rina desu", arti:"Saya Rina — ganti Rina dengan namamu", cat:"tanpa わたしは — begitu yang alami",
+   varian:[{konci:"u1-v1", jp:"リナと もうします。", ro:"Rina to moushimasu", arti:"versi resmi: wawancara / hari pertama kerja"}]},
+  {konci:"u1-3", jp:"インドネシアから きました。", ro:"Indoneshia kara kimashita", arti:"Saya datang dari Indonesia", cat:"",
+   varian:[{konci:"u1-v2", jp:"しゅっしんは インドネシアです。", ro:"shusshin wa Indoneshia desu", arti:"versi 'asal saya…' — sama alaminya"}]},
+  {konci:"u1-4", jp:"にほんごを べんきょう しています。", ro:"nihongo wo benkyou shite imasu", arti:"Saya sedang belajar bahasa Jepang", cat:"",
+   varian:[{konci:"u1-v3", jp:"かいごの しごとを しています。", ro:"kaigo no shigoto wo shite imasu", arti:"versi untuk yang bekerja di perawatan lansia"}]},
+  {konci:"u1-5", jp:"どうぞ よろしく おねがいします。", ro:"douzo yoroshiku onegaishimasu", arti:"mohon bantuannya / senang berkenalan", cat:"penutup wajib — tanpa ini terasa belum selesai"}
+];
+var UNIT1_FULL = {jp:"はじめまして。リナ です。インドネシアから きました。にほんごを べんきょう しています。どうぞ よろしく おねがいします。", ro:"hajimemashite. Rina desu. Indoneshia kara kimashita. nihongo wo benkyou shite imasu. douzo yoroshiku onegaishimasu."};
+var UNIT1_BALAS = {konci:"u1-v4", jp:"こちらこそ、よろしく おねがいします。", ro:"kochira koso, yoroshiku onegaishimasu", arti:"'Saya juga — mohon bantuannya.' Akan kamu dengar sebagai balasan, dan bisa kamu pakai juga."};
+var unitAudioCache = {}, unitAudioObj = null;
+function putarUnit(konci){
+  var berkas = "sora-unit/" + konci + "-" + (progres.sora || "awewe") + ".b64";
+  function mainkeun(uri){
+    if(unitAudioObj){ try{ unitAudioObj.pause(); }catch(e){} }
+    unitAudioObj = new Audio(uri);
+    unitAudioObj.play().catch(function(){ bejaPesen("Suaranya tidak bisa diputar."); });
+  }
+  if(unitAudioCache[berkas]){ mainkeun(unitAudioCache[berkas]); return; }
+  fetch(berkas, {cache: "force-cache"}).then(function(r){
+    if(!r.ok){ throw new Error("euweuh"); }
+    return r.text();
+  }).then(function(teks){
+    var uri = "data:audio/mpeg;base64," + teks.trim();
+    unitAudioCache[berkas] = uri;
+    mainkeun(uri);
+  }).catch(function(){ bejaPesen("Suaranya belum tersedia untuk bagian ini."); });
+}
+function bukaUnit(){ bukaLayar("unit"); gambarUnit(); }
+function gambarUnit(){
+  var wadah = document.getElementById("unit-potongan");
+  if(!wadah){ return; }
+  wadah.innerHTML = "";
+  UNIT1_POTONGAN.forEach(function(f, i){
+    var blok = document.createElement("div");
+    blok.className = "unit-potongan";
+    var jajar = document.createElement("div");
+    jajar.className = "unit-jajar";
+    var nama = document.createElement("div");
+    nama.className = "nama";
+    nama.innerHTML = "<span class='jp' style='font-size:17px;'>" + f.jp + "</span><br><small>" + f.ro + " — " + f.arti + "</small>" + (f.cat ? "<br><small style='color:var(--toska-gelap);'>" + f.cat + "</small>" : "");
+    jajar.appendChild(nama);
+    var tblD = document.createElement("button");
+    tblD.className = "tombol-sora"; tblD.textContent = "\u25B6 Dengar";
+    tblD.setAttribute("aria-label", "Dengarkan potongan ini");
+    (function(k){ tblD.onclick = function(){ putarUnit(k); }; })(f.konci);
+    jajar.appendChild(tblD);
+    var tblU = document.createElement("button");
+    var geusU = progres.unitUcap && progres.unitUcap["u1-" + i];
+    tblU.className = "tombol-sora" + (geusU ? " geus-ucap" : "");
+    tblU.textContent = geusU ? "\u2713 Sudah" : "\u2713 Ucapkan";
+    tblU.setAttribute("aria-label", "Tandai potongan sudah saya ucapkan");
+    (function(idx){ tblU.onclick = function(){ tandaiUcapUnit(idx); }; })(i);
+    jajar.appendChild(tblU);
+    blok.appendChild(jajar);
+    (f.varian || []).forEach(function(v){
+      var barisV = document.createElement("div");
+      barisV.className = "unit-jajar unit-varian";
+      var namaV = document.createElement("div");
+      namaV.className = "nama";
+      namaV.innerHTML = "<small style='font-weight:700; color:var(--toska-gelap);'>Versi lain:</small> <span class='jp' style='font-size:15px;'>" + v.jp + "</span><br><small>" + v.ro + " — " + v.arti + "</small>";
+      barisV.appendChild(namaV);
+      var tblV = document.createElement("button");
+      tblV.className = "tombol-sora"; tblV.textContent = "\u25B6 Dengar";
+      tblV.setAttribute("aria-label", "Dengarkan versi lain ini");
+      (function(k){ tblV.onclick = function(){ putarUnit(k); }; })(v.konci);
+      barisV.appendChild(tblV);
+      blok.appendChild(barisV);
+    });
+    wadah.appendChild(blok);
+  });
+  var elF = document.getElementById("unit-full-jp"), elR = document.getElementById("unit-full-ro");
+  if(elF){ elF.textContent = UNIT1_FULL.jp; }
+  if(elR){ elR.textContent = UNIT1_FULL.ro; }
+  var elB = document.getElementById("unit-balas");
+  if(elB){
+    elB.innerHTML = "";
+    var jajarB = document.createElement("div");
+    jajarB.className = "unit-jajar";
+    var namaB = document.createElement("div");
+    namaB.className = "nama";
+    namaB.innerHTML = "<span class='jp' style='font-size:16px;'>" + UNIT1_BALAS.jp + "</span><br><small>" + UNIT1_BALAS.ro + " — " + UNIT1_BALAS.arti + "</small>";
+    jajarB.appendChild(namaB);
+    var tblB = document.createElement("button");
+    tblB.className = "tombol-sora"; tblB.textContent = "\u25B6 Dengar";
+    tblB.onclick = function(){ putarUnit(UNIT1_BALAS.konci); };
+    jajarB.appendChild(tblB);
+    elB.appendChild(jajarB);
+  }
+  var elT = document.getElementById("unit-ucap-teks");
+  if(elT){
+    var cnt = 0;
+    UNIT1_POTONGAN.forEach(function(f, i){ if(progres.unitUcap && progres.unitUcap["u1-" + i]){ cnt++; } });
+    elT.textContent = "Sudah kamu ucapkan: " + cnt + " dari " + UNIT1_POTONGAN.length + " potongan.";
+  }
+}
+function tandaiUcapUnit(i){
+  if(!progres.unitUcap){ progres.unitUcap = {}; }
+  if(!progres.unitXp){ progres.unitXp = {}; }
+  var konci = "u1-" + i;
+  if(progres.unitUcap[konci]){
+    delete progres.unitUcap[konci];
+    simpan(); gambarUnit();
+    return;
+  }
+  progres.unitUcap[konci] = 1;
+  if(!progres.unitXp[konci]){ progres.unitXp[konci] = 1; progres.xp += 5; }
+  simpan(); segarkanProgres(); gambarUnit();
+  bejaPesen("Bagus! Potongan ini sudah kamu ucapkan. +5 XP");
 }
 
 // === Fase Kenalan: berkenalan dengan huruf baris ini satu per satu ===
