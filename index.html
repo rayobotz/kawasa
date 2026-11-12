@@ -77,6 +77,8 @@
     background:#fff; color:var(--toska-gelap); font-size:17px; font-weight:600; cursor:pointer;}
   .daftar-salah{font-size:16px; line-height:2;}
   .cerita-teks{font-size:19px; line-height:2; background:var(--krem); border-radius:12px; padding:12px;}
+  .kotak-nulis{display:flex; justify-content:center;}
+  #nulis-canvas{width:300px; height:300px; max-width:88vw; aspect-ratio:1; background:#FFFDF8; border:2px solid #147D74; border-radius:12px; touch-action:none;}
   .kt{border-bottom:2px dotted #147D74; cursor:pointer;}
   .kt.aktif{background:#F3E3B3; border-radius:4px;}
   #glos-strip{margin-top:10px; background:#EAF4F1; border:1px solid #147D74; border-radius:12px; padding:10px 12px; font-size:15px;}
@@ -411,6 +413,16 @@
       <p class="atribusi">Data goresan: KanjiVG · CC BY-SA 3.0</p>
     </div>
     <div class="kartu">
+      <h2>✍️ Latihan menulis</h2>
+      <p>Tulis hurufnya di kotak ini dengan jarimu — ikuti urutan goresan dari animasi di atas. Tidak dinilai; yang penting tanganmu pernah menggambarnya sendiri.</p>
+      <div class="kotak-nulis"><canvas id="nulis-canvas" width="300" height="300"></canvas></div>
+      <div style="display:flex; gap:8px; margin-top:10px;">
+        <button class="tombol rangka" onclick="nulisHapus()">🗑 Hapus</button>
+        <button class="tombol rangka" id="nulis-selesai" onclick="nulisSelesai()">✓ Sudah saya tulis</button>
+      </div>
+      <p id="nulis-status" class="petunjuk" style="margin-top:8px;"></p>
+    </div>
+    <div class="kartu">
       <h2>Contoh kata</h2>
       <div id="detail-kata"></div>
       <button class="tombol-sora" id="detail-kata-sora" style="display:block; margin:10px auto 0;" onclick="putarSoraKata(this.dataset.kata)">▶ Dengar kata ini</button>
@@ -524,7 +536,7 @@ var KATA = [["ア","a"],["イ","i"],["ウ","u"],["エ","e"],["オ","o"],["カ","
 
 var KUNCI = "aplikasi-umum-beginner:progress:v1";
 var TRACK_URL = "https://script.google.com/macros/s/AKfycbzt4lhJu00LrpG_4ped806sh393v0pIfl778SnO6r4gZ75P-FU8N3SFs7jjw2oVh5eI/exec";
-var progres = {xp:0, kuasai:{}, id:"", nama:"", capBaris:{}, kenalan:{}};
+var progres = {xp:0, kuasai:{}, id:"", nama:"", capBaris:{}, kenalan:{}, nulis:{}};
 try{ var tersimpan = localStorage.getItem(KUNCI); if(tersimpan){ progres = JSON.parse(tersimpan); } }catch(e){}
 if(!progres.id){ progres.id = "u" + Date.now().toString(36) + Math.floor(Math.random()*99999).toString(36); }
 function simpan(){ try{ localStorage.setItem(KUNCI, JSON.stringify(progres)); }catch(e){} }
@@ -650,7 +662,8 @@ function progresKosong(){
   var n = 0; for(var k in progres.kuasai){ n++; }
   var c = 0; for(var k2 in (progres.capBaris || {})){ c++; }
   var kn = 0; for(var k3 in (progres.kenalan || {})){ kn++; }
-  return progres.xp === 0 && n === 0 && c === 0 && kn === 0;
+  var nw = 0; for(var k4 in (progres.nulis || {})){ nw++; }
+  return progres.xp === 0 && n === 0 && c === 0 && kn === 0 && nw === 0;
 }
 function terapkanCadangan(blobTeks){
   try{
@@ -1329,6 +1342,7 @@ function gambarDetail(){
   document.getElementById("detail-sebelumnya").disabled = detail.indeks <= 0;
   document.getElementById("detail-berikutnya").disabled = detail.indeks >= data.length - 1;
   mulaiAnimasiDetail(item[0]);
+  nulisSiapkan();
 }
 function mulaiAnimasiDetail(huruf, idSvg, idTeks){
   berhentiAnimasi();
@@ -1374,6 +1388,76 @@ function mulaiAnimasiDetail(huruf, idSvg, idTeks){
   if(jalur.length){
     timerAnimasi.push(setTimeout(function(){ gambarSatu(0); }, 250));
   }
+}
+var nulisCtx = null, nulisNgagambar = false, nulisLast = null, nulisKosong = true;
+function nulisKanaKey(){ return detail ? (detail.aksara + "-" + dataAksara(detail.aksara)[detail.indeks][1]) : ""; }
+function nulisSiapkan(){
+  var cv = document.getElementById("nulis-canvas");
+  if(!cv || !detail){ return; }
+  nulisCtx = cv.getContext("2d");
+  nulisGambarPituduh();
+  var st = document.getElementById("nulis-status");
+  var geus = progres.nulis && progres.nulis[nulisKanaKey()];
+  if(st){ st.textContent = geus ? "Huruf ini sudah pernah kamu tulis ✓ — boleh diulang sepuasnya." : "Sekali selesai menulisnya, ketuk \u2713 untuk +10 XP (sekali per huruf)."; }
+  if(!cv.dataset.siap){
+    cv.dataset.siap = "1";
+    cv.addEventListener("pointerdown", nulisMimitian);
+    cv.addEventListener("pointermove", nulisGerak);
+    cv.addEventListener("pointerup", nulisAnggeus);
+    cv.addEventListener("pointercancel", nulisAnggeus);
+    cv.addEventListener("pointerleave", nulisAnggeus);
+  }
+}
+function nulisGambarPituduh(){
+  var cv = document.getElementById("nulis-canvas");
+  if(!cv || !nulisCtx || !detail){ return; }
+  var ctx = nulisCtx;
+  ctx.clearRect(0, 0, 300, 300);
+  ctx.save();
+  ctx.strokeStyle = "#E7DCC0"; ctx.lineWidth = 1; ctx.setLineDash([6, 6]);
+  ctx.beginPath(); ctx.moveTo(150, 8); ctx.lineTo(150, 292); ctx.moveTo(8, 150); ctx.lineTo(292, 150); ctx.stroke();
+  ctx.setLineDash([]);
+  var item = dataAksara(detail.aksara)[detail.indeks];
+  ctx.fillStyle = "rgba(20,125,116,0.16)";
+  ctx.font = "230px 'Hiragino Sans','Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif";
+  ctx.textAlign = "center"; ctx.textBaseline = "middle";
+  ctx.fillText(item[0], 150, 158);
+  ctx.restore();
+  nulisKosong = true;
+}
+function nulisPos(e){
+  var cv = document.getElementById("nulis-canvas");
+  var r = cv.getBoundingClientRect();
+  return {x: (e.clientX - r.left) * 300 / r.width, y: (e.clientY - r.top) * 300 / r.height};
+}
+function nulisMimitian(e){
+  e.preventDefault();
+  var cv = document.getElementById("nulis-canvas");
+  if(cv.setPointerCapture && e.pointerId != null){ try{ cv.setPointerCapture(e.pointerId); }catch(err){} }
+  nulisNgagambar = true; nulisLast = nulisPos(e);
+}
+function nulisGerak(e){
+  if(!nulisNgagambar || !nulisCtx){ return; }
+  e.preventDefault();
+  var titik = nulisPos(e);
+  var ctx = nulisCtx;
+  ctx.strokeStyle = "#3A332A"; ctx.lineWidth = 7; ctx.lineCap = "round"; ctx.lineJoin = "round";
+  ctx.beginPath(); ctx.moveTo(nulisLast.x, nulisLast.y); ctx.lineTo(titik.x, titik.y); ctx.stroke();
+  nulisLast = titik; nulisKosong = false;
+}
+function nulisAnggeus(){ nulisNgagambar = false; }
+function nulisHapus(){ nulisGambarPituduh(); }
+function nulisSelesai(){
+  if(nulisKosong){ bejaPesen("Tulis dulu hurufnya di kotak, baru ketuk selesai."); return; }
+  if(!progres.nulis){ progres.nulis = {}; }
+  var konci = nulisKanaKey();
+  if(progres.nulis[konci]){ bejaPesen("Huruf ini sudah pernah tercatat — bagus! Lanjut ke huruf berikutnya."); return; }
+  progres.nulis[konci] = 1;
+  progres.xp += 10;
+  simpan();
+  var st = document.getElementById("nulis-status");
+  if(st){ st.textContent = "Tercatat \u2713 +10 XP. Huruf ini sudah pernah kamu tulis."; }
+  bejaPesen("Bagus! +10 XP untuk latihan menulis huruf ini.");
 }
 function putarLagiDetail(){
   if(!detail){ return; }
