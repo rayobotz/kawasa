@@ -92,6 +92,11 @@
   #tabbar button.aktif{color:#FFFFFF;}
   #tabbar button svg{width:25px; height:25px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round;}
   #tabbar button.aktif svg{fill:currentColor;}
+  @keyframes tiKatuhu{from{opacity:0; transform:translateX(26px); filter:blur(7px);} to{opacity:1; transform:translateX(0); filter:blur(0);}}
+  @keyframes tiKenca{from{opacity:0; transform:translateX(-26px); filter:blur(7px);} to{opacity:1; transform:translateX(0); filter:blur(0);}}
+  .anim-katuhu{animation:tiKatuhu .3s ease both;}
+  .anim-kenca{animation:tiKenca .3s ease both;}
+  @media (prefers-reduced-motion: reduce){ .anim-katuhu, .anim-kenca{animation:none;} }
   body.tab-aktif main{padding-bottom:106px;}
   #cerita-arsip .arsip-item{border-left:6px solid #147D74; background:#FFFDF6;}
   .navigasi{display:flex; gap:8px; margin-bottom:14px;}
@@ -813,6 +818,12 @@ function bukaLayar(nama){
   for(var t2 = 0; t2 < btnsTab.length; t2++){ btnsTab[t2].classList.toggle("aktif", btnsTab[t2].dataset.tab === nama); }
   var sorotEl = document.getElementById("tabbar-sorot");
   if(sorotEl && namaTab){ var idxTab = (nama === "belajar") ? 1 : (nama === "cerita") ? 2 : 0; sorotEl.style.transform = "translateX(" + (idxTab * 100) + "%)"; }
+  var indTab = function(n){ return n === "beranda" ? 0 : n === "belajar" ? 1 : n === "cerita" ? 2 : -1; };
+  var iaA = indTab(asal), iaB = indTab(nama), arahKatuhu = true;
+  if(iaA >= 0 && iaB >= 0){ arahKatuhu = iaB >= iaA; }
+  else if(iaA < 0 && iaB >= 0){ arahKatuhu = false; }
+  var elBar = document.getElementById("layar-" + nama);
+  if(elBar){ elBar.classList.remove("anim-katuhu", "anim-kenca"); void elBar.offsetWidth; elBar.classList.add(arahKatuhu ? "anim-katuhu" : "anim-kenca"); }
   window.scrollTo(0,0);
 }
 
