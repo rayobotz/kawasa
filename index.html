@@ -160,21 +160,11 @@
 <main>
   <!-- BERANDA -->
   <section id="layar-beranda">
-    <div class="kartu kartu-utama">
-      <h2>Progresmu</h2>
-      <div class="progres">
-        <div class="kotak"><div class="angka" id="xp">0</div><div class="label">XP</div></div>
-        <div class="kotak"><div class="angka"><span id="kana-kuasai">0</span>/92</div><div class="label">Kana dikuasai</div></div>
-      </div>
-      <div class="batang-bungkus"><div class="batang"><div class="batang-isi" id="batang-kana"></div></div><div class="batang-teks" id="batang-kana-teks">Perjalanan kana: 0%</div></div>
-      <button class="tombol" onclick="bukaJalur()">Mulai: Jalur Kana →</button>
-    </div>
-    <p style="text-align:center; font-size:13.5px; color:var(--teks-lembut); margin:0 6px 14px;">Mulai di sini: ucapkan <b>frasa pertamamu</b> di bawah ini → lalu kana, tema di tab <b>Belajar</b>, dan cerita di tab <b>Baca</b>.</p>
-    <div class="kartu" id="kartu-nama">
-      <h2>Kenalan dulu, yuk</h2>
-      <p>Tanpa kata sandi. Progres dicadangkan otomatis atas nama ini — bisa dipulihkan di alat lain dengan nama yang sama.</p>
-      <input class="ketik" id="input-nama" placeholder="nama panggilan" autocomplete="off">
-      <button class="tombol rangka" onclick="simpanNama()">Simpan</button>
+    <div class="kartu kartu-langkah">
+      <h2>Langkah Berikutnya</h2>
+      <p id="teks-langkah">Satu langkah kecil dulu — ikuti urutannya, tidak usah lompat-lompat.</p>
+      <div class="koleksi-cap" id="koleksi-cap-beranda"></div>
+      <button class="tombol aksen" id="tombol-langkah" onclick="keLangkahBerikutnya()">Mulai</button>
     </div>
     <div class="kartu" id="kartu-frasa">
       <h2>🗣️ Ngomong dari Hari Pertama</h2>
@@ -187,18 +177,24 @@
       <div id="daftar-frasa"></div>
       <p id="frasa-konci" style="margin-top:8px;"></p>
     </div>
+    <div class="kartu" id="kartu-nama">
+      <h2>Kenalan dulu, yuk</h2>
+      <p>Tanpa kata sandi. Progres dicadangkan otomatis atas nama ini — bisa dipulihkan di alat lain dengan nama yang sama.</p>
+      <input class="ketik" id="input-nama" placeholder="nama panggilan" autocomplete="off">
+      <button class="tombol rangka" onclick="simpanNama()">Simpan</button>
+    </div>
     <div class="kartu">
       <h2>🔤 Huruf Kana</h2>
-      <div style="display:flex; gap:8px;">
-        <button class="tombol" style="flex:1;" onclick="bukaJalur()">🧭 Jalur Kana</button>
-        <button class="tombol rangka" style="flex:1;" onclick="bukaLayar('kana')">Tabel 92 Kana</button>
-      </div>
+      <button class="tombol" style="width:100%;" onclick="bukaJalur()">🧭 Mulai Jalur Kana</button>
+      <p style="text-align:center; margin:10px 0 0; font-size:13.5px;"><a href="#" onclick="bukaLayar('kana'); return false;" style="color:var(--toska-gelap); font-weight:600;">Lihat tabel 92 kana (rujukan)</a></p>
     </div>
-    <div class="kartu kartu-langkah">
-      <h2>Langkah Berikutnya</h2>
-      <p id="teks-langkah">Satu langkah kecil dulu — ikuti urutannya, tidak usah lompat-lompat.</p>
-      <div class="koleksi-cap" id="koleksi-cap-beranda"></div>
-      <button class="tombol aksen" id="tombol-langkah" onclick="keLangkahBerikutnya()">Mulai</button>
+    <div class="kartu kartu-utama">
+      <h2>Progresmu</h2>
+      <div class="progres">
+        <div class="kotak"><div class="angka" id="xp">0</div><div class="label">XP</div></div>
+        <div class="kotak"><div class="angka"><span id="kana-kuasai">0</span>/92</div><div class="label">Kana dikuasai</div></div>
+      </div>
+      <div class="batang-bungkus"><div class="batang"><div class="batang-isi" id="batang-kana"></div></div><div class="batang-teks" id="batang-kana-teks">Perjalanan kana: 0%</div></div>
     </div>
     <div class="kartu sembunyi" id="kartu-konfirmasi-progres">
       <h2>Progres ditemukan 🎉</h2>
@@ -2045,7 +2041,8 @@ function jawabJebakan(pil, tombol, q){
   document.getElementById("tombol-lanjut").classList.remove("sembunyi");
 }
 function langkahBerikutnya(){
-  // {jenis:"baris", aksara, indeks} | {jenis:"jebakan"} | {jenis:"selesai"}
+  // {jenis:"awal"} | {jenis:"baris", aksara, indeks} | {jenis:"jebakan"} | {jenis:"selesai"}
+  if(progresKosong()){ return {jenis: "awal"}; }
   for(var b = 0; b < BARIS_GY.length; b++){
     if(!progres.capBaris["hira:" + b]){ return {jenis: "baris", aksara: "hira", indeks: b}; }
   }
@@ -2059,7 +2056,10 @@ function segarkanBeranda(){
   var lk = langkahBerikutnya();
   var tombol = document.getElementById("tombol-langkah");
   var teks = document.getElementById("teks-langkah");
-  if(lk.jenis === "baris"){
+  if(lk.jenis === "awal"){
+    tombol.textContent = "Ucapkan frasa pertamamu \u2192";
+    teks.textContent = "Mulai dari yang paling menyenangkan: tiga frasa yang langsung bisa kamu ucapkan hari ini — tanpa harus bisa baca huruf dulu.";
+  } else if(lk.jenis === "baris"){
     tombol.textContent = "Lanjut: Baris " + namaBaris(lk.aksara, lk.indeks) + " (" + (lk.aksara === "hira" ? "Hiragana" : "Katakana") + ") \u2192";
     teks.textContent = "Cap berikutnya menunggumu di baris ini. Hurufnya: " + hurufBarisTampil(lk.aksara, lk.indeks).split("").join(" ") + ".";
   } else if(lk.jenis === "jebakan"){
@@ -2073,7 +2073,8 @@ function segarkanBeranda(){
 }
 function keLangkahBerikutnya(){
   var lk = langkahBerikutnya();
-  if(lk.jenis === "baris"){ bukaHalamanBaris(lk.aksara, lk.indeks); }
+  if(lk.jenis === "awal"){ var elF = document.getElementById("daftar-frasa"); if(elF && elF.closest){ var kartF = elF.closest(".kartu"); if(kartF){ kartF.scrollIntoView({behavior: "smooth", block: "start"}); } } }
+  else if(lk.jenis === "baris"){ bukaHalamanBaris(lk.aksara, lk.indeks); }
   else if(lk.jenis === "jebakan"){ bukaJalurAksara("hira"); }
   else { bukaJalur(); }
 }
