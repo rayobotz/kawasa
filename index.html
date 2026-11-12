@@ -171,7 +171,7 @@
 
     <div class="kartu" id="kartu-frasa">
       <h2>🗣️ Ngomong dari Hari Pertama</h2>
-      <p>Tidak sabar menunggu kana beres? Wajar. Kuasai frasa ini dan kamu sudah bisa menyapa serta berterima kasih hari ini juga. Frasa baru terbuka otomatis seiring cap yang kamu kumpulkan — sekali-sekali saja, supaya tidak pusing. Tekan tombol Dengar untuk mendengar ucapannya.</p>
+      <p>Frasa baru terbuka otomatis seiring cap yang kamu kumpulkan. Tekan ▶ Dengar untuk mendengar ucapannya.</p>
       <div style="display:flex; gap:8px; align-items:center; margin:10px 0;">
         <span style="font-size:13px; color:var(--teks-lembut);">Suara:</span>
         <button class="pil-sora" id="pil-sora-awewe" onclick="pilihSora('awewe')">Perempuan</button>
@@ -183,7 +183,7 @@
 
     <div class="kartu" id="kartu-nama">
       <h2>Kenalan dulu, yuk</h2>
-      <p>Isi nama panggilanmu — tanpa kata sandi, cukup nama panggilan saja. Progresmu dicadangkan otomatis atas nama itu, jadi kalau kamu ganti HP atau membuka di alat lain, progresmu bisa dipulihkan dengan nama yang sama.</p>
+      <p>Tanpa kata sandi. Progres dicadangkan otomatis atas nama ini — bisa dipulihkan di alat lain dengan nama yang sama.</p>
       <input class="ketik" id="input-nama" placeholder="nama panggilan" autocomplete="off">
       <button class="tombol rangka" onclick="simpanNama()">Simpan</button>
     </div>
@@ -209,7 +209,7 @@
 
     <div class="kartu kartu-cerita">
       <h2>📖 Cerita hari ini</h2>
-      <p>Cerita pendek untuk dibaca santai — bahan input, tanpa soal. Berganti setiap hari, dan khusus ditulis dengan hiragana saja supaya bisa dibaca sejak tahap kana. Ketuk ▶ Dengar cerita untuk mendengar sambil membaca; artinya ada di bawah teksnya. Ketuk kata bergaris bawah titik-titik untuk melihat arti kata itu.</p>
+      <p>Cerita baru setiap hari, ditulis dengan hiragana saja. Ketuk kata bergaris bawah titik-titik untuk artinya; ▶ Dengar untuk mendengarnya.</p>
       <div class="cerita-teks jp" lang="ja" id="teks-cerita"></div>
       <div id="glos-strip" class="sembunyi"></div>
       <button class="tombol rangka" id="tombol-dengar-cerita" onclick="dengarCerita()" style="margin-top:10px;">▶ Dengar cerita</button>
@@ -228,7 +228,7 @@
   <!-- KANA -->
   <section id="layar-kana" class="sembunyi">
     <div class="navigasi"><button onclick="bukaJalur()">← Jalur Kana</button><button onclick="bukaLayar('beranda')">Beranda</button></div>
-    <div class="kartu" style="padding:10px 16px;"><p style="margin:0;">Ini tabel lengkap 92 kana — untuk melihat-lihat &amp; berlatih bebas. Jalur terpandunya ada di <strong>Jalur Kana</strong>.</p></div>
+    <div class="kartu" style="padding:10px 16px;"><p style="margin:0;">Tabel lengkap 92 kana — untuk berlatih bebas.</p></div>
     <div class="kartu">
       <h2>Kana — huruf dasar bahasa Jepang</h2>
       <p>Ketuk huruf untuk detail, suara, dan cara menulisnya. Huruf berubah hijau (<b>dikuasai</b>) setelah kamu menjawabnya benar di dua hari berbeda.</p>
@@ -243,7 +243,7 @@
 
     <div class="kartu">
       <h2>Bor Kana Mirip 🎯</h2>
-      <p>Sebagian huruf bentuknya mirip sekali dan gampang tertukar. Pilih satu kelompok, lalu bor 10 soal khusus huruf-huruf itu.</p>
+      <p>Huruf-huruf yang bentuknya mirip dan gampang tertukar — 10 soal per kelompok.</p>
       <div class="kelompok-bor" id="kelompok-bor"></div>
     </div>
   </section>
@@ -254,18 +254,18 @@
     <div class="navigasi"><button onclick="bukaLayar('beranda')">← Beranda</button></div>
     <div class="kartu">
       <h2>Jalur Kana 🧭</h2>
-      <p>Belajar kana baris demi baris — tidak sekaligus 92 huruf. Selesaikan latihan satu baris dengan nilai 8/10 untuk mendapat <strong>Cap Latihan</strong> baris itu. Jalur Katakana terbuka setelah kamu menguasai hiragana — yaitu setelah semua Cap Latihan hiragana (10 baris + Jebakan Bunyi) sudah di tangan.</p>
+      <p>Nilai 8/10 per baris = <strong>Cap Latihan</strong>. Jalur Katakana terbuka setelah semua cap hiragana terkumpul.</p>
     </div>
     <div class="kartu">
       <h2>① Hiragana</h2>
-      <p>Huruf dasar untuk kata-kata asli Jepang, 10 baris dari あ行 sampai わ行, ditutup langkah khusus Jebakan Bunyi.</p>
+      <p>Untuk kata-kata asli Jepang — 10 baris + Jebakan Bunyi.</p>
       <p><span class="angka-hub" id="hub-hira-angka">0 dari 10</span> cap baris hiragana sudah didapat.<span id="hub-hira-jebakan"></span></p>
       <div class="koleksi-cap" id="koleksi-cap-hub-hira"></div>
       <button class="tombol" onclick="bukaJalurAksara('hira')">Buka Jalur Hiragana →</button>
     </div>
     <div class="kartu">
       <h2>② Katakana</h2>
-      <p>Huruf untuk kata serapan asing, 10 baris dengan urutan yang sama seperti hiragana. Biasanya dipelajari sesudah hiragana beres.</p>
+      <p>Untuk kata serapan asing — 10 baris, urutan sama seperti hiragana.</p>
       <p><span class="angka-hub" id="hub-kata-angka">0 dari 10</span> cap baris katakana sudah didapat.</p>
       <div class="koleksi-cap" id="koleksi-cap-hub-kata"></div>
       <p id="hub-kata-kunci" style="display:none"></p>
@@ -273,7 +273,7 @@
     </div>
     <div class="kartu">
       <h2>Tabel lengkap</h2>
-      <p>Mau lihat semua 92 kana sekaligus, atau berlatih bebas dan bor kana mirip? Ada di tabel lengkap.</p>
+      <p>Semua 92 kana + bor kana mirip ada di tabel lengkap.</p>
       <button class="tombol rangka" onclick="bukaLayar('kana')">Buka tabel lengkap</button>
     </div>
   </section>
@@ -283,7 +283,7 @@
     <div class="navigasi"><button onclick="bukaJalur()">← Jalur Kana</button><button onclick="bukaLayar('beranda')">Beranda</button></div>
     <div class="kartu">
       <h2>Jalur Hiragana</h2>
-      <p>Sepuluh baris hiragana, satu per satu. Selesaikan latihan satu baris dengan nilai 8/10 untuk mendapat <strong>Cap Latihan</strong> baris itu. Urutannya dianjurkan dari atas, tapi semua baris tetap bisa dibuka kapan saja.</p>
+      <p>Nilai 8/10 = <strong>Cap Latihan</strong> baris itu. Semua baris bisa dibuka kapan saja.</p>
       <h3 style="margin:12px 0 4px;">Koleksi cap hiragana</h3>
       <div class="koleksi-cap" id="koleksi-cap-jalur-hira"></div>
     </div>
@@ -302,7 +302,7 @@
     <div class="navigasi"><button onclick="bukaJalur()">← Jalur Kana</button><button onclick="bukaLayar('beranda')">Beranda</button></div>
     <div class="kartu">
       <h2>Jalur Katakana</h2>
-      <p>Sepuluh baris katakana — huruf untuk kata serapan asing. Selesaikan latihan satu baris dengan nilai 8/10 untuk mendapat <strong>Cap Latihan</strong> baris itu. Urutannya sama seperti hiragana dan dianjurkan dari atas, tapi semua baris tetap bisa dibuka kapan saja.</p>
+      <p>Nilai 8/10 = <strong>Cap Latihan</strong> baris itu. Semua baris bisa dibuka kapan saja.</p>
       <h3 style="margin:12px 0 4px;">Koleksi cap katakana</h3>
       <div class="koleksi-cap" id="koleksi-cap-jalur-kata"></div>
     </div>
@@ -319,21 +319,21 @@
       <h2 id="baris-judul">Baris</h2>
       <p id="baris-status"></p>
       <div class="grid-kana" id="grid-baris"></div>
-      <p style="margin-top:8px;">Ketuk hurufnya untuk melihat cara menulisnya ✍️ — terus turun ke bawah: kenali kata-katanya dulu, baru mulai.</p>
+      <p style="margin-top:8px;">Ketuk huruf untuk cara menulisnya ✍️.</p>
     </div>
     <div class="kartu">
       <h2>Kata-kata baris ini</h2>
-      <p>Kenali kata-kata ini pelan-pelan — <strong>tidak harus hafal semua hari ini</strong>. Mereka akan muncul satu-satu di latihan, dan ingatan datang dengan sendirinya. Semuanya hanya memakai huruf dari baris ini dan baris-baris sebelumnya.</p>
+      <p>Tidak harus hafal semua hari ini — kata-kata ini akan muncul di latihan. Hanya memakai huruf baris ini dan sebelumnya.</p>
       <div class="daftar-kata-baris" id="daftar-kata-baris"></div>
     </div>
     <div class="kartu">
       <h2>Sudah kenal huruf &amp; kata-katanya?</h2>
       <div id="baris-kenalan-kotak" class="sembunyi">
-        <p style="font-size:13px;">Baru pertama kali melihat huruf-huruf ini? Kenalan dulu satu per satu — ada jangkar ingetnya, cara menulisnya, dan contoh katanya. Santai saja, tanpa nilai dan tanpa hukuman.</p>
+        <p style="font-size:13px;">Kenalan satu per satu: jangkar ingat, cara menulis, contoh kata. Tanpa nilai.</p>
         <button class="tombol" id="tombol-kenalan" onclick="mulaiKenalan()">① Kenalan dulu</button>
       </div>
       <button class="tombol aksen" id="tombol-latihan-baris" onclick="mulaiLatihanBaris()">② Latihan Baris (10 soal)</button>
-      <p style="margin-top:8px; font-size:13px;">Isi latihannya campuran: pilih kana, ketik romaji, baca kata, dan ketik bacaan kata — bukan cuma menebak huruf. Nilai 8/10 atau lebih memberi <strong>Cap Latihan</strong> baris ini.</p>
+      <p style="margin-top:8px; font-size:13px;">Campuran: pilih kana, ketik romaji, baca kata. Nilai 8/10 = <strong>Cap Latihan</strong>.</p>
     </div>
   </section>
 
@@ -344,7 +344,7 @@
     <div id="kenalan-pemanasan" class="sembunyi">
       <div class="kartu">
         <h2>Pemanasan — masih ingat? 🔥</h2>
-        <p>Tiga huruf dari baris-baris sebelumnya, untuk menghangatkan ingatan sebelum berkenalan dengan huruf baru. Santai saja — tidak ada hukuman, dan boleh dilewati.</p>
+        <p>Pemanasan: 3 huruf dari baris sebelumnya. Boleh dilewati.</p>
         <div class="indikator-sesi" id="pemanasan-indikator"></div>
         <div class="soal-besar">
           <div class="petunjuk">Huruf apa yang dibaca seperti ini?</div>
