@@ -170,7 +170,7 @@
       <button class="tombol" onclick="bukaJalur()">Mulai: Jalur Kana →</button>
     </div>
 
-    <p style="text-align:center; font-size:13.5px; color:var(--teks-lembut); margin:0 6px 14px;">Rute belajarmu: <b>Frasa</b> (tab Belajar) → <b>Kana</b> (di sini) → <b>Cerita</b> (tab Baca) — kartu di bawah selalu menunjukkan langkahmu berikutnya.</p>
+    <p style="text-align:center; font-size:13.5px; color:var(--teks-lembut); margin:0 6px 14px;">Mulai di sini: ucapkan <b>frasa pertamamu</b> di bawah ini → lalu kana, tema di tab <b>Belajar</b>, dan cerita di tab <b>Baca</b>.</p>
 
     <div class="kartu">
       <h2>🔤 Huruf Kana</h2>
@@ -185,6 +185,18 @@
       <p id="teks-langkah">Satu langkah kecil dulu — ikuti urutannya, tidak usah lompat-lompat.</p>
       <div class="koleksi-cap" id="koleksi-cap-beranda"></div>
       <button class="tombol aksen" id="tombol-langkah" onclick="keLangkahBerikutnya()">Mulai</button>
+    </div>
+
+    <div class="kartu" id="kartu-frasa">
+      <h2>🗣️ Ngomong dari Hari Pertama</h2>
+      <p>Frasa baru terbuka otomatis seiring cap yang kamu kumpulkan. Tekan ▶ Dengar untuk mendengar ucapannya.</p>
+      <div style="display:flex; gap:8px; align-items:center; margin:10px 0;">
+        <span style="font-size:13px; color:var(--teks-lembut);">Suara:</span>
+        <button class="pil-sora" id="pil-sora-awewe" onclick="pilihSora('awewe')">Perempuan</button>
+        <button class="pil-sora" id="pil-sora-lalaki" onclick="pilihSora('lalaki')">Laki-laki</button>
+      </div>
+      <div id="daftar-frasa"></div>
+      <p id="frasa-konci" style="margin-top:8px;"></p>
     </div>
 
     
@@ -217,17 +229,7 @@
 
   <!-- BELAJAR (TEMA) -->
   <section id="layar-belajar" class="sembunyi">
-<div class="kartu" id="kartu-frasa">
-      <h2>🗣️ Ngomong dari Hari Pertama</h2>
-      <p>Frasa baru terbuka otomatis seiring cap yang kamu kumpulkan. Tekan ▶ Dengar untuk mendengar ucapannya.</p>
-      <div style="display:flex; gap:8px; align-items:center; margin:10px 0;">
-        <span style="font-size:13px; color:var(--teks-lembut);">Suara:</span>
-        <button class="pil-sora" id="pil-sora-awewe" onclick="pilihSora('awewe')">Perempuan</button>
-        <button class="pil-sora" id="pil-sora-lalaki" onclick="pilihSora('lalaki')">Laki-laki</button>
-      </div>
-      <div id="daftar-frasa"></div>
-      <p id="frasa-konci" style="margin-top:8px;"></p>
-    </div>
+
 
 <div class="kartu">
       <h2>Hal yang bisa kamu lakukan</h2>
@@ -802,7 +804,7 @@ function bukaLayar(nama){
   }
   if(nama === "beranda"){ segarkanProgres(); segarkanBeranda(); }
   if(nama === "jalur"){ gambarHub(); }
-  if(nama === "belajar"){ gambarFrasa(); }
+  if(nama === "beranda"){ gambarFrasa(); }
   if(nama === "jalur-hira"){ gambarJalurAksara("hira"); }
   if(nama === "jalur-kata"){ gambarJalurAksara("kata"); }
   var tbEl = document.getElementById("tabbar");
