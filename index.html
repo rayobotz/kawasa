@@ -145,6 +145,7 @@
   .kartu-langkah{border-left:5px solid var(--aksen);}
   .kartu-cerita{background:#fffdf6; border-top:4px solid var(--toska);}
   .tombol-sora{flex:none; height:30px; padding:0 12px; border-radius:999px; border:1.5px solid var(--toska); background:#fff; font-size:12.5px; font-weight:600; color:var(--toska-gelap); cursor:pointer; font-family:inherit;}
+  .tumpuk-tombol{display:flex; flex-direction:column; gap:6px; flex:none; align-items:stretch;}
   .pil-sora{padding:6px 14px; border-radius:999px; border:2px solid var(--toska); background:#fff; color:var(--toska-gelap); font-size:13px; font-weight:600; cursor:pointer; font-family:inherit;}
   .pil-sora.aktif{background:var(--toska); color:#fff;}
   .lencana-baru{background:var(--aksen); color:#fff; font-size:10px; font-weight:700; padding:2px 7px; border-radius:999px; vertical-align:middle; margin-left:6px;}
@@ -1311,14 +1312,17 @@ function gambarFrasa(){
     var tbl = document.createElement("button");
     tbl.className = "tombol-sora"; tbl.textContent = "\u25B6 Dengar"; tbl.setAttribute("aria-label", "Dengarkan frasa");
     (function(idx, el){ tbl.onclick = function(){ putarSora("frasa-" + (idx + 1)); var pasangan = el.parentElement ? el.parentElement.querySelector(".tombol-ucap") : null; if(pasangan){ pasangan.classList.remove("kedip"); void pasangan.offsetWidth; pasangan.classList.add("kedip"); } }; })(i, tbl);
-    baris.appendChild(tbl);
+    var klpF = document.createElement("div");
+    klpF.className = "tumpuk-tombol";
+    klpF.appendChild(tbl);
     var tblU = document.createElement("button");
     var geusU = progres.frasaUcap && progres.frasaUcap[i];
     tblU.className = "tombol-sora tombol-ucap" + (geusU ? " geus-ucap" : "");
     tblU.textContent = geusU ? "\u2713 Sudah kuucapkan" : "Ucapkan sendiri";
     tblU.setAttribute("aria-label", "Tandai frasa sudah saya ucapkan");
     (function(idx){ tblU.onclick = function(){ tandaiUcap(idx); }; })(i);
-    baris.appendChild(tblU);
+    klpF.appendChild(tblU);
+    baris.appendChild(klpF);
     wadah.appendChild(baris);
   }
   var elU = document.getElementById("frasa-ucap-teks");
@@ -2219,14 +2223,17 @@ function gambarUnit(){
     tblD.className = "tombol-sora"; tblD.textContent = "\u25B6 Dengar";
     tblD.setAttribute("aria-label", "Dengarkan potongan ini");
     (function(k, el){ tblD.onclick = function(){ putarUnit(k); var pasangan = el.closest(".unit-potongan") ? el.closest(".unit-potongan").querySelector(".tombol-ucap") : null; if(pasangan){ pasangan.classList.remove("kedip"); void pasangan.offsetWidth; pasangan.classList.add("kedip"); } }; })(f.konci, tblD);
-    jajar.appendChild(tblD);
+    var klpU = document.createElement("div");
+    klpU.className = "tumpuk-tombol";
+    klpU.appendChild(tblD);
     var tblU = document.createElement("button");
     var geusU = progres.unitUcap && progres.unitUcap["u1-" + i];
     tblU.className = "tombol-sora tombol-ucap" + (geusU ? " geus-ucap" : "");
     tblU.textContent = geusU ? "\u2713 Sudah kuucapkan" : "Ucapkan sendiri";
     tblU.setAttribute("aria-label", "Tandai potongan sudah saya ucapkan");
     (function(idx){ tblU.onclick = function(){ tandaiUcapUnit(idx); }; })(i);
-    jajar.appendChild(tblU);
+    klpU.appendChild(tblU);
+    jajar.appendChild(klpU);
     blok.appendChild(jajar);
     (f.varian || []).forEach(function(v){
       var barisV = document.createElement("div");
