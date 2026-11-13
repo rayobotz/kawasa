@@ -85,6 +85,7 @@
   .arsip-item{display:block; width:100%; text-align:left; margin-top:8px;}
   .sampul-cerita{width:100%; height:auto; border-radius:14px; display:block; margin-bottom:12px;}
   .tombol-sora.geus-ucap{background:#147D74; color:#FFFFFF; border-color:#147D74;}
+  .tombol-sora.nyala{background:#147D74; color:#FFFFFF; border-color:#147D74;}
   @keyframes kedipUcap{0%{box-shadow:0 0 0 0 rgba(20,125,116,.55);}100%{box-shadow:0 0 0 14px rgba(20,125,116,0);}}
   .kedip{animation:kedipUcap .8s ease-out 2;}
   .unit-potongan{border-top:1px solid #EFE3CB; padding:10px 0;}
@@ -390,7 +391,7 @@
         <div class="soal-besar" style="padding-top:2px;">
           <div class="huruf jp" id="kenalan-huruf"></div>
           <div class="petunjuk" id="kenalan-romaji"></div>
-          <button class="tombol rangka" id="kenalan-sora" style="margin-top:8px;" onclick="putarSora('kana-' + this.dataset.romaji)"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/><path d="M18.8 6a8.5 8.5 0 0 1 0 12"/></svg>Dengar suaranya</button>
+          <button class="tombol rangka" id="kenalan-sora" style="margin-top:8px;" onclick="putarSora('kana-' + this.dataset.romaji, this)"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/><path d="M18.8 6a8.5 8.5 0 0 1 0 12"/></svg>Dengar suaranya</button>
         </div>
         <div class="kotak-goresan">
           <svg id="kenalan-svg" viewBox="0 0 109 109" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Animasi urutan goresan"></svg>
@@ -438,7 +439,7 @@
       <div class="soal-besar" style="padding-top:2px;">
         <div class="huruf jp" id="detail-huruf"></div>
         <div class="petunjuk" id="detail-romaji"></div>
-        <button class="tombol rangka" id="detail-sora" style="margin-top:8px;" onclick="putarSora('kana-' + this.dataset.romaji)"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/><path d="M18.8 6a8.5 8.5 0 0 1 0 12"/></svg>Dengar suaranya</button>
+        <button class="tombol rangka" id="detail-sora" style="margin-top:8px;" onclick="putarSora('kana-' + this.dataset.romaji, this)"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/><path d="M18.8 6a8.5 8.5 0 0 1 0 12"/></svg>Dengar suaranya</button>
       </div>
       <div class="kotak-goresan">
         <div id="tahap-animasi"><svg id="detail-svg" viewBox="0 0 109 109" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Animasi urutan goresan"></svg></div>
@@ -524,7 +525,7 @@
       <h2>Contoh lengkapnya</h2>
       <p class="jp" id="unit-full-jp" style="font-size:17px; line-height:1.9;"></p>
       <p style="margin-top:0;"><small id="unit-full-ro"></small></p>
-      <button class="tombol-sora" onclick="putarUnit('u1-full')"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/><path d="M18.8 6a8.5 8.5 0 0 1 0 12"/></svg>Dengar contoh lengkap</button>
+      <button class="tombol-sora" onclick="putarUnit('u1-full', this)"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/><path d="M18.8 6a8.5 8.5 0 0 1 0 12"/></svg>Dengar contoh lengkap</button>
       <p class="petunjuk" style="margin-top:8px;">Ganti "Rina" dengan namamu sendiri.</p>
     </div>
     <div class="kartu">
@@ -546,13 +547,21 @@
       <div id="unit-latihan"></div>
       <p id="unit-latihan-teks" class="petunjuk" style="margin-top:8px;"></p>
     </div>
+    <div class="kartu">
+      <p class="petunjuk" style="margin-top:0;">Unit berikutnya masih disiapkan — ini daftarnya.</p>
+      <button class="tombol aksen" style="width:100%;" onclick="bukaLayar('belajar')">Lanjut ke Unit 2 — Belanja →</button>
+    </div>
   </section>
   <section id="layar-unit-kata" class="sembunyi">
     <div class="navigasi"><button onclick="bukaUnit()">← Kembali ke Unit 1</button></div>
     <div class="kartu">
       <h2>Kosakata Unit 1</h2>
-      <p>Kata-kata yang muncul di Unit 1 — dengarkan dan ucapkan satu-satu.</p>
+      <p>Kata baru untuk perkenalanmu sendiri — pekerjaan dan negara lain. Dengarkan dan ucapkan satu-satu.</p>
       <div id="unit-kata-daftar" class="daftar-kata-baris"></div>
+    </div>
+    <div class="kartu">
+      <p class="petunjuk" style="margin-top:0;">Unit berikutnya masih disiapkan — ini daftarnya.</p>
+      <button class="tombol aksen" style="width:100%;" onclick="bukaLayar('belajar')">Lanjut ke Unit 2 — Belanja →</button>
     </div>
   </section>
 
@@ -1330,7 +1339,7 @@ function gambarFrasa(){
   baris.innerHTML = "<div class='nama'><span class='jp' style='font-size:19px;'>" + f.jp + "</span>" + baru + "<br><small>" + f.ro + " \u2014 " + f.arti + "</small></div>";
   var tbl = document.createElement("button");
   tbl.className = "tombol-sora ikon"; tbl.innerHTML = IKON_SPK; tbl.setAttribute("aria-label", "Dengarkan frasa");
-  (function(idx, el){ tbl.onclick = function(){ putarSora("frasa-" + (idx + 1)); var pasangan = el.parentElement ? el.parentElement.querySelector(".tombol-ucap") : null; if(pasangan){ pasangan.classList.remove("kedip"); void pasangan.offsetWidth; pasangan.classList.add("kedip"); } }; })(i, tbl);
+  (function(idx, el){ tbl.onclick = function(){ putarSora("frasa-" + (idx + 1), el); }; })(i, tbl);
   var klpF = document.createElement("div");
   klpF.className = "jajar-tombol";
   klpF.appendChild(tbl);
@@ -1378,7 +1387,20 @@ function tandaiUcap(i){
 }
 function pilihSora(g){ progres.sora = g; simpan(); gambarFrasa(); putarSora("frasa-1"); }
 var soraAudio = null, soraNujuDimuat = false, soraAntre = null;
-function putarSora(kunciDasar){
+var tombolSoraAktif = null;
+function sorotDengar(tbl, audio){
+  if(!tbl || !audio){ return; }
+  if(tombolSoraAktif && tombolSoraAktif !== tbl){ tombolSoraAktif.classList.remove("nyala"); tombolSoraAktif.classList.remove("kedip"); }
+  tombolSoraAktif = tbl;
+  tbl.classList.remove("kedip");
+  tbl.classList.add("nyala");
+  audio.onended = function(){
+    tbl.classList.remove("nyala");
+    tbl.classList.remove("kedip"); void tbl.offsetWidth; tbl.classList.add("kedip");
+    setTimeout(function(){ tbl.classList.remove("kedip"); }, 1800);
+  };
+}
+function putarSora(kunciDasar, tbl){
   var kunci = kunciDasar + "-" + (progres.sora || "awewe");
   function mainkan(){
     var uri = window.SORA_DATA && window.SORA_DATA[kunci];
@@ -1387,7 +1409,8 @@ function putarSora(kunciDasar){
     if(soraKataAudio){ soraKataAudio.pause(); }
     soraAudio = new Audio(uri);
     var janji = soraAudio.play();
-    if(janji && janji.catch){ janji.catch(function(){ bejaPesen("Suara gagal diputar — ketuk sekali lagi."); }); }
+    if(tbl){ sorotDengar(tbl, soraAudio); }
+    if(janji && janji.catch){ janji.catch(function(){ if(tbl){ tbl.classList.remove("nyala"); } bejaPesen("Suara gagal diputar — ketuk sekali lagi."); }); }
   }
   if(window.SORA_DATA){ mainkan(); return; }
   soraAntre = mainkan;
@@ -2213,12 +2236,13 @@ var UNIT1_POTONGAN = [
 var UNIT1_FULL = {jp:"はじめまして。リナ です。インドネシアから きました。にほんごを べんきょう しています。どうぞ よろしく おねがいします。", ro:"hajimemashite. Rina desu. Indoneshia kara kimashita. nihongo wo benkyou shite imasu. douzo yoroshiku onegaishimasu."};
 var UNIT1_BALAS = {konci:"u1-v4", jp:"こちらこそ、よろしく おねがいします。", ro:"kochira koso, yoroshiku onegaishimasu", arti:"'Saya juga — mohon bantuannya.' Akan kamu dengar sebagai balasan, dan bisa kamu pakai juga."};
 var unitAudioCache = {}, unitAudioObj = null;
-function putarUnit(konci){
-  var berkas = "sora-unit/" + konci + "-" + (progres.sora || "awewe") + ".b64?v=vv1";
+function putarUnit(konci, tbl){
+  var berkas = "sora-unit/" + konci + "-" + (progres.sora || "awewe") + ".b64?v=vv2";
   function mainkeun(uri){
     if(unitAudioObj){ try{ unitAudioObj.pause(); }catch(e){} }
     unitAudioObj = new Audio(uri);
-    unitAudioObj.play().catch(function(){ bejaPesen("Suaranya tidak bisa diputar."); });
+    if(tbl){ sorotDengar(tbl, unitAudioObj); }
+    unitAudioObj.play().catch(function(){ if(tbl){ tbl.classList.remove("nyala"); } bejaPesen("Suaranya tidak bisa diputar."); });
   }
   if(unitAudioCache[berkas]){ mainkeun(unitAudioCache[berkas]); return; }
   fetch(berkas, {cache: "force-cache"}).then(function(r){
@@ -2247,7 +2271,7 @@ function gambarUnit(){
     var tblD = document.createElement("button");
     tblD.className = "tombol-sora ikon"; tblD.innerHTML = IKON_SPK;
     tblD.setAttribute("aria-label", "Dengarkan potongan ini");
-    (function(k, el){ tblD.onclick = function(){ putarUnit(k); var pasangan = el.closest(".unit-potongan") ? el.closest(".unit-potongan").querySelector(".tombol-ucap") : null; if(pasangan){ pasangan.classList.remove("kedip"); void pasangan.offsetWidth; pasangan.classList.add("kedip"); } }; })(f.konci, tblD);
+    (function(k, el){ tblD.onclick = function(){ putarUnit(k, el); }; })(f.konci, tblD);
     var klpU = document.createElement("div");
     klpU.className = "jajar-tombol";
     klpU.appendChild(tblD);
@@ -2271,7 +2295,7 @@ function gambarUnit(){
       var tblV = document.createElement("button");
       tblV.className = "tombol-sora"; tblV.innerHTML = IKON_SPK + "Dengar";
       tblV.setAttribute("aria-label", "Dengarkan versi lain ini");
-      (function(k){ tblV.onclick = function(){ putarUnit(k); }; })(v.konci);
+      tblV.onclick = function(){ putarUnit(v.konci, tblV); };
       barisV.appendChild(tblV);
       blok.appendChild(barisV);
     });
@@ -2291,7 +2315,7 @@ function gambarUnit(){
     jajarB.appendChild(namaB);
     var tblB = document.createElement("button");
     tblB.className = "tombol-sora"; tblB.innerHTML = IKON_SPK + "Dengar";
-    tblB.onclick = function(){ putarUnit(UNIT1_BALAS.konci); };
+    tblB.onclick = function(){ putarUnit(UNIT1_BALAS.konci, tblB); };
     jajarB.appendChild(tblB);
     elB.appendChild(jajarB);
   }
@@ -2311,32 +2335,46 @@ var UNIT1_LATIHAN = [
   {audio:null, tanya:"Kamu pertama kali bertemu rekan kerja baru. Kalimat pertama yang kamu ucapkan?", pilihan:["はじめまして", "こちらこそ、よろしく おねがいします", "おなまえは？"], bener:0, alas:"はじめまして hanya untuk pertemuan pertama — itulah momennya."}
 ];
 var UNIT1_KATA = [
-  {jp:"インドネシア", ro:"Indoneshia", arti:"Indonesia", kon:"u1k-1"},
-  {jp:"から", ro:"kara", arti:"dari", kon:"u1k-2"},
-  {jp:"きました", ro:"kimashita", arti:"datang \u2014 bentuk sopan dari \u304f\u308b", kon:"u1k-3"},
-  {jp:"しゅっしん", ro:"shusshin", arti:"asal (negara / daerah asal)", kon:"u1k-4"},
-  {jp:"にほんご", ro:"nihongo", arti:"bahasa Jepang", kon:"u1k-5"},
-  {jp:"べんきょう", ro:"benkyou", arti:"belajar", kon:"u1k-6"},
-  {jp:"かいご", ro:"kaigo", arti:"perawatan lansia", kon:"u1k-7"},
-  {jp:"しごと", ro:"shigoto", arti:"pekerjaan", kon:"u1k-8"},
-  {jp:"しています", ro:"shite imasu", arti:"sedang melakukan (\u301c\u3066\u3044\u307e\u3059)", kon:"u1k-9"},
-  {jp:"もうします", ro:"moushimasu", arti:"menyebut nama \u2014 versi resmi", kon:"u1k-10"},
-  {jp:"おねがいします", ro:"onegai shimasu", arti:"mohon bantuannya", kon:"u1k-11"},
-  {jp:"こちらこそ", ro:"kochira koso", arti:"saya juga \u2014 untuk membalas", kon:"u1k-12"},
-  {jp:"おなまえ", ro:"onamae", arti:"nama (sopan)", kon:"u1k-13"},
-  {jp:"です", ro:"desu", arti:"penutup sopan kalimat", kon:"u1k-14"}
+  {jp:"がくせい", ro:"gakusei", arti:"pelajar / mahasiswa", kon:"u1k-1", g:"kerja"},
+  {jp:"せんせい", ro:"sensei", arti:"guru", kon:"u1k-2", g:"kerja"},
+  {jp:"かいしゃいん", ro:"kaishain", arti:"karyawan perusahaan", kon:"u1k-3", g:"kerja"},
+  {jp:"てんいん", ro:"ten'in", arti:"pegawai toko", kon:"u1k-4", g:"kerja"},
+  {jp:"いしゃ", ro:"isha", arti:"dokter", kon:"u1k-5", g:"kerja"},
+  {jp:"かんごし", ro:"kangoshi", arti:"perawat", kon:"u1k-6", g:"kerja"},
+  {jp:"エンジニア", ro:"enjinia", arti:"insinyur / engineer", kon:"u1k-7", g:"kerja"},
+  {jp:"うんてんしゅ", ro:"untenshu", arti:"sopir / pengemudi", kon:"u1k-8", g:"kerja"},
+  {jp:"マレーシア", ro:"mareeshia", arti:"Malaysia", kon:"u1k-9", g:"negara"},
+  {jp:"ベトナム", ro:"betonamu", arti:"Vietnam", kon:"u1k-10", g:"negara"},
+  {jp:"フィリピン", ro:"firipin", arti:"Filipina", kon:"u1k-11", g:"negara"},
+  {jp:"タイ", ro:"tai", arti:"Thailand", kon:"u1k-12", g:"negara"},
+  {jp:"ミャンマー", ro:"myanmaa", arti:"Myanmar", kon:"u1k-13", g:"negara"},
+  {jp:"かんこく", ro:"kankoku", arti:"Korea Selatan", kon:"u1k-14", g:"negara"},
+  {jp:"ちゅうごく", ro:"chuugoku", arti:"Tiongkok", kon:"u1k-15", g:"negara"},
+  {jp:"アメリカ", ro:"amerika", arti:"Amerika Serikat", kon:"u1k-16", g:"negara"}
 ];
 function bukaUnitKata(){ bukaLayar("unit-kata"); gambarUnitKata(); }
 function gambarUnitKata(){
   var wadah = document.getElementById("unit-kata-daftar"); if(!wadah){ return; }
   wadah.innerHTML = "";
+  var grupAyeuna = "";
   UNIT1_KATA.forEach(function(w){
+    if(w.g !== grupAyeuna){
+      grupAyeuna = w.g;
+      var h = document.createElement("p");
+      h.style.cssText = "font-weight:700; margin:14px 0 2px;";
+      h.textContent = grupAyeuna === "kerja" ? "Pekerjaan lain" : "Negara lain";
+      var hint = document.createElement("p");
+      hint.className = "petunjuk";
+      hint.style.margin = "0 0 8px";
+      hint.textContent = grupAyeuna === "kerja" ? "Untuk menyebut pekerjaanmu sendiri di perkenalan." : "Pakai di potongan nomor 3: [negara] \u304b\u3089 \u304d\u307e\u3057\u305f.";
+      wadah.appendChild(h); wadah.appendChild(hint);
+    }
     var baris = document.createElement("div");
     baris.className = "kata-baris";
     baris.innerHTML = "<span class='kw jp'>" + w.jp + "</span><span class='kr'>" + w.ro + "</span><span class='ka'>" + w.arti + "</span>";
     var tbl = document.createElement("button");
     tbl.className = "tombol-sora ikon"; tbl.innerHTML = IKON_SPK; tbl.setAttribute("aria-label", "Dengarkan kata ini");
-    (function(k){ tbl.onclick = function(){ putarUnit(k); }; })(w.kon);
+    (function(k, el){ tbl.onclick = function(){ putarUnit(k, el); }; })(w.kon, tbl);
     baris.appendChild(tbl);
     wadah.appendChild(baris);
   });
@@ -2356,7 +2394,7 @@ function gambarLatihanUnit(){
       var tblD = document.createElement("button");
       tblD.className = "tombol-sora"; tblD.innerHTML = IKON_SPK + "Dengar";
       tblD.setAttribute("aria-label", "Dengarkan soal ini");
-      (function(k){ tblD.onclick = function(){ putarUnit(k); }; })(soal.audio);
+      tblD.onclick = function(){ putarUnit(soal.audio, tblD); };
       judul.appendChild(tblD);
     }
     var geusBener = progres.unitXp && progres.unitXp["q" + (qi + 1)];
