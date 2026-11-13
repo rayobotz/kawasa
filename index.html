@@ -526,6 +526,7 @@
       <p class="jp" id="unit-full-jp" style="font-size:17px; line-height:1.9;"></p>
       <p style="margin-top:0;"><small id="unit-full-ro"></small></p>
       <button class="tombol-sora" onclick="putarUnit('u1-full', this)"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/><path d="M18.8 6a8.5 8.5 0 0 1 0 12"/></svg>Dengar contoh lengkap</button>
+        <button class="tombol-sora ikon" title="Dengarkan pelan-pelan" aria-label="Dengarkan contoh lengkap pelan-pelan" onclick="putarUnit('u1-full', this, true)"><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M5 17c0-4.5 3.1-8 7-8s7 3.5 7 8'/><path d='M3 17h18'/><circle cx='20' cy='14.6' r='1.5'/><path d='M8.5 17v2M15.5 17v2'/></svg></button>
       <p class="petunjuk" style="margin-top:8px;">Ganti "Rina" dengan namamu sendiri.</p>
     </div>
     <div class="kartu">
@@ -1309,7 +1310,7 @@ var FRASA = [
   {jp:"すみません", ro:"sumimasen", arti:"permisi / maaf"},
   {jp:"おねがいします", ro:"onegai shimasu", arti:"tolong ya"},
   {jp:"わかりません", ro:"wakarimasen", arti:"saya tidak mengerti"},
-  {jp:"もういちど おねがいします", ro:"mou ichido onegai shimasu", arti:"tolong ulangi sekali lagi"},
+  {jp:"もういちどおねがいします", ro:"mou ichido onegai shimasu", arti:"tolong ulangi sekali lagi"},
   {jp:"だいじょうぶです", ro:"daijoubu desu", arti:"tidak apa-apa"}
 ];
 var AMBANG_FRASA = [1, 3, 5, 8, 11];
@@ -1319,6 +1320,7 @@ var IKON_SPK = "<svg viewBox='0 0 24 24'><path d='M4 9v6h4l5 4V5L8 9H4z'/><path 
 var IKON_MIC = "<svg viewBox='0 0 24 24'><rect x='9' y='3' width='6' height='11' rx='3'/><path d='M5.5 11a6.5 6.5 0 0 0 13 0'/><path d='M12 17.5V21'/></svg>";
 var frasaPilih = -1;
 function frasaGeser(arah){ var n = frasaTerbuka(); if(n < 2){ return; } if(frasaPilih < 0 || frasaPilih >= n){ frasaPilih = 0; } frasaPilih = (frasaPilih + arah + n) % n; gambarFrasa(); }
+var IKON_SLOW = "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 17c0-4.5 3.1-8 7-8s7 3.5 7 8\"/><path d=\"M3 17h18\"/><circle cx=\"20\" cy=\"14.6\" r=\"1.5\"/><path d=\"M8.5 17v2M15.5 17v2\"/></svg>";
 function gambarFrasa(){
   var wadah = document.getElementById("daftar-frasa"); if(!wadah){ return; }
   var g = progres.sora || "awewe";
@@ -1339,10 +1341,15 @@ function gambarFrasa(){
   baris.innerHTML = "<div class='nama'><span class='jp' style='font-size:19px;'>" + f.jp + "</span>" + baru + "<br><small>" + f.ro + " \u2014 " + f.arti + "</small></div>";
   var tbl = document.createElement("button");
   tbl.className = "tombol-sora ikon"; tbl.innerHTML = IKON_SPK; tbl.setAttribute("aria-label", "Dengarkan frasa");
+  var tblS = document.createElement("button");
+  tblS.className = "tombol-sora ikon"; tblS.innerHTML = IKON_SLOW; tblS.title = "Dengarkan pelan-pelan";
+  tblS.setAttribute("aria-label", "Dengarkan frasa pelan-pelan");
+  (function(idx, el){ tblS.onclick = function(){ putarSora("frasa-" + (idx + 1), el, true); }; })(i, tblS);
   (function(idx, el){ tbl.onclick = function(){ putarSora("frasa-" + (idx + 1), el); }; })(i, tbl);
   var klpF = document.createElement("div");
   klpF.className = "jajar-tombol";
   klpF.appendChild(tbl);
+  klpF.appendChild(tblS);
   var tblU = document.createElement("button");
   var geusU = progres.frasaUcap && progres.frasaUcap[i];
   tblU.className = "tombol-sora ikon tombol-ucap" + (geusU ? " geus-ucap" : "");
@@ -1400,7 +1407,7 @@ function sorotDengar(tbl, audio){
     setTimeout(function(){ tbl.classList.remove("kedip"); }, 1800);
   };
 }
-function putarSora(kunciDasar, tbl){
+function putarSora(kunciDasar, tbl, lambat){
   var kunci = kunciDasar + "-" + (progres.sora || "awewe");
   function mainkan(){
     var uri = window.SORA_DATA && window.SORA_DATA[kunci];
@@ -1408,6 +1415,7 @@ function putarSora(kunciDasar, tbl){
     if(soraAudio){ soraAudio.pause(); }
     if(soraKataAudio){ soraKataAudio.pause(); }
     soraAudio = new Audio(uri);
+    soraAudio.playbackRate = lambat ? 0.7 : 1;
     var janji = soraAudio.play();
     if(tbl){ sorotDengar(tbl, soraAudio); }
     if(janji && janji.catch){ janji.catch(function(){ if(tbl){ tbl.classList.remove("nyala"); } bejaPesen("Suara gagal diputar — ketuk sekali lagi."); }); }
@@ -2225,22 +2233,23 @@ function keLangkahBerikutnya(){
 // unggal potongan boga versi luyu kaayaanana.
 var UNIT1_POTONGAN = [
   {konci:"u1-1", jp:"はじめまして。", ro:"hajimemashite", arti:"salam kenal", cat:"hanya untuk pertemuan pertama"},
-  {konci:"u1-2", jp:"リナ です。", ro:"Rina desu", arti:"Saya Rina — ganti Rina dengan namamu", cat:"tanpa わたしは — begitu yang alami",
-   varian:[{konci:"u1-v1", jp:"リナと もうします。", ro:"Rina to moushimasu", arti:"versi resmi: wawancara / hari pertama kerja"}]},
-  {konci:"u1-3", jp:"インドネシアから きました。", ro:"Indoneshia kara kimashita", arti:"Saya datang dari Indonesia", cat:"",
-   varian:[{konci:"u1-v2", jp:"しゅっしんは インドネシアです。", ro:"shusshin wa Indoneshia desu", arti:"versi 'asal saya…' — sama alaminya"}]},
-  {konci:"u1-4", jp:"にほんごを べんきょう しています。", ro:"nihongo wo benkyou shite imasu", arti:"Saya sedang belajar bahasa Jepang", cat:"",
-   varian:[{konci:"u1-v3", jp:"かいごの しごとを しています。", ro:"kaigo no shigoto wo shite imasu", arti:"versi untuk yang bekerja di perawatan lansia"}]},
-  {konci:"u1-5", jp:"どうぞ よろしく おねがいします。", ro:"douzo yoroshiku onegaishimasu", arti:"mohon bantuannya / senang berkenalan", cat:"penutup wajib — tanpa ini terasa belum selesai"}
+  {konci:"u1-2", jp:"リナです。", ro:"Rina desu", arti:"Saya Rina — ganti Rina dengan namamu", cat:"tanpa わたしは — begitu yang alami",
+   varian:[{konci:"u1-v1", jp:"リナともうします。", ro:"Rina to moushimasu", arti:"versi resmi: wawancara / hari pertama kerja"}]},
+  {konci:"u1-3", jp:"インドネシアからきました。", ro:"Indoneshia kara kimashita", arti:"Saya datang dari Indonesia", cat:"",
+   varian:[{konci:"u1-v2", jp:"しゅっしんはインドネシアです。", ro:"shusshin wa Indoneshia desu", arti:"versi 'asal saya…' — sama alaminya"}]},
+  {konci:"u1-4", jp:"にほんごをべんきょうしています。", ro:"nihongo wo benkyou shite imasu", arti:"Saya sedang belajar bahasa Jepang", cat:"",
+   varian:[{konci:"u1-v3", jp:"かいごのしごとをしています。", ro:"kaigo no shigoto wo shite imasu", arti:"versi untuk yang bekerja di perawatan lansia"}]},
+  {konci:"u1-5", jp:"どうぞよろしくおねがいします。", ro:"douzo yoroshiku onegaishimasu", arti:"mohon bantuannya / senang berkenalan", cat:"penutup wajib — tanpa ini terasa belum selesai"}
 ];
-var UNIT1_FULL = {jp:"はじめまして。リナ です。インドネシアから きました。にほんごを べんきょう しています。どうぞ よろしく おねがいします。", ro:"hajimemashite. Rina desu. Indoneshia kara kimashita. nihongo wo benkyou shite imasu. douzo yoroshiku onegaishimasu."};
-var UNIT1_BALAS = {konci:"u1-v4", jp:"こちらこそ、よろしく おねがいします。", ro:"kochira koso, yoroshiku onegaishimasu", arti:"'Saya juga — mohon bantuannya.' Akan kamu dengar sebagai balasan, dan bisa kamu pakai juga."};
+var UNIT1_FULL = {jp:"はじめまして。リナです。インドネシアからきました。にほんごをべんきょうしています。どうぞよろしくおねがいします。", ro:"hajimemashite. Rina desu. Indoneshia kara kimashita. nihongo wo benkyou shite imasu. douzo yoroshiku onegaishimasu."};
+var UNIT1_BALAS = {konci:"u1-v4", jp:"こちらこそ、よろしくおねがいします。", ro:"kochira koso, yoroshiku onegaishimasu", arti:"'Saya juga — mohon bantuannya.' Akan kamu dengar sebagai balasan, dan bisa kamu pakai juga."};
 var unitAudioCache = {}, unitAudioObj = null;
-function putarUnit(konci, tbl){
+function putarUnit(konci, tbl, lambat){
   var berkas = "sora-unit/" + konci + "-" + (progres.sora || "awewe") + ".b64?v=vv2";
   function mainkeun(uri){
     if(unitAudioObj){ try{ unitAudioObj.pause(); }catch(e){} }
     unitAudioObj = new Audio(uri);
+    unitAudioObj.playbackRate = lambat ? 0.7 : 1;
     if(tbl){ sorotDengar(tbl, unitAudioObj); }
     unitAudioObj.play().catch(function(){ if(tbl){ tbl.classList.remove("nyala"); } bejaPesen("Suaranya tidak bisa diputar."); });
   }
@@ -2275,12 +2284,17 @@ function gambarUnit(){
     var klpU = document.createElement("div");
     klpU.className = "jajar-tombol";
     klpU.appendChild(tblD);
+    klpU.appendChild(tblDS);
     var tblU = document.createElement("button");
     var geusU = progres.unitUcap && progres.unitUcap["u1-" + i];
     tblU.className = "tombol-sora ikon tombol-ucap" + (geusU ? " geus-ucap" : "");
     tblU.innerHTML = IKON_MIC;
     tblU.title = geusU ? "Sudah kamu ucapkan" : "Ucapkan sendiri, lalu ketuk";
     tblU.setAttribute("aria-label", "Tandai potongan sudah saya ucapkan");
+    var tblDS = document.createElement("button");
+    tblDS.className = "tombol-sora ikon"; tblDS.innerHTML = IKON_SLOW; tblDS.title = "Dengarkan pelan-pelan";
+    tblDS.setAttribute("aria-label", "Dengarkan potongan ini pelan-pelan");
+    (function(k, el){ tblDS.onclick = function(){ putarUnit(k, el, true); }; })(f.konci, tblDS);
     (function(idx){ tblU.onclick = function(){ tandaiUcapUnit(idx); }; })(i);
     klpU.appendChild(tblU);
     jajar.appendChild(klpU);
@@ -2366,7 +2380,7 @@ function gambarUnitKata(){
       var hint = document.createElement("p");
       hint.className = "petunjuk";
       hint.style.margin = "0 0 8px";
-      hint.textContent = grupAyeuna === "kerja" ? "Untuk menyebut pekerjaanmu sendiri di perkenalan." : "Pakai di potongan nomor 3: [negara] \u304b\u3089 \u304d\u307e\u3057\u305f.";
+      hint.textContent = grupAyeuna === "kerja" ? "Untuk menyebut pekerjaanmu sendiri di perkenalan." : "Pakai di potongan nomor 3: [negara]\u304b\u3089\u304d\u307e\u3057\u305f.";
       wadah.appendChild(h); wadah.appendChild(hint);
     }
     var baris = document.createElement("div");
