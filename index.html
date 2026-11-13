@@ -2287,7 +2287,6 @@ function gambarUnit(){
     var klpU = document.createElement("div");
     klpU.className = "jajar-tombol";
     klpU.appendChild(tblD);
-    klpU.appendChild(tblDS);
     var tblU = document.createElement("button");
     var geusU = progres.unitUcap && progres.unitUcap["u1-" + i];
     tblU.className = "tombol-sora ikon tombol-ucap" + (geusU ? " geus-ucap" : "");
@@ -2299,6 +2298,7 @@ function gambarUnit(){
     tblDS.setAttribute("aria-label", "Dengarkan potongan ini pelan-pelan");
     (function(k, el){ tblDS.onclick = function(){ putarUnit(k, el, true); }; })(f.konci, tblDS);
     (function(idx){ tblU.onclick = function(){ tandaiUcapUnit(idx); }; })(i);
+    klpU.appendChild(tblDS);
     klpU.appendChild(tblU);
     jajar.appendChild(klpU);
     blok.appendChild(jajar);
