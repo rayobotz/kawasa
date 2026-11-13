@@ -1267,7 +1267,7 @@ function dengarCerita(){
   }
   if(soraCeritaCache[konci]){ mainkeun(soraCeritaCache[konci]); return; }
   bejaPesen("Memuat suara cerita…");
-  fetch("sora-cerita/" + konci + ".b64", {cache:"force-cache"}).then(function(r){ return r.ok ? r.text() : null; }).then(function(t){
+  fetch("sora-cerita/" + konci + ".b64?v=vv1", {cache:"force-cache"}).then(function(r){ return r.ok ? r.text() : null; }).then(function(t){
     if(!t){ bejaPesen("Suara cerita ini belum tersedia."); return; }
     var uri = "data:audio/mpeg;base64," + t.replace(/\s+/g, "");
     soraCeritaCache[konci] = uri;
@@ -2214,7 +2214,7 @@ var UNIT1_FULL = {jp:"はじめまして。リナ です。インドネシアか
 var UNIT1_BALAS = {konci:"u1-v4", jp:"こちらこそ、よろしく おねがいします。", ro:"kochira koso, yoroshiku onegaishimasu", arti:"'Saya juga — mohon bantuannya.' Akan kamu dengar sebagai balasan, dan bisa kamu pakai juga."};
 var unitAudioCache = {}, unitAudioObj = null;
 function putarUnit(konci){
-  var berkas = "sora-unit/" + konci + "-" + (progres.sora || "awewe") + ".b64";
+  var berkas = "sora-unit/" + konci + "-" + (progres.sora || "awewe") + ".b64?v=vv1";
   function mainkeun(uri){
     if(unitAudioObj){ try{ unitAudioObj.pause(); }catch(e){} }
     unitAudioObj = new Audio(uri);
