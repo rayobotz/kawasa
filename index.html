@@ -550,6 +550,7 @@
       <p>Dengarkan dan pahami pesannya. Tanpa aturan, tanpa hafalan pola.</p>
       <div id="unit-latihan"></div>
       <p id="unit-latihan-teks" class="petunjuk" style="margin-top:8px;"></p>
+      <div id="unit-latihan-beres"></div>
     </div>
     <div class="kartu">
       <p class="petunjuk" style="margin-top:0;">Unit berikutnya masih disiapkan — ini daftarnya.</p>
@@ -2398,6 +2399,8 @@ function gambarUnitKata(){
     wadah.appendChild(baris);
   });
 }
+var latihanUlang = false;
+var latihanUlangBeres = {};
 function gambarLatihanUnit(){
   var wadah = document.getElementById("unit-latihan");
   if(!wadah){ return; }
@@ -2416,7 +2419,7 @@ function gambarLatihanUnit(){
       tblD.onclick = function(){ putarUnit(soal.audio, tblD); };
       judul.appendChild(tblD);
     }
-    var geusBener = progres.unitXp && progres.unitXp["q" + (qi + 1)];
+    var geusBener = !latihanUlang && progres.unitXp && progres.unitXp["q" + (qi + 1)];
     soal.pilihan.forEach(function(pil, pi){
       var tbl = document.createElement("button");
       tbl.className = "tombol rangka";
@@ -2438,10 +2441,14 @@ function gambarLatihanUnit(){
     wadah.appendChild(blok);
   });
   var elT = document.getElementById("unit-latihan-teks");
-  if(elT){
-    var cnt = 0;
-    UNIT1_LATIHAN.forEach(function(soal, qi){ if(progres.unitXp && progres.unitXp["q" + (qi + 1)]){ cnt++; } });
-    elT.textContent = "Latihan selesai: " + cnt + " dari " + UNIT1_LATIHAN.length + " soal.";
+  var cnt = 0;
+  UNIT1_LATIHAN.forEach(function(soal, qi){ if(progres.unitXp && progres.unitXp["q" + (qi + 1)]){ cnt++; } });
+  if(elT){ elT.textContent = latihanUlang ? "Mode ulangi \u2014 soal beres: " + Object.keys(latihanUlangBeres).length + " dari " + UNIT1_LATIHAN.length + "." : "Soal beres: " + cnt + " dari " + UNIT1_LATIHAN.length + "."; }
+  var elBeres = document.getElementById("unit-latihan-beres");
+  if(elBeres){
+    if(!latihanUlang && cnt >= UNIT1_LATIHAN.length){
+      elBeres.innerHTML = "<div style=\"background:#EAF4F1; border:1.5px solid #147D74; border-radius:12px; padding:12px; margin-top:10px;\"><p style=\"margin:0 0 6px; font-weight:700;\">Unit 1 selesai.</p><p style=\"margin:0 0 10px;\">Kamu sudah bisa memperkenalkan diri dalam bahasa Jepang: menyapa saat pertama bertemu, menyebut nama dan asalmu, dan bilang apa yang sedang kamu pelajari.</p><button class=\"tombol rangka\" onclick=\"ulangiLatihanUnit()\">Ulangi latihan</button> <button class=\"tombol\" onclick=\"bukaLayar('beranda')\">Kembali ke Beranda</button></div>";
+    } else { elBeres.innerHTML = ""; }
   }
 }
 function jawabLatihanUnit(qi, pi, el){
@@ -2457,6 +2464,18 @@ function jawabLatihanUnit(qi, pi, el){
       bejaPesen("Benar! +10 XP");
     }
     if(fb){ fb.textContent = "\u2713 " + soal.alas; }
+    if(latihanUlang){
+      latihanUlangBeres[konci] = 1;
+      el.classList.add("geus-ucap"); el.style.background = "#147D74"; el.style.color = "#FFFFFF"; el.style.borderColor = "#147D74";
+      var elT2 = document.getElementById("unit-latihan-teks");
+      if(elT2){ elT2.textContent = "Mode ulangi \u2014 soal beres: " + Object.keys(latihanUlangBeres).length + " dari " + UNIT1_LATIHAN.length + "."; }
+      if(Object.keys(latihanUlangBeres).length >= UNIT1_LATIHAN.length){
+        latihanUlang = false; latihanUlangBeres = {};
+        bejaPesen("Ulangi selesai \u2014 perkenalanmu makin lancar.");
+        gambarLatihanUnit();
+      }
+      return;
+    }
     gambarLatihanUnit();
   } else {
     el.style.background = "#F6DCD2";
@@ -2464,6 +2483,13 @@ function jawabLatihanUnit(qi, pi, el){
     el.disabled = true;
     if(fb){ fb.textContent = "Belum tepat — dengarkan lagi, lalu coba pilihan lain."; }
   }
+}
+function ulangiLatihanUnit(){
+  latihanUlang = true;
+  latihanUlangBeres = {};
+  gambarLatihanUnit();
+  var el = document.getElementById("unit-latihan");
+  if(el && el.scrollIntoView){ el.scrollIntoView({behavior:"smooth", block:"start"}); }
 }
 function tandaiUcapUnit(i){
   if(!progres.unitUcap){ progres.unitUcap = {}; }
