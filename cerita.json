@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-14",
+ "updated": "2026-11-15",
  "cerita": [
   {
    "jp": "ゆきが ふっています。そとは しろいです。こどもが ゆきで あそびます。てが つめたいです。でも、とても たのしいです。",
@@ -20,6 +20,11 @@
    "jp": "あきです。きの はが あかいです。こうえんに いきます。はが たくさん おちています。とても きれいです。",
    "id": "Sekarang musim gugur. Daun-daun pohon berwarna merah. Saya pergi ke taman. Banyak daun berguguran. Sangat indah.",
    "kode": "f4"
+  },
+  {
+   "jp": "よるです。いえで ほんを よみます。ほんの なかに、やまが あります。かわも あります。ほんは たのしいです。",
+   "id": "Sudah malam. Di rumah, saya membaca buku. Di dalam buku, ada gunung. Ada sungai juga. Bukunya menyenangkan.",
+   "kode": "f5"
   }
  ]
 }

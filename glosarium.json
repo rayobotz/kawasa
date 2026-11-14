@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-14",
+ "updated": "2026-11-15",
  "kata": {
   "でんしゃに": "kereta (naik…)",
   "のります": "naik (kendaraan)",
@@ -15,6 +15,13 @@
   "こうえんに": "ke taman",
   "いきます": "pergi",
   "おちています": "sedang jatuh; berguguran",
-  "きれいです": "indah; cantik"
+  "きれいです": "indah; cantik",
+  "よるです": "sudah malam",
+  "ほんを": "buku (objek)",
+  "よみます": "membaca",
+  "ほんの": "buku punya / dari buku",
+  "なかに": "di dalam (…nya)",
+  "かわも": "sungai juga",
+  "ほんは": "buku (topik)"
  }
 }
