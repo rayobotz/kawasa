@@ -195,9 +195,17 @@
     </div>
     <div class="kartu" id="kartu-nama">
       <h2>Kenalan dulu, yuk</h2>
-      <p>Tanpa kata sandi. Progres dicadangkan otomatis atas nama ini — bisa dipulihkan di alat lain dengan nama yang sama.</p>
+      <p>Tanpa kata sandi. Progresmu dicadangkan otomatis atas nama panggilan + kode 4 angka. Di alat lain, isi nama dan kode yang sama untuk memulihkan progresmu.</p>
       <input class="ketik" id="input-nama" placeholder="nama panggilan" autocomplete="off">
+      <input class="ketik" id="input-kode" placeholder="kode 4 angka — isi kalau kamu sudah punya kode" autocomplete="off" inputmode="numeric" maxlength="4" style="margin-top:8px;">
+      <p style="font-size:13px; color:var(--teks-lembut); margin-top:6px;">Baru pertama kali? Kosongkan kolom kode — kode akan dibuatkan untukmu dan ditampilkan setelah kamu menyimpan nama.</p>
       <button class="tombol rangka" onclick="simpanNama()">Simpan</button>
+    </div>
+    <div class="kartu sembunyi" id="kartu-kode">
+      <h2>Kode kamu</h2>
+      <p style="font-size:30px; font-weight:800; letter-spacing:6px; text-align:center; margin:8px 0;" id="angka-kode">----</p>
+      <p>Catat atau foto kode ini. Kalau ganti alat, isi nama panggilan + kode ini untuk memulihkan progresmu. Kode ini juga bisa dilihat lagi di halaman Privasi.</p>
+      <button class="tombol" onclick="tutupKartuKode()">Sudah kucatat</button>
     </div>
     <div class="kartu">
       <h2>Huruf Kana</h2>
@@ -600,16 +608,17 @@
     </div>
     <div class="kartu">
       <h2>Kebijakan Privasi</h2>
-      <p>Terakhir diperbarui: 11 November 2026. Ditulis dengan bahasa yang jujur dan sederhana — sesuai cara aplikasi ini benar-benar bekerja.</p>
+      <p>Terakhir diperbarui: 15 November 2026. Ditulis dengan bahasa yang jujur dan sederhana — sesuai cara aplikasi ini benar-benar bekerja.</p>
     </div>
     <div class="kartu">
       <h2>Data di perangkatmu</h2>
-      <p>Progres belajarmu (XP, huruf yang dikuasai, cap latihan), nama panggilan, dan pilihan suara disimpan di penyimpanan lokal peramban di perangkatmu sendiri. Aplikasi ini <strong>tidak</strong> meminta akses ke kontak, lokasi, kamera, atau mikrofonmu, dan tidak merekam suaramu.</p>
+      <p>Progres belajarmu (XP, huruf yang dikuasai, cap latihan), nama panggilan, kode pemulihan 4 angka, dan pilihan suara disimpan di penyimpanan lokal peramban di perangkatmu sendiri. Aplikasi ini <strong>tidak</strong> meminta akses ke kontak, lokasi, kamera, atau mikrofonmu, dan tidak merekam suaramu.</p>
     </div>
     <div class="kartu">
       <h2>Data yang dikirim ke pembuat</h2>
       <p>Setiap aplikasi dibuka dan setiap progresmu berubah, sebuah <strong>ringkasan progres</strong> terkirim otomatis ke pembuat lewat Google Sheets. Isinya: nama panggilan, XP, jumlah huruf yang dikuasai, cap yang terkumpul, dan waktu terakhir kamu belajar. Tujuannya dua: pembuat bisa melihat perkembangan belajarmu untuk memperbaiki aplikasi, dan progresmu tercadangkan.</p>
-      <p style="margin-top:8px;">Selain itu, progresmu juga <strong>dicadangkan atas nama panggilanmu</strong> supaya bisa dipulihkan di perangkat lain. Sistem ini tanpa kata sandi — artinya siapa pun yang tahu nama panggilanmu bisa memulihkan progres atas nama itu. Karena itu, pakailah nama panggilan biasa; jangan gunakan nama lengkap aslimu atau nama yang bersifat pribadi.</p>
+      <p style="margin-top:8px;">Selain itu, progresmu juga <strong>dicadangkan atas nama panggilan + kode 4 angkamu</strong> supaya bisa dipulihkan di perangkat lain. Hanya orang yang tahu nama panggilan <strong>dan</strong> kodemu yang bisa memulihkan progres itu — jagalah kodemu seperti kata sandi sederhana. Karena itu juga, pakailah nama panggilan biasa; jangan gunakan nama lengkap aslimu atau nama yang bersifat pribadi.</p>
+      <p style="margin-top:8px;">Kode pemulihanmu di perangkat ini: <strong id="teks-kode-privasi">—</strong></p>
     </div>
     <div class="kartu">
       <h2>Yang tidak kami lakukan</h2>
@@ -617,7 +626,7 @@
     </div>
     <div class="kartu">
       <h2>Menghapus datamu</h2>
-      <p>Tombol di bawah menghapus semua progres dari perangkat ini. Cadangan atas nama panggilanmu di server bisa ikut dihapus — hubungi pembuat lewat Instagram <strong>@ray_dewantara</strong>.</p>
+      <p>Tombol di bawah menghapus semua progres dari perangkat ini. Cadangan atas nama panggilan + kodemu di server bisa ikut dihapus — hubungi pembuat lewat Instagram <strong>@ray_dewantara</strong>.</p>
       <button class="tombol rangka" style="margin-top:10px; color:#b3261e; border-color:#b3261e;" onclick="hapusProgres()">Hapus progres di perangkat ini</button>
     </div>
   </section>
@@ -639,7 +648,7 @@ var KATA = [["ア","a"],["イ","i"],["ウ","u"],["エ","e"],["オ","o"],["カ","
 
 var KUNCI = "aplikasi-umum-beginner:progress:v1";
 var TRACK_URL = "https://script.google.com/macros/s/AKfycbzt4lhJu00LrpG_4ped806sh393v0pIfl778SnO6r4gZ75P-FU8N3SFs7jjw2oVh5eI/exec";
-var progres = {xp:0, kuasai:{}, id:"", nama:"", capBaris:{}, kenalan:{}, nulis:{}, frasaUcap:{}, frasaXp:{}, unitUcap:{}, unitXp:{}};
+var progres = {xp:0, kuasai:{}, id:"", nama:"", kode:"", capBaris:{}, kenalan:{}, nulis:{}, frasaUcap:{}, frasaXp:{}, unitUcap:{}, unitXp:{}};
 try{ var tersimpan = localStorage.getItem(KUNCI); if(tersimpan){ progres = JSON.parse(tersimpan); } }catch(e){}
 if(!progres.id){ progres.id = "u" + Date.now().toString(36) + Math.floor(Math.random()*99999).toString(36); }
 function simpan(){ try{ localStorage.setItem(KUNCI, JSON.stringify(progres)); }catch(e){} }
@@ -689,9 +698,15 @@ function normalisasiKenalan(){
   // Kenalan ikut tercadangkan karena tinggal di blob progres yang sama.
   if(!progres.kenalan || typeof progres.kenalan !== "object"){ progres.kenalan = {}; }
 }
+function normalisasiKode(){
+  // Progres lama belum punya kode — isi string kosong, jangan sampai error.
+  // Kode dibuat lewat pastikanKode()/migrasiKode(), bukan di sini.
+  if(typeof progres.kode !== "string"){ progres.kode = ""; }
+}
 migrasiProgres();
 normalisasiCap();
 normalisasiKenalan();
+normalisasiKode();
 simpan();
 
 var timerKirim = null;
@@ -722,6 +737,7 @@ function hapusProgres(){
   location.reload();
 }
 function gambarSapaan(){
+  segarkanTeksKode();
   var j = document.getElementById("judul-utama"), sb = document.getElementById("sub-utama");
   if(!j || !sb){ return; }
   if(progres.nama){
@@ -734,30 +750,85 @@ function gambarSapaan(){
 }
 function simpanNama(){
   var v = document.getElementById("input-nama").value.trim();
-  if(v){ progres.nama = v; simpan(); gambarSapaan(); }
+  var elKode = document.getElementById("input-kode");
+  var kodeIsi = elKode ? elKode.value.trim() : "";
+  if(v && kodeIsi && !kodeSah(kodeIsi)){
+    bejaPesen("Kode harus tepat 4 angka — periksa lagi, ya.");
+    return;
+  }
+  var kodeBaru = false;
+  if(v){
+    if(kodeIsi){ progres.kode = kodeIsi; }
+    else if(!progres.kode){ progres.kode = buatKode(); kodeBaru = true; }
+    progres.nama = v; simpan(); gambarSapaan();
+  }
   document.getElementById("kartu-nama").classList.add("sembunyi");
   kirimLaporan("daftar");
-  if(v){ cekCadanganNama(v); }
+  if(v){
+    if(kodeBaru){ tampilkanKartuKode(); }
+    cekCadanganNama(v);
+  }
 }
 
-// === Cadangan progres atas nama panggilan ===
-// Identitas = nama panggilan saja (tanpa login/kode). Blob progres penuh
-// dicadangkan ke server; nama yang sama di alat mana pun memulihkannya.
+// === Cadangan progres atas nama panggilan + kode 4 angka (Opsi A) ===
+// Identitas = nama panggilan + kode acak 4 angka yang dibuat sekali dan
+// ditampilkan ke pengguna. Blob progres penuh dicadangkan ke server atas
+// nama+kode; di alat lain, nama + kode yang sama memulihkannya.
+// Cadangan lama (dari sebelum ada kode) tetap dibaca server sebagai
+// cadangan warisan — tidak ada pengguna lama yang terkunci.
 var cadanganMenunggu = null; // {blob, diperbarui} dari server, menunggu pilihan pengguna
 var tahanKirimCadangan = false; // true bila cek cadangan terakhir gagal total: jangan menimpa apa pun dulu
+function kodeSah(k){ return /^\d{4}$/.test(String(k || "")); }
+function buatKode(){ return String(Math.floor(1000 + Math.random() * 9000)); }
+function segarkanTeksKode(){
+  var t = document.getElementById("teks-kode-privasi");
+  if(t){ t.textContent = progres.kode ? progres.kode : "—"; }
+}
+function tampilkanKartuKode(){
+  var a = document.getElementById("angka-kode");
+  if(a){ a.textContent = progres.kode || "----"; }
+  var k = document.getElementById("kartu-kode");
+  if(k){ k.classList.remove("sembunyi"); }
+  segarkanTeksKode();
+}
+function tutupKartuKode(){
+  var k = document.getElementById("kartu-kode");
+  if(k){ k.classList.add("sembunyi"); }
+}
+function pastikanKode(){
+  // Bila pengguna sudah bernama tapi belum berkode: buat kode sekali,
+  // tampilkan ke pengguna, lalu cadangkan progres alat ini atas nama+kode.
+  if(!progres.nama || progres.kode){ return; }
+  progres.kode = buatKode();
+  simpan();
+  tampilkanKartuKode();
+  kirimCadangan();
+}
+function migrasiKode(){
+  // Pengguna lama (punya nama, belum punya kode, progres tidak kosong):
+  // buatkan kode sekarang. Progres kosong ditangani pulihkanDiamDiam() dulu,
+  // supaya cadangan warisan di server sempat dipulihkan sebelum kode dibuat.
+  if(!progres.nama || progres.kode){ return; }
+  if(progresKosong()){ return; }
+  pastikanKode();
+}
 function kirimCadangan(){
   // Api-dan-lupakan (no-cors, sama seperti laporan event); hanya bila nama terisi.
   if(!TRACK_URL || !progres.nama){ return; }
   if(tahanKirimCadangan){ return; }
-  var muatan = {aksi:"cadangkan", nama:progres.nama, blob:JSON.stringify(progres)};
+  var muatan = {aksi:"cadangkan", nama:progres.nama, kode:progres.kode || "", blob:JSON.stringify(progres)};
   try{
     fetch(TRACK_URL, {method:"POST", mode:"no-cors", headers:{"Content-Type":"text/plain"}, body:JSON.stringify(muatan)});
   }catch(e){}
 }
-function ambilCadangan(nama){
-  // GET ?pulihkan=<nama> -> janji berisi objek jawaban server, atau null bila gagal.
+function ambilCadangan(nama, kode){
+  // GET ?pulihkan=<nama>[&kode=<kode>] -> janji berisi objek jawaban server,
+  // atau null bila gagal. Server mencari baris nama#kode dulu, lalu baris
+  // warisan atas nama saja (jawaban warisan ditandai hasil.warisan).
   if(!TRACK_URL || !nama){ return Promise.resolve(null); }
-  return fetch(TRACK_URL + "?pulihkan=" + encodeURIComponent(nama))
+  var url = TRACK_URL + "?pulihkan=" + encodeURIComponent(nama);
+  if(kodeSah(kode)){ url += "&kode=" + encodeURIComponent(kode); }
+  return fetch(url)
     .then(function(r){ return r.json(); })
     .catch(function(){ return null; });
 }
@@ -778,6 +849,7 @@ function terapkanCadangan(blobTeks){
     if(!progres.kuasai){ progres.kuasai = {}; }
     normalisasiCap();
     normalisasiKenalan();
+    normalisasiKode();
     if(typeof progres.xp !== "number"){ progres.xp = 0; }
     migrasiProgres();
     simpan(); segarkanProgres(); gambarGrid(); gambarSapaan(); segarkanBeranda(); gambarFrasa();
@@ -793,31 +865,43 @@ function cadanganBedaDariLokal(p){
 function pulihkanDiamDiam(){
   // Saat mulai: lokal kosong tapi nama dikenal alat ini -> pulihkan tanpa tanya.
   if(!progres.nama || !progresKosong()){ return; }
-  ambilCadangan(progres.nama).then(function(hasil){
+  ambilCadangan(progres.nama, progres.kode).then(function(hasil){
     if(!hasil || hasil.ok === false){ tahanKirimCadangan = true; return; }
     if(hasil.ada && hasil.blob){ terapkanCadangan(hasil.blob); }
+    // Progres warisan (atau alat ini) belum berkode -> buatkan kode dan
+    // cadangkan atas nama+kode supaya pemulihan berikutnya memakai kode.
+    pastikanKode();
   });
 }
 function cekCadanganNama(nama){
-  // Setelah nama diisi: bila nama ini sudah punya cadangan yang isinya beda,
-  // tawarkan konfirmasi satu ketuk. Bila belum punya, tanam cadangan awal.
-  ambilCadangan(nama).then(function(hasil){
+  // Setelah nama diisi: bila nama+kode ini sudah punya cadangan yang isinya
+  // beda, tawarkan konfirmasi satu ketuk. Bila belum punya, tanam cadangan
+  // awal. Cadangan warisan (sebelum ada kode) juga ditawarkan dari sini.
+  ambilCadangan(nama, progres.kode).then(function(hasil){
     if(!hasil || hasil.ok === false){ return; } // gagal terhubung/server galat: jangan menimpa apa pun
     tahanKirimCadangan = false;
-    if(!hasil.ada){ kirimCadangan(); return; } // server eksplisit: nama ini belum punya cadangan
+    if(!hasil.ada){ kirimCadangan(); return; } // server eksplisit: nama+kode ini belum punya cadangan
     if(!hasil.blob){ return; }
     var p = null; try{ p = JSON.parse(hasil.blob); }catch(e){}
     if(!cadanganBedaDariLokal(p)){ return; }
     cadanganMenunggu = hasil;
-    document.getElementById("teks-konfirmasi-progres").textContent =
-      "Progres atas nama " + nama + " ditemukan (terakhir diperbarui " + (hasil.diperbarui || "-") + "). Pakai progres itu?";
+    var teks = "Progres atas nama " + nama + " ditemukan (terakhir diperbarui " + (hasil.diperbarui || "-") + ").";
+    if(hasil.warisan){ teks += " Ini cadangan lama dari sebelum ada kode — tetap bisa dipakai."; }
+    teks += " Pakai progres itu?";
+    document.getElementById("teks-konfirmasi-progres").textContent = teks;
     document.getElementById("kartu-konfirmasi-progres").classList.remove("sembunyi");
   });
 }
 function pakaiProgresServer(){
-  if(cadanganMenunggu && cadanganMenunggu.blob && !terapkanCadangan(cadanganMenunggu.blob)){ bejaPesen("Progres dari server gagal dibaca — progres di perangkat ini tetap dipakai."); }
+  var berhasil = false;
+  if(cadanganMenunggu && cadanganMenunggu.blob){
+    berhasil = terapkanCadangan(cadanganMenunggu.blob);
+    if(!berhasil){ bejaPesen("Progres dari server gagal dibaca — progres di perangkat ini tetap dipakai."); }
+  }
   cadanganMenunggu = null;
   document.getElementById("kartu-konfirmasi-progres").classList.add("sembunyi");
+  // Progres warisan belum berkode -> buatkan kode dan cadangkan atas nama+kode.
+  if(berhasil){ pastikanKode(); }
 }
 function tetapProgresIni(){
   // Pilihan pengguna: versi lokal yang berlaku -> timpa cadangan server dengannya.
@@ -2746,6 +2830,7 @@ gambarGrid();
 gambarKelompokBor();
 segarkanProgres();
 if(progres.nama){ document.getElementById("kartu-nama").classList.add("sembunyi"); }
+migrasiKode();
 pulihkanDiamDiam();
 kirimLaporan("buka");
 bukaLayar("beranda");
