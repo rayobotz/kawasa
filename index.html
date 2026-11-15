@@ -84,6 +84,11 @@
   #glos-strip{margin-top:10px; background:#EAF4F1; border:1px solid #147D74; border-radius:12px; padding:10px 12px; font-size:15px;}
   .arsip-item{display:block; width:100%; text-align:left; margin-top:8px;}
   .sampul-cerita{width:100%; height:auto; border-radius:14px; display:block; margin-bottom:12px;}
+  .klip-bingkai{width:100%; height:auto; border-radius:14px; display:block;}
+  .klip-baris{margin-top:6px; line-height:1.6; opacity:.38;}
+  .klip-baris.aktif{opacity:1;}
+  .klip-baris .jp{font-size:16px; font-weight:700;}
+  .klip-baris small{display:block;}
   .tombol-sora.geus-ucap{background:#147D74; color:#FFFFFF; border-color:#147D74;}
   .tombol-sora.nyala{background:#147D74; color:#FFFFFF; border-color:#147D74;}
   @keyframes kedipUcap{0%{box-shadow:0 0 0 0 rgba(20,125,116,.55);}100%{box-shadow:0 0 0 14px rgba(20,125,116,0);}}
@@ -523,6 +528,11 @@
   <section id="layar-unit" class="sembunyi">
     <div class="navigasi"><button onclick="bukaLayar('belajar')">← Kembali ke Belajar</button></div>
     <div class="kartu">
+      <h2>Tonton semenit</h2>
+      <p id="klip-status">Satu menit: dengarkan Rina memperkenalkan diri di hari pertama bekerja, lalu tangkap maksud kalimat terakhir seniornya.</p>
+      <button class="tombol" style="margin-top:10px;" onclick="bukaKlip()">Tonton sekarang</button>
+    </div>
+    <div class="kartu">
       <h2>Memperkenalkan Diri</h2>
       <p>Setelah unit ini, kamu bisa memperkenalkan diri seperti yang benar-benar dipakai orang Jepang. Dengarkan dulu contoh lengkapnya, ucapkan, lalu bedah penjelasannya satu-satu di bawahnya.</p>
     </div>
@@ -578,6 +588,27 @@
     </div>
   </section>
 
+  <!-- TONTON SEMENIT: UNIT 1 -->
+  <section id="layar-klip" class="sembunyi">
+    <div class="navigasi"><button onclick="bukaUnit()">← Kembali ke Unit 1</button></div>
+    <div class="kartu">
+      <h2>Tonton semenit</h2>
+      <img id="klip-bingkai" class="klip-bingkai" src="klip/b1.webp" alt="Ilustrasi klip: Rina tiba di tempat kerja barunya">
+      <p id="klip-panggung" style="margin-top:12px; font-size:16px; line-height:1.7;">Hari pertama di tempat kerja. Dengarkan baik-baik.</p>
+      <div id="klip-baris-teks"></div>
+      <div style="margin-top:12px;">
+        <button class="tombol" id="klip-tombol-mulai" onclick="putarKlip(false)">Mulai</button>
+        <button class="tombol rangka sembunyi" id="klip-tombol-pelan" onclick="putarKlip(true)">Putar ulang pelan + teks</button>
+      </div>
+      <div id="klip-soal" class="sembunyi" style="margin-top:16px;">
+        <p><strong>Tangkap Maksudnya.</strong> Senior bilang <span class="jp">何かあったら、遠慮なく聞いてね。</span> Maksudnya?</p>
+        <div id="klip-pilihan"></div>
+        <p id="klip-umpan" class="petunjuk" style="margin-top:6px;"></p>
+      </div>
+      <p class="petunjuk" style="margin-top:14px;">Suara: VOICEVOX：波音リツ (perempuan) dan VOICEVOX：剣崎雌雄 (laki-laki).</p>
+    </div>
+  </section>
+
   <!-- TENTANG -->
   <section id="layar-tentang" class="sembunyi">
     <div class="navigasi">
@@ -592,7 +623,7 @@
     <div class="kartu">
       <h2>Siapa pembuatnya</h2>
       <p>Kawasa dibuat oleh <strong>Ray</strong>, orang Indonesia yang tinggal dan bekerja di Jepang — setiap hari hidup di antara dua bahasa, dan bertahun-tahun belajar (serta mengajari orang lain) bahasa Jepang. Aplikasi ini lahir dari kegelisahan yang sama yang mungkin kamu rasakan: terlalu banyak aplikasi dan web, sampai bingung mulai dari mana.</p>
-      <p style="margin-top:8px;">Materi di Kawasa ditulis sendiri. Data urutan goresan huruf kana berasal dari proyek terbuka KanjiVG (CC BY-SA 3.0). Suara pengucapan adalah suara sintetis pilihan pembuat.</p>
+      <p style="margin-top:8px;">Materi di Kawasa ditulis sendiri. Data urutan goresan huruf kana berasal dari proyek terbuka KanjiVG (CC BY-SA 3.0). Suara pengucapan memakai VOICEVOX：波音リツ dan VOICEVOX：剣崎雌雄.</p>
       <p style="margin-top:8px;">Kontak: Instagram <strong>@ray_dewantara</strong></p>
     </div>
     <div class="kartu">
@@ -707,6 +738,7 @@ migrasiProgres();
 normalisasiCap();
 normalisasiKenalan();
 normalisasiKode();
+normalisasiKlip();
 simpan();
 
 var timerKirim = null;
@@ -940,11 +972,12 @@ function bukaLayar(nama){
       try{ history.back(); }catch(e){}
     }
   }
-  var layar = ["beranda","kana","latihan","ringkasan","detail","jalur","jalur-hira","jalur-kata","baris","kenalan","tentang","privasi","cerita","belajar","unit","unit-kata"];
+  var layar = ["beranda","kana","latihan","ringkasan","detail","jalur","jalur-hira","jalur-kata","baris","kenalan","tentang","privasi","cerita","belajar","unit","unit-kata","klip"];
   if(nama !== "detail"){ berhentiAnimasi(); }
   for(var i=0;i<layar.length;i++){
     document.getElementById("layar-"+layar[i]).classList.toggle("sembunyi", layar[i] !== nama);
   }
+  if(nama !== "klip" && typeof berhentiKlip === "function"){ berhentiKlip(); }
   if(nama === "beranda"){ segarkanProgres(); segarkanBeranda(); }
   if(nama === "jalur"){ gambarHub(); }
   if(nama === "beranda"){ gambarFrasa(); }
@@ -2429,6 +2462,11 @@ function gambarUnit(){
     UNIT1_POTONGAN.forEach(function(f, i){ if(progres.unitUcap && progres.unitUcap["u1-" + i]){ cnt++; } });
     elT.textContent = "Sudah kamu ucapkan: " + cnt + " dari " + UNIT1_POTONGAN.length + " potongan.";
   }
+  var elKlip = document.getElementById("klip-status");
+  if(elKlip){
+    var stKlip = statusKlip();
+    elKlip.textContent = stKlip.xp ? "Sudah ditonton, dan pertanyaan Tangkap Maksudnya sudah kamu jawab. Kamu bisa menontonnya lagi kapan pun." : (stKlip.tonton ? "Sudah ditonton — tinggal jawab pertanyaan Tangkap Maksudnya di akhir klip." : "Satu menit: dengarkan Rina memperkenalkan diri di hari pertama bekerja, lalu tangkap maksud kalimat terakhir seniornya.");
+  }
   gambarLatihanUnit();
 }
 var UNIT1_LATIHAN = [
@@ -2588,6 +2626,201 @@ function tandaiUcapUnit(i){
   if(!progres.unitXp[konci]){ progres.unitXp[konci] = 1; progres.xp += 5; }
   simpan(); segarkanProgres(); gambarUnit();
   bejaPesen("Bagus! Potongan ini sudah kamu ucapkan. +5 XP");
+}
+
+
+// === Tonton Semenit: Unit 1 — Perkenalan di hari pertama kerja ===
+// Bukan video: 5 ilustrasi berganti mengikuti satu audio dialog VOICEVOX.
+// Alur: pembuka (teks) -> dialog kecepatan alami TANPA teks -> pertanyaan
+// Tangkap Maksudnya (+10 XP sekali) -> putar ulang pelan + teks per baris.
+// Waktu baris & bingkai dalam detik terhadap berkas audio gabungan
+// (sora-klip/klip-u1.b64; dihasilkeun ku sora/bangun-klip-u1.py).
+var KLIP_U1 = {
+  audio: "sora-klip/klip-u1.b64?v=klip1",
+  bingkai: [
+    {src: "klip/b1.webp", t: 0},
+    {src: "klip/b2.webp", t: 2.603},
+    {src: "klip/b3.webp", t: 4.577},
+    {src: "klip/b4.webp", t: 10.455},
+    {src: "klip/b5.webp", t: 14.111}
+  ],
+  baris: [
+    {jp: "はじめまして。", ro: "hajimemashite", t: 0.5},
+    {jp: "リナです。", ro: "Rina desu", t: 2.603},
+    {jp: "インドネシアからきました。", ro: "Indoneshia kara kimashita", t: 4.577},
+    {jp: "にほんごをべんきょうしています。", ro: "nihongo wo benkyou shite imasu", t: 7.431},
+    {jp: "どうぞよろしくおねがいします。", ro: "douzo yoroshiku onegaishimasu", t: 10.455},
+    {jp: "こちらこそ、よろしくおねがいします。", ro: "kochira koso, yoroshiku onegaishimasu", t: 14.111},
+    {jp: "何かあったら、遠慮なく聞いてね。", ro: "nanika attara, enryonaku kiite ne", t: 17.681}
+  ],
+  pilihan: [
+    "Kalau ada kesulitan, tanya saja tanpa sungkan",
+    "Kalau ada masalah, jangan tanya siapa pun dulu",
+    "Kalau sudah selesai bekerja, segera pulang saja"
+  ],
+  bener: 0,
+  alas: "遠慮なく (enryonaku) artinya \u201Ctanpa sungkan\u201D. Senior itu mempersilakanmu bertanya kapan pun ada kesulitan — tawaran bantuan yang tulus."
+};
+var klipAudioObj = null, klipTimer = null, klipUri = null, klipModeTeks = false;
+var klipJsDimuat = false, klipJsNujuDimuat = false, klipJsAntre = null;
+function klipSrc(jalur){
+  return (window.KLIP_BINGKAI && window.KLIP_BINGKAI[jalur]) || jalur;
+}
+function muatKlipBingkai(lanjut){
+  if(window.KLIP_BINGKAI){ lanjut(); return; }
+  klipJsAntre = lanjut;
+  if(!klipJsNujuDimuat){
+    klipJsNujuDimuat = true;
+    var sc = document.createElement("script");
+    sc.src = "klip.js?v=klip1";
+    sc.onload = function(){ klipJsDimuat = true; if(klipJsAntre){ var a = klipJsAntre; klipJsAntre = null; a(); } };
+    sc.onerror = function(){ klipJsNujuDimuat = false; klipJsAntre = null; bejaPesen("Gambar klip gagal dimuat — periksa sambungan internet."); };
+    document.body.appendChild(sc);
+  }
+}
+function normalisasiKlip(){
+  if(!progres.klip || typeof progres.klip !== "object"){ progres.klip = {}; }
+}
+function statusKlip(){
+  normalisasiKlip();
+  return progres.klip.u1 || {};
+}
+function bukaKlip(){
+  berhentiKlip();
+  bukaLayar("klip");
+  muatKlipBingkai(function(){
+    KLIP_U1.bingkai.forEach(function(b){ var im = new Image(); im.src = klipSrc(b.src); });
+    var img = document.getElementById("klip-bingkai");
+    if(img){ img.src = klipSrc(KLIP_U1.bingkai[0].src); }
+  });
+  var pg = document.getElementById("klip-panggung");
+  if(pg){ pg.textContent = "Hari pertama di tempat kerja. Dengarkan baik-baik."; }
+  var bt = document.getElementById("klip-baris-teks");
+  if(bt){ bt.innerHTML = ""; }
+  var st = statusKlip();
+  var tblM = document.getElementById("klip-tombol-mulai");
+  if(tblM){ tblM.textContent = st.tonton ? "Putar lagi" : "Mulai"; }
+  var tblP = document.getElementById("klip-tombol-pelan");
+  if(tblP){ tblP.classList.toggle("sembunyi", !st.tonton); }
+  if(st.tonton){ tampilSoalKlip(); } else {
+    var elS = document.getElementById("klip-soal");
+    if(elS){ elS.classList.add("sembunyi"); }
+  }
+}
+function berhentiKlip(){
+  if(klipTimer){ clearInterval(klipTimer); klipTimer = null; }
+  if(klipAudioObj){ try{ klipAudioObj.pause(); }catch(e){} klipAudioObj = null; }
+}
+function putarKlip(pelan){
+  berhentiKlip();
+  klipModeTeks = !!pelan;
+  var bt = document.getElementById("klip-baris-teks");
+  if(bt){
+    bt.innerHTML = "";
+    if(klipModeTeks){
+      KLIP_U1.baris.forEach(function(b){
+        var d = document.createElement("div");
+        d.className = "klip-baris";
+        d.innerHTML = "<span class='jp'>" + b.jp + "</span><small>" + b.ro + "</small>";
+        bt.appendChild(d);
+      });
+    }
+  }
+  var pg = document.getElementById("klip-panggung");
+  if(pg){ pg.textContent = klipModeTeks ? "Dengarkan lagi pelan-pelan, sambil membaca teksnya." : "Dengarkan baik-baik."; }
+  function mainkeun(uri){
+    klipAudioObj = new Audio(uri);
+    klipAudioObj.playbackRate = pelan ? 0.7 : 1;
+    klipAudioObj.addEventListener("ended", klipBeres);
+    klipTimer = setInterval(sinkronKlip, 120);
+    klipAudioObj.play().catch(function(){ berhentiKlip(); bejaPesen("Suaranya tidak bisa diputar."); });
+  }
+  if(klipUri){ mainkeun(klipUri); return; }
+  fetch(KLIP_U1.audio, {cache: "force-cache"}).then(function(r){
+    if(!r.ok){ throw new Error("euweuh"); }
+    return r.text();
+  }).then(function(teks){
+    klipUri = "data:audio/mpeg;base64," + teks.trim();
+    mainkeun(klipUri);
+  }).catch(function(){ bejaPesen("Suaranya belum tersedia untuk klip ini."); });
+}
+function sinkronKlip(){
+  if(!klipAudioObj){ return; }
+  var ct = klipAudioObj.currentTime || 0;
+  var img = document.getElementById("klip-bingkai");
+  if(img){
+    var src = KLIP_U1.bingkai[0].src;
+    KLIP_U1.bingkai.forEach(function(b){ if(ct >= b.t){ src = b.src; } });
+    var uri = klipSrc(src);
+    if(img.getAttribute("src") !== uri){ img.src = uri; }
+  }
+  if(klipModeTeks){
+    var bt = document.getElementById("klip-baris-teks");
+    if(bt){
+      var barudak = bt.children;
+      KLIP_U1.baris.forEach(function(b, i){
+        if(barudak[i]){ barudak[i].classList.toggle("aktif", ct >= b.t); }
+      });
+    }
+  }
+}
+function klipBeres(){
+  if(klipTimer){ clearInterval(klipTimer); klipTimer = null; }
+  var st = statusKlip();
+  if(!st.tonton){
+    st.tonton = 1;
+    progres.klip.u1 = st;
+    simpan();
+    kirimLaporan("klip-u1-tonton");
+  }
+  var tblP = document.getElementById("klip-tombol-pelan");
+  if(tblP){ tblP.classList.remove("sembunyi"); }
+  var tblM = document.getElementById("klip-tombol-mulai");
+  if(tblM){ tblM.textContent = "Putar lagi"; }
+  tampilSoalKlip();
+}
+function tampilSoalKlip(){
+  var elS = document.getElementById("klip-soal");
+  if(!elS){ return; }
+  elS.classList.remove("sembunyi");
+  var wadah = document.getElementById("klip-pilihan");
+  if(!wadah){ return; }
+  wadah.innerHTML = "";
+  var st = statusKlip();
+  KLIP_U1.pilihan.forEach(function(pil, pi){
+    var tbl = document.createElement("button");
+    tbl.className = "tombol rangka";
+    tbl.style.cssText = "display:block; width:100%; text-align:left; margin-top:6px;";
+    tbl.textContent = pil;
+    if(st.xp && pi === KLIP_U1.bener){
+      tbl.style.background = "#147D74"; tbl.style.color = "#FFFFFF"; tbl.style.borderColor = "#147D74";
+    }
+    (function(p2, el){ tbl.onclick = function(){ jawabKlip(p2, el); }; })(pi, tbl);
+    wadah.appendChild(tbl);
+  });
+  var fb = document.getElementById("klip-umpan");
+  if(fb && st.xp){ fb.textContent = "\u2713 " + KLIP_U1.alas; }
+}
+function jawabKlip(pi, el){
+  var fb = document.getElementById("klip-umpan");
+  var st = statusKlip();
+  if(pi === KLIP_U1.bener){
+    if(!st.xp){
+      st.xp = 1;
+      progres.klip.u1 = st;
+      progres.xp += 10;
+      simpan(); segarkanProgres();
+      bejaPesen("Benar! +10 XP");
+      kirimLaporan("klip-u1-benar");
+    }
+    if(fb){ fb.textContent = "\u2713 " + KLIP_U1.alas; }
+    tampilSoalKlip();
+  } else {
+    el.style.background = "#F6DCD2";
+    el.style.borderColor = "#E2725B";
+    el.disabled = true;
+    if(fb){ fb.textContent = "Belum tepat — coba dengarkan lagi kalimat terakhir seniornya, lalu pilih lagi."; }
+  }
 }
 
 // === Fase Kenalan: berkenalan dengan huruf baris ini satu per satu ===
