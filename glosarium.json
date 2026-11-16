@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-16",
+ "updated": "2026-11-17",
  "kata": {
   "でんしゃに": "kereta (naik…)",
   "のります": "naik (kendaraan)",
@@ -29,6 +29,13 @@
   "りんごは": "apel (topik)",
   "あかくて": "merah, dan…",
   "いえに": "ke rumah",
-  "かえって": "pulang, lalu…"
+  "かえって": "pulang, lalu…",
+  "かぞくで": "bersama keluarga",
+  "ごはんを": "nasi; makanan (objek)",
+  "おかあさんが": "ibu (subjek)",
+  "みそしるを": "sup miso (objek)",
+  "つくります": "membuat",
+  "みんなで": "semua bersama-sama",
+  "たべると": "kalau makan; ketika makan"
  }
 }

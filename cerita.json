@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-16",
+ "updated": "2026-11-17",
  "cerita": [
   {
    "jp": "ゆきが ふっています。そとは しろいです。こどもが ゆきで あそびます。てが つめたいです。でも、とても たのしいです。",
@@ -30,6 +30,11 @@
    "jp": "スーパーに いきます。やさいを かいます。りんごも かいます。りんごは あかくて、おいしいです。いえに かえって、たべます。",
    "id": "Saya pergi ke supermarket. Saya membeli sayuran. Saya membeli apel juga. Apelnya merah dan enak. Saya pulang ke rumah, lalu memakannya.",
    "kode": "f6"
+  },
+  {
+   "jp": "よるです。かぞくで ごはんを たべます。おかあさんが みそしるを つくります。あたたかくて、おいしいです。みんなで たべると、たのしいです。",
+   "id": "Sudah malam. Saya makan bersama keluarga. Ibu membuat sup miso. Hangat dan enak. Makan bersama-sama itu menyenangkan.",
+   "kode": "f7"
   }
  ]
 }
