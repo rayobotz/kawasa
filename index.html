@@ -240,7 +240,12 @@
 
   <!-- BELAJAR (TEMA) -->
   <section id="layar-belajar" class="sembunyi">
-
+    <div class="kartu" id="kartu-bahas">
+      <h2>Frasa Hari Ini — Bahas Tuntas</h2>
+      <p>Penjelasan, contoh, dan balasan untuk frasa harianmu.</p>
+      <div id="bahas-isi"></div>
+      <div id="bahas-daftar" style="margin-top:12px;"></div>
+    </div>
 
 <div class="kartu">
       <h2>Unit Belajar</h2>
@@ -1450,6 +1455,8 @@ function muatGlosariumFeed(){
   }catch(e){}
 }
 muatGlosariumFeed();
+muatFrasaFeed();
+gambarBahas();
 var ARTIKEL = [
   {judul:'"Uhun, uhun" belum tentu setuju',
    ringkas:'Kenapa anggukan dan kata "iya" dari orang Jepang belum tentu berarti setuju.',
@@ -1503,14 +1510,14 @@ function bukaArtikel(i){
 }
 gambarDaftarArtikel();
 var FRASA = [
-  {jp:"おはようございます", ro:"ohayou gozaimasu", arti:"selamat pagi"},
-  {jp:"こんにちは", ro:"konnichiwa", arti:"halo / selamat siang"},
-  {jp:"ありがとうございます", ro:"arigatou gozaimasu", arti:"terima kasih banyak"},
-  {jp:"すみません", ro:"sumimasen", arti:"permisi / maaf"},
-  {jp:"おねがいします", ro:"onegai shimasu", arti:"tolong ya"},
-  {jp:"わかりません", ro:"wakarimasen", arti:"saya tidak mengerti"},
-  {jp:"もういちどおねがいします", ro:"mou ichido onegai shimasu", arti:"tolong ulangi sekali lagi"},
-  {jp:"だいじょうぶです", ro:"daijoubu desu", arti:"tidak apa-apa"}
+  {jp:"おはようございます", ro:"ohayou gozaimasu", arti:"selamat pagi", jelas:"Sapaan pagi sampai sekitar pukul 10–11. Di tempat kerja, frasa ini juga dipakai saat pertama kali bertemu rekan hari itu, walaupun sudah siang — misalnya saat masuk shift siang atau malam.", contoh:[{"jp": "おはようございます、たなかさん。", "ro": "ohayou gozaimasu, Tanaka-san", "arti": "Selamat pagi, Pak/Bu Tanaka."}, {"jp": "おはようございます。きょうも よろしく おねがいします。", "ro": "ohayou gozaimasu. kyou mo yoroshiku onegai shimasu", "arti": "Selamat pagi. Hari ini pun mohon bimbingannya."}], balas:{"jp": "おはようございます。", "ro": "ohayou gozaimasu", "arti": "Selamat pagi. (balasan yang sama)"}},
+  {jp:"こんにちは", ro:"konnichiwa", arti:"halo / selamat siang", jelas:"Sapaan siang hari untuk orang yang ditemui di luar rumah. Untuk keluarga serumah atau teman sangat dekat biasanya tidak dipakai — cukup memanggil nama atau mengangguk.", contoh:[{"jp": "こんにちは。かいもの ですか。", "ro": "konnichiwa. kaimono desu ka", "arti": "Selamat siang. Sedang belanja ya?"}, {"jp": "こんにちは。おひさしぶりです。", "ro": "konnichiwa. ohisashiburi desu", "arti": "Selamat siang. Lama tidak bertemu."}], balas:{"jp": "こんにちは。", "ro": "konnichiwa", "arti": "Selamat siang. (balasan yang sama)"}},
+  {jp:"ありがとうございます", ro:"arigatou gozaimasu", arti:"terima kasih banyak", jelas:"Terima kasih yang sopan — pakai ini untuk orang baru, atasan, dan bantuan yang jelas. Untuk teman dekat dan bantuan kecil, ありがとう saja sudah cukup.", contoh:[{"jp": "てつだって くれて、ありがとうございます。", "ro": "tetsudatte kurete, arigatou gozaimasu", "arti": "Terima kasih sudah membantu."}, {"jp": "プレゼント、ありがとうございます。うれしいです。", "ro": "purezento, arigatou gozaimasu. ureshii desu", "arti": "Terima kasih hadiahnya. Saya senang."}], balas:{"jp": "いえいえ、とんでもないです。", "ro": "ieie, tondemonai desu", "arti": "Ah, tidak usah dipikirkan. (balasan yang paling sering terdengar)"}},
+  {jp:"すみません", ro:"sumimasen", arti:"permisi / maaf", jelas:"Satu kata untuk banyak situasi: permisi lewat, minta maaf ringan, memanggil pelayan, dan membuka pertanyaan ke orang asing.", contoh:[{"jp": "すみません、えきは どこですか。", "ro": "sumimasen, eki wa doko desu ka", "arti": "Permisi, stasiun di mana ya?"}, {"jp": "すみません、おくれました。", "ro": "sumimasen, okuremashita", "arti": "Maaf, saya terlambat."}], balas:{"jp": "はい、なんでしょうか。", "ro": "hai, nan deshou ka", "arti": "Ya, ada yang bisa dibantu? (jawaban orang yang dipanggil)"}},
+  {jp:"おねがいします", ro:"onegai shimasu", arti:"tolong ya", jelas:"Diucapkan saat menyerahkan atau meminta sesuatu: sebutkan barangnya dulu, lalu frasa ini. Di kasir, di restoran, di loket — di mana-mana dipakai.", contoh:[{"jp": "これを おねがいします。", "ro": "kore o onegai shimasu", "arti": "Yang ini ya. (saat menyerahkan barang ke kasir)"}, {"jp": "コーヒーを ひとつ おねがいします。", "ro": "koohii o hitotsu onegai shimasu", "arti": "Kopi satu, tolong."}], balas:{"jp": "かしこまりました。", "ro": "kashikomarimashita", "arti": "Baik, siap. (jawaban petugas atau pelayan)"}},
+  {jp:"わかりません", ro:"wakarimasen", arti:"saya tidak mengerti", jelas:"Mengatakan belum paham itu tidak apa-apa — orang Jepang justru terbantu. Tambahkan すみません di depan supaya terdengar lembut.", contoh:[{"jp": "すみません、わかりません。", "ro": "sumimasen, wakarimasen", "arti": "Maaf, saya tidak mengerti."}, {"jp": "にほんごが あまり わかりません。", "ro": "nihongo ga amari wakarimasen", "arti": "Bahasa Jepang saya belum begitu bisa."}], balas:{"jp": "じゃあ、ゆっくり はなしますね。", "ro": "jaa, yukkuri hanashimasu ne", "arti": "Kalau begitu saya bicara pelan-pelan ya. (lawan bicara menyesuaikan)"}},
+  {jp:"もういちどおねがいします", ro:"mou ichido onegai shimasu", arti:"tolong ulangi sekali lagi", jelas:"Minta pengulangan dengan sopan. Boleh ditambah ゆっくり (pelan-pelan) di tengahnya.", contoh:[{"jp": "すみません、もういちど おねがいします。", "ro": "sumimasen, mou ichido onegai shimasu", "arti": "Maaf, tolong ulangi sekali lagi."}, {"jp": "もういちど、ゆっくり おねがいします。", "ro": "mou ichido, yukkuri onegai shimasu", "arti": "Sekali lagi, pelan-pelan ya."}], balas:{"jp": "はい、もういちど いいますね。", "ro": "hai, mou ichido iimasu ne", "arti": "Baik, saya ulangi ya."}},
+  {jp:"だいじょうぶです", ro:"daijoubu desu", arti:"tidak apa-apa", jelas:"Dua arah: menyatakan 'saya baik-baik saja', dan menolak tawaran bantuan dengan halus — 'tidak usah, terima kasih'.", contoh:[{"jp": "だいじょうぶです。ありがとうございます。", "ro": "daijoubu desu. arigatou gozaimasu", "arti": "Saya tidak apa-apa. Terima kasih. (misalnya setelah hampir jatuh)"}, {"jp": "てつだいましょうか。— だいじょうぶです。", "ro": "tetsudaimashou ka. — daijoubu desu", "arti": "Perlu saya bantu? — Tidak usah, terima kasih."}], balas:{"jp": "そうですか。よかったです。", "ro": "sou desu ka. yokatta desu", "arti": "Oh begitu. Syukurlah. (jawaban penolong yang lega)"}}
 ];
 var AMBANG_FRASA = [1, 3, 5, 8, 11];
 function jumlahCap(){ var n = 0; for(var k in progres.capBaris){ if(progres.capBaris[k]){ n++; } } return n; }
@@ -1518,65 +1525,211 @@ function frasaTerbuka(){ var c = jumlahCap(), n = 3; for(var i = 0; i < AMBANG_F
 var IKON_SPK = "<svg viewBox='0 0 24 24'><path d='M4 9v6h4l5 4V5L8 9H4z'/><path d='M16.5 8.5a5 5 0 0 1 0 7'/><path d='M18.8 6a8.5 8.5 0 0 1 0 12'/></svg>";
 var IKON_CENTANG = "<svg viewBox='0 0 24 24'><path d='M4.5 12.5l5 5L19.5 7'/></svg>";
 var frasaPilih = -1;
-function frasaGeser(arah){ var n = frasaTerbuka(); if(n < 2){ return; } if(frasaPilih < 0 || frasaPilih >= n){ frasaPilih = 0; } frasaPilih = (frasaPilih + arah + n) % n; gambarFrasa(); }
+var frasaDigese = false;
+function frasaGeser(arah){ var u = urutanFrasa(); if(u.length < 2){ return; } frasaDigese = true; if(frasaPilih < 0 || frasaPilih >= u.length){ frasaPilih = 0; } frasaPilih = (frasaPilih + arah + u.length) % u.length; gambarFrasa(); }
 var IKON_SLOW = "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 17c0-4.5 3.1-8 7-8s7 3.5 7 8\"/><path d=\"M3 17h18\"/><circle cx=\"20\" cy=\"14.6\" r=\"1.5\"/><path d=\"M8.5 17v2M15.5 17v2\"/></svg>";
+var FRASA_FEED = [];
+var frasaTanggal = "";
+function urutanFrasa(){
+  var u = [];
+  for(var a = FRASA_FEED.length - 1; a >= 0; a--){ u.push({t:"f", f:FRASA_FEED[a]}); }
+  var n = frasaTerbuka();
+  for(var b = 0; b < n; b++){ u.push({t:"b", i:b}); }
+  return u;
+}
 function gambarFrasa(){
   var wadah = document.getElementById("daftar-frasa"); if(!wadah){ return; }
   var g = progres.sora || "awewe";
   var pilA = document.getElementById("pil-sora-awewe"), pilL = document.getElementById("pil-sora-lalaki");
   if(pilA && pilL){ pilA.classList.toggle("aktif", g === "awewe"); pilL.classList.toggle("aktif", g === "lalaki"); }
-  var n = frasaTerbuka();
-  var pernah = progres.frasaTerbuka || 3;
+  var u = urutanFrasa();
+  var poe = new Date().toDateString();
+  if(frasaTanggal !== poe){ frasaTanggal = poe; frasaPilih = 0; frasaDigese = false; }
   wadah.innerHTML = "";
-  if(frasaPilih < 0 || frasaPilih >= n){
-    var poe = Math.floor(Date.now() / 86400000);
-    frasaPilih = n > 0 ? (poe % n) : 0;
-  }
-  var i = frasaPilih;
-  var f = FRASA[i];
+  if(u.length === 0){ return; }
+  if(frasaPilih < 0 || frasaPilih >= u.length){ frasaPilih = 0; }
+  var item = u[frasaPilih];
+  var f = item.t === "f" ? item.f : FRASA[item.i];
+  var pernah = progres.frasaTerbuka || 3;
   var baris = document.createElement("div");
   baris.className = "jalur";
-  var baru = i >= pernah ? "<span class='lencana-baru'>BARU</span>" : "";
+  var isBaru = item.t === "f" ? (frasaPilih === 0) : (item.i >= pernah);
+  var baru = isBaru ? "<span class='lencana-baru'>BARU</span>" : "";
   baris.innerHTML = "<div class='nama'><span class='jp' style='font-size:19px;'>" + f.jp + "</span>" + baru + "<br><small>" + f.ro + " \u2014 " + f.arti + "</small></div>";
   var tbl = document.createElement("button");
   tbl.className = "tombol-sora ikon"; tbl.innerHTML = IKON_SPK; tbl.setAttribute("aria-label", "Dengarkan frasa");
   var tblS = document.createElement("button");
   tblS.className = "tombol-sora ikon"; tblS.innerHTML = IKON_SLOW; tblS.title = "Dengarkan pelan-pelan";
   tblS.setAttribute("aria-label", "Dengarkan frasa pelan-pelan");
-  (function(idx, el){ tblS.onclick = function(){ putarSora("frasa-" + (idx + 1), el, true); }; })(i, tblS);
-  (function(idx, el){ tbl.onclick = function(){ putarSora("frasa-" + (idx + 1), el); }; })(i, tbl);
+  if(item.t === "f"){
+    (function(k, el){ tblS.onclick = function(){ putarFrasa(k, el, true); }; })(item.f.kode, tblS);
+    (function(k, el){ tbl.onclick = function(){ putarFrasa(k, el); }; })(item.f.kode, tbl);
+  } else {
+    (function(idx, el){ tblS.onclick = function(){ putarSora("frasa-" + (idx + 1), el, true); }; })(item.i, tblS);
+    (function(idx, el){ tbl.onclick = function(){ putarSora("frasa-" + (idx + 1), el); }; })(item.i, tbl);
+  }
   var klpF = document.createElement("div");
   klpF.className = "jajar-tombol";
   klpF.appendChild(tbl);
   klpF.appendChild(tblS);
   var tblU = document.createElement("button");
-  var geusU = progres.frasaUcap && progres.frasaUcap[i];
+  var geusU = item.t === "f" ? !!((progres.frasaFeedUcap || {})[item.f.kode]) : !!(progres.frasaUcap && progres.frasaUcap[item.i]);
   tblU.className = "tombol-sora ikon tombol-ucap" + (geusU ? " geus-ucap" : "");
   tblU.innerHTML = IKON_CENTANG;
   tblU.setAttribute("aria-label", "Tandai frasa sudah saya ucapkan");
   tblU.title = geusU ? "Sudah kamu ucapkan" : "Ucapkan sendiri, lalu ketuk";
-  (function(idx){ tblU.onclick = function(){ tandaiUcap(idx); }; })(i);
+  if(item.t === "f"){ (function(k){ tblU.onclick = function(){ tandaiUcapFeed(k); }; })(item.f.kode); }
+  else { (function(idx){ tblU.onclick = function(){ tandaiUcap(idx); }; })(item.i); }
   klpF.appendChild(tblU);
   baris.appendChild(klpF);
   wadah.appendChild(baris);
-  if(n > 1){
+  if(u.length > 1){
     var nav = document.createElement("div");
     nav.style.cssText = "display:flex; align-items:center; justify-content:center; gap:14px; margin-top:10px;";
-    nav.innerHTML = "<button class='panah-frasa' onclick='frasaGeser(-1)' aria-label='Frasa sebelumnya'>\u2039</button><span style='font-size:13px; color:var(--teks-lembut);'>Frasa " + (i + 1) + " dari " + n + " yang terbuka</span><button class='panah-frasa' onclick='frasaGeser(1)' aria-label='Frasa berikutnya'>\u203A</button>";
+    nav.innerHTML = "<button class='panah-frasa' onclick='frasaGeser(-1)' aria-label='Frasa sebelumnya'>\u2039</button><span style='font-size:13px; color:var(--teks-lembut);'>Frasa " + (frasaPilih + 1) + " dari " + u.length + "</span><button class='panah-frasa' onclick='frasaGeser(1)' aria-label='Frasa berikutnya'>\u203a</button>";
     wadah.appendChild(nav);
   }
+  var tblB = document.createElement("button");
+  tblB.className = "tombol rangka";
+  tblB.style.cssText = "margin-top:12px; width:100%;";
+  tblB.textContent = "Bahas lebih dalam →";
+  tblB.onclick = function(){ bukaBahas(); };
+  wadah.appendChild(tblB);
   var elU = document.getElementById("frasa-ucap-teks");
   if(elU){
     var cntU = 0;
-    for(var u2 = 0; u2 < n; u2++){ if(progres.frasaUcap && progres.frasaUcap[u2]){ cntU++; } }
-    elU.textContent = "Sudah kamu ucapkan: " + cntU + " dari " + n + " frasa terbuka \u2014 dengarkan, ucapkan keras-keras, lalu ketuk tombol centangnya.";
+    for(var u2 = 0; u2 < u.length; u2++){ var it2 = u[u2]; if(it2.t === "f"){ if((progres.frasaFeedUcap || {})[it2.f.kode]){ cntU++; } } else if(progres.frasaUcap && progres.frasaUcap[it2.i]){ cntU++; } }
+    elU.textContent = "Sudah kamu ucapkan: " + cntU + " dari " + u.length + " frasa \u2014 dengarkan, ucapkan keras-keras, lalu ketuk tombol centangnya.";
   }
-  if(n > pernah){ progres.frasaTerbuka = n; simpan(); }
+  var nB = frasaTerbuka();
+  if(nB > pernah){ progres.frasaTerbuka = nB; simpan(); }
   var kunci = document.getElementById("frasa-konci");
   if(kunci){
-    var sisa = FRASA.length - n;
-    kunci.textContent = sisa > 0 ? ("\uD83D\uDD12 " + sisa + " frasa lagi — terbuka otomatis seiring cap yang kamu kumpulkan (sekarang " + jumlahCap() + " cap). Cukup lanjut belajar, tidak perlu diapa-apakan.") : "Semua frasa sudah terbuka \uD83C\uDF89 — tinggal dipakai ngomong beneran.";
+    var sisa = FRASA.length - nB;
+    kunci.textContent = sisa > 0 ? ("\uD83D\uDD12 " + sisa + " frasa dasar lagi \u2014 terbuka otomatis seiring cap yang kamu kumpulkan (sekarang " + jumlahCap() + " cap). Frasa harian baru datang sendiri tiap hari.") : "Semua frasa dasar sudah terbuka \uD83C\uDF89 \u2014 frasa harian baru tetap datang tiap hari.";
   }
+}
+var frasaAudioCache = {}, frasaAudioObj = null;
+function putarFrasa(konci, tbl, lambat){
+  var berkas = "sora-frasa/" + konci + "-" + (progres.sora || "awewe") + ".b64?v=ff1";
+  function mainkeun(uri){
+    if(frasaAudioObj){ try{ frasaAudioObj.pause(); }catch(e){} }
+    if(soraAudio){ try{ soraAudio.pause(); }catch(e){} }
+    frasaAudioObj = new Audio(uri);
+    frasaAudioObj.playbackRate = lambat ? 0.7 : 1;
+    if(tbl){ sorotDengar(tbl, frasaAudioObj); }
+    frasaAudioObj.play().catch(function(){ if(tbl){ tbl.classList.remove("nyala"); } bejaPesen("Suaranya tidak bisa diputar."); });
+  }
+  if(frasaAudioCache[berkas]){ mainkeun(frasaAudioCache[berkas]); return; }
+  fetch(berkas, {cache: "force-cache"}).then(function(r){
+    if(!r.ok){ throw new Error("euweuh"); }
+    return r.text();
+  }).then(function(teks){
+    var uri = "data:audio/mpeg;base64," + teks.trim();
+    frasaAudioCache[berkas] = uri;
+    mainkeun(uri);
+  }).catch(function(){ bejaPesen("Suaranya belum tersedia untuk bagian ini."); });
+}
+function tandaiUcapFeed(kode){
+  if(!progres.frasaFeedUcap){ progres.frasaFeedUcap = {}; }
+  if(!progres.frasaFeedXp){ progres.frasaFeedXp = {}; }
+  if(progres.frasaFeedUcap[kode]){
+    delete progres.frasaFeedUcap[kode];
+    simpan(); gambarFrasa();
+    return;
+  }
+  progres.frasaFeedUcap[kode] = 1;
+  if(!progres.frasaFeedXp[kode]){ progres.frasaFeedXp[kode] = 1; progres.xp += 5; }
+  simpan(); segarkanProgres(); gambarFrasa();
+  bejaPesen("Bagus! Frasa ini sudah kamu ucapkan. +5 XP");
+}
+var bahasItem = null;
+function bukaBahas(){
+  var u = urutanFrasa();
+  if(u.length){ bahasItem = u[Math.min(Math.max(frasaPilih, 0), u.length - 1)]; }
+  bukaLayar("belajar");
+  gambarBahas();
+  var k = document.getElementById("kartu-bahas");
+  if(k && k.scrollIntoView){ setTimeout(function(){ try{ k.scrollIntoView({behavior:"smooth", block:"start"}); }catch(e){} }, 80); }
+}
+function barisBahas(wadah, jp, ro, arti, konci, bawaanUtama, gede){
+  var blok = document.createElement("div");
+  blok.className = "jalur";
+  var nama = document.createElement("div");
+  nama.className = "nama";
+  nama.innerHTML = "<span class='jp' style='font-size:" + (gede ? "20px" : "16px") + ";'>" + jp + "</span><br><small>" + ro + " \u2014 " + arti + "</small>";
+  blok.appendChild(nama);
+  var klp = document.createElement("div");
+  klp.className = "jajar-tombol";
+  var t1 = document.createElement("button");
+  t1.className = "tombol-sora ikon"; t1.innerHTML = IKON_SPK; t1.setAttribute("aria-label", "Dengarkan");
+  var t2 = document.createElement("button");
+  t2.className = "tombol-sora ikon"; t2.innerHTML = IKON_SLOW; t2.title = "Dengarkan pelan-pelan"; t2.setAttribute("aria-label", "Dengarkan pelan-pelan");
+  (function(k, el, bu){ t1.onclick = function(){ if(bu){ putarSora(k, el); } else { putarFrasa(k, el); } }; })(konci, t1, bawaanUtama);
+  (function(k, el, bu){ t2.onclick = function(){ if(bu){ putarSora(k, el, true); } else { putarFrasa(k, el, true); } }; })(konci, t2, bawaanUtama);
+  klp.appendChild(t1); klp.appendChild(t2);
+  blok.appendChild(klp);
+  wadah.appendChild(blok);
+}
+function gambarBahas(){
+  var wadah = document.getElementById("bahas-isi"); if(!wadah){ return; }
+  var u = urutanFrasa();
+  if(!bahasItem && u.length){ bahasItem = u[0]; }
+  wadah.innerHTML = "";
+  if(!bahasItem){ wadah.innerHTML = "<p>Frasa belum tersedia.</p>"; return; }
+  var f = bahasItem.t === "f" ? bahasItem.f : FRASA[bahasItem.i];
+  var dasar = bahasItem.t === "f" ? bahasItem.f.kode : "b" + (bahasItem.i + 1);
+  var konciUtama = bahasItem.t === "f" ? bahasItem.f.kode : "frasa-" + (bahasItem.i + 1);
+  barisBahas(wadah, f.jp, f.ro, f.arti, konciUtama, bahasItem.t === "b", true);
+  if(f.jelas){
+    var pj = document.createElement("p");
+    pj.style.cssText = "margin-top:10px;";
+    pj.textContent = f.jelas;
+    wadah.appendChild(pj);
+  }
+  if(f.contoh && f.contoh.length){
+    var lc = document.createElement("p");
+    lc.style.cssText = "margin-top:12px; font-size:13px; color:var(--teks-lembut);";
+    lc.textContent = "Contoh pemakaian:";
+    wadah.appendChild(lc);
+    f.contoh.forEach(function(c, ci){ barisBahas(wadah, c.jp, c.ro, c.arti, dasar + "c" + (ci + 1), false, false); });
+  }
+  if(f.balas){
+    var lb = document.createElement("p");
+    lb.style.cssText = "margin-top:12px; font-size:13px; color:var(--teks-lembut);";
+    lb.textContent = "Balasan yang biasa terdengar:";
+    wadah.appendChild(lb);
+    barisBahas(wadah, f.balas.jp, f.balas.ro, f.balas.arti, dasar + "b", false, false);
+  }
+  var dft = document.getElementById("bahas-daftar");
+  if(dft){
+    dft.innerHTML = "";
+    if(u.length > 1){
+      var jm = document.createElement("p");
+      jm.style.cssText = "font-size:13px; color:var(--teks-lembut); margin-bottom:6px;";
+      jm.textContent = "Frasa lain:";
+      dft.appendChild(jm);
+      u.forEach(function(it, ix){
+        var ff = it.t === "f" ? it.f : FRASA[it.i];
+        var tb = document.createElement("button");
+        tb.className = "tombol rangka";
+        tb.style.cssText = "margin:0 6px 6px 0; padding:6px 12px; font-size:13px;";
+        tb.textContent = ff.jp;
+        if(bahasItem === it){ tb.classList.add("aksen"); }
+        (function(itemRef){ tb.onclick = function(){ bahasItem = itemRef; gambarBahas(); }; })(it);
+        dft.appendChild(tb);
+      });
+    }
+  }
+}
+function muatFrasaFeed(){
+  try{
+    fetch("frasa.json",{cache:"no-store"}).then(function(r){return r.ok?r.json():null;}).then(function(j){
+      if(!j||!Array.isArray(j.frasa))return;
+      FRASA_FEED = j.frasa.filter(function(x){ return x && x.jp && x.kode; });
+      if(FRASA_FEED.length){ if(!frasaDigese){ frasaPilih = 0; } gambarFrasa(); gambarBahas(); }
+    }).catch(function(){});
+  }catch(e){}
 }
 function tandaiUcap(i){
   if(!progres.frasaUcap){ progres.frasaUcap = {}; }
