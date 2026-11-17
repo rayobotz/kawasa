@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-17",
+ "updated": "2026-11-18",
  "kata": {
   "でんしゃに": "kereta (naik…)",
   "のります": "naik (kendaraan)",
@@ -36,6 +36,11 @@
   "みそしるを": "sup miso (objek)",
   "つくります": "membuat",
   "みんなで": "semua bersama-sama",
-  "たべると": "kalau makan; ketika makan"
+  "たべると": "kalau makan; ketika makan",
+  "おふろに": "ke bak mandi",
+  "はいります": "masuk (ke bak mandi)",
+  "おゆは": "air (panas) (topik)",
+  "あたたかいです": "hangat",
+  "からだも": "badan juga"
  }
 }
