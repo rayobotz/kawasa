@@ -264,6 +264,20 @@
       <p id="arti-cerita" style="margin-top:10px; color:var(--teks-lembut); font-size:15px;"></p>
       <div id="cerita-arsip"></div>
     </div>
+    <div class="kartu">
+      <h2>Artikel</h2>
+      <p>Tambah wawasan tentang cara orang Jepang berkomunikasi — bacaan pendek 2–3 menit, penjelasan Bahasa Indonesia.</p>
+      <div id="artikel-daftar"></div>
+    </div>
+  </section>
+
+  <!-- ARTIKEL -->
+  <section id="layar-artikel" class="sembunyi">
+    <div class="navigasi"><button onclick="bukaLayar('cerita')">← Baca</button><button onclick="bukaLayar('beranda')">Beranda</button></div>
+    <div class="kartu">
+      <h2 id="artikel-judul"></h2>
+      <div id="artikel-isi"></div>
+    </div>
   </section>
 
   <!-- KANA -->
@@ -975,7 +989,7 @@ function bukaLayar(nama){
       try{ history.back(); }catch(e){}
     }
   }
-  var layar = ["beranda","kana","latihan","ringkasan","detail","jalur","jalur-hira","jalur-kata","baris","kenalan","tentang","privasi","cerita","belajar","unit","unit-kata","klip"];
+  var layar = ["beranda","kana","latihan","ringkasan","detail","jalur","jalur-hira","jalur-kata","baris","kenalan","tentang","privasi","cerita","belajar","unit","unit-kata","klip","artikel"];
   if(nama !== "detail"){ berhentiAnimasi(); }
   for(var i=0;i<layar.length;i++){
     document.getElementById("layar-"+layar[i]).classList.toggle("sembunyi", layar[i] !== nama);
@@ -1429,6 +1443,45 @@ function muatGlosariumFeed(){
   }catch(e){}
 }
 muatGlosariumFeed();
+var ARTIKEL = [
+  {judul:'"Uhun, uhun" belum tentu setuju',
+   ringkas:'Kenapa anggukan dan kata "iya" dari orang Jepang belum tentu berarti setuju.',
+   isi:'<p>Pernah dengar orang Jepang menjawab うん、うん (un, un) sambil mengangguk waktu kamu bercerita? Lalu ternyata dia tidak setuju dengan ceritamu?</p>'
+   + '<p>Itu bukan dia berbohong. Itu <b>aizuchi</b> — suara kecil penanda "aku sedang mendengarkan".</p>'
+   + '<p><b>Intinya dulu</b></p>'
+   + '<p>Aizuchi itu seperti anggukan kita waktu mendengarkan teman bicara. Fungsinya menunjukkan "aku dengar, teruskan", <b>bukan</b> "aku setuju".</p>'
+   + '<p>Contoh yang paling sering terdengar:<br><b>はい</b> (hai) — iya / saya dengar<br><b>うん</b> (un) — uhun, santai, ke teman dekat<br><b>そうですね</b> (sō desu ne) — iya ya / begitu ya<br><b>なるほど</b> (naruhodo) — oh, begitu / masuk akal<br><b>へえ</b> (hē) — oh, begitu ya (kaget ringan)</p>'
+   + '<p><b>Percakapan 1 — di tempat kerja</b></p>'
+   + '<p>A: 「明日、休みたいんです。」(Ashita, yasumitai n desu.) — "Besok saya mau libur."<br>B: 「うん、うん。」(Un, un.) — "Uhun, uhun."</p>'
+   + '<p>Si B belum tentu menyetujui liburnya. Dia hanya bilang "aku dengar". Persetujuan aslinya baru terlihat dari kalimat berikutnya — misalnya 「いいよ」 (ii yo, "boleh") atau 「ちょっと…」 (chotto…, "hmm, agak sulit").</p>'
+   + '<p><b>Percakapan 2 — teman bercerita</b></p>'
+   + '<p>A: 「昨日、電車が遅れてさ…」(Kinō, densha ga okurete sa…) — "Kemarin keretaku telat…"<br>B: 「へえ、そうなんだ。」(Hē, sō nan da.) — "Oh, begitu ya."</p>'
+   + '<p>Si B tidak sedang memberi pendapat — dia memberi ruang supaya A terus bercerita. Kalau di Indonesia, padanannya kira-kira "oh gitu, terus?"</p>'
+   + '<p><b>Yang sering salah kaprah</b></p>'
+   + '<p>Pemula sering mengira setiap 「はい」 berarti "ya, saya setuju". Padahal dalam percakapan sehari-hari, 「はい」 sering hanya berarti "ya, saya mendengar kamu". Tanda setuju yang sebenarnya biasanya muncul sesudahnya, dalam kalimat lengkap.</p>'
+   + '<p>Ini bukan aturan kaku untuk semua orang Jepang — ini kecenderungan umum dalam percakapan sehari-hari. Yang penting: dengarkan kalimat sesudah aizuchi, bukan aizuchinya saja.</p>'
+   + '<p><b>Coba ingat (1 menit)</b></p>'
+   + '<p>Kamu sedang bercerita, temanmu menjawab 「なるほど」 sambil mengangguk. Apa yang paling aman kamu simpulkan?<br>A. Dia setuju dengan ceritamu.<br>B. Dia mengikuti ceritamu dan memintamu melanjutkan.</p>'
+   + '<details><summary>Lihat jawaban</summary><p><b>B.</b> 「なるほど」 berarti "oh, begitu" — dia paham alurnya, belum tentu setuju dengan isinya.</p></details>'}
+];
+function gambarDaftarArtikel(){
+  var w = document.getElementById("artikel-daftar");
+  if(!w) return;
+  var h = "";
+  for(var i=0;i<ARTIKEL.length;i++){
+    h += '<p style="margin:10px 0 4px;">' + ARTIKEL[i].ringkas + '</p>';
+    h += '<button class="tombol" onclick="bukaArtikel(' + i + ')">' + ARTIKEL[i].judul + '</button>';
+  }
+  w.innerHTML = h;
+}
+function bukaArtikel(i){
+  var a = ARTIKEL[i];
+  if(!a) return;
+  document.getElementById("artikel-judul").textContent = a.judul;
+  document.getElementById("artikel-isi").innerHTML = a.isi;
+  bukaLayar("artikel");
+}
+gambarDaftarArtikel();
 var FRASA = [
   {jp:"おはようございます", ro:"ohayou gozaimasu", arti:"selamat pagi"},
   {jp:"こんにちは", ro:"konnichiwa", arti:"halo / selamat siang"},
