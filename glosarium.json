@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-18",
+ "updated": "2026-11-19",
  "kata": {
   "でんしゃに": "kereta (naik…)",
   "のります": "naik (kendaraan)",
@@ -41,6 +41,14 @@
   "はいります": "masuk (ke bak mandi)",
   "おゆは": "air (panas) (topik)",
   "あたたかいです": "hangat",
-  "からだも": "badan juga"
+  "からだも": "badan juga",
+  "はなやに": "ke toko bunga",
+  "はなを": "bunga (objek)",
+  "うえます": "menanam",
+  "みずを": "air (objek)",
+  "あげます": "memberi; menyiram (air)",
+  "はなが": "bunga (subjek)",
+  "さくと": "kalau mekar; ketika mekar",
+  "うれしいです": "senang; gembira"
  }
 }
