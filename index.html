@@ -634,6 +634,11 @@
   <section id="layar-unit2" class="sembunyi">
     <div class="navigasi"><button onclick="bukaLayar('belajar')">← Kembali ke Belajar</button></div>
     <div class="kartu">
+      <h2>Tonton semenit</h2>
+      <p id="klip2-status">Satu menit: dengarkan percakapan di toko pakaian dari masuk sampai kasir, lalu tangkap maksud pertanyaan terakhir stafnya.</p>
+      <button class="tombol" style="margin-top:10px;" onclick="bukaKlip2()">Tonton sekarang</button>
+    </div>
+    <div class="kartu">
       <h2>Belanja</h2>
       <p>Setelah unit ini, kamu bisa berbelanja di toko pakaian seperti yang benar-benar dipakai orang Jepang: tanya harga, minta ukuran lain, mencoba baju, lalu membayar di kasir. Dengarkan dulu contoh lengkapnya, ucapkan, lalu bedah penjelasannya satu-satu di bawahnya.</p>
     </div>
@@ -687,9 +692,9 @@
     </div>
   </section>
 
-  <!-- TONTON SEMENIT: UNIT 1 -->
+  <!-- TONTON SEMENIT -->
   <section id="layar-klip" class="sembunyi">
-    <div class="navigasi"><button onclick="bukaUnit()">← Kembali ke Unit 1</button></div>
+    <div class="navigasi"><button id="klip-kembali" onclick="bukaUnit()">← Kembali ke Unit 1</button></div>
     <div class="kartu">
       <h2>Tonton semenit</h2>
       <img id="klip-bingkai" class="klip-bingkai" src="klip/b1.webp" alt="Ilustrasi klip: Rina tiba di tempat kerja barunya">
@@ -700,7 +705,7 @@
         <button class="tombol rangka sembunyi" id="klip-tombol-pelan" onclick="putarKlip(true)">Putar ulang pelan + teks</button>
       </div>
       <div id="klip-soal" class="sembunyi" style="margin-top:16px;">
-        <p><strong>Tangkap Maksudnya.</strong> Senior bilang <span class="jp">何かあったら、遠慮なく聞いてね。</span> Maksudnya?</p>
+        <p id="klip-soal-teks"><strong>Tangkap Maksudnya.</strong> Senior bilang <span class="jp">何かあったら、遠慮なく聞いてね。</span> Maksudnya?</p>
         <div id="klip-pilihan"></div>
         <p id="klip-umpan" class="petunjuk" style="margin-top:6px;"></p>
       </div>
@@ -2960,7 +2965,7 @@ function gambarUnit(){
   }
   var elKlip = document.getElementById("klip-status");
   if(elKlip){
-    var stKlip = statusKlip();
+    var stKlip = statusKlip("u1");
     elKlip.textContent = stKlip.xp ? "Sudah ditonton, dan pertanyaan Tangkap Maksudnya sudah kamu jawab. Kamu bisa menontonnya lagi kapan pun." : (stKlip.tonton ? "Sudah ditonton — tinggal jawab pertanyaan Tangkap Maksudnya di akhir klip." : "Satu menit: dengarkan Rina memperkenalkan diri di hari pertama bekerja, lalu tangkap maksud kalimat terakhir seniornya.");
   }
   gambarLatihanUnit();
@@ -3253,6 +3258,11 @@ function gambarUnit2(){
     UNIT2_POTONGAN.forEach(function(f, i){ if(progres.unit2Ucap && progres.unit2Ucap["u2-" + i]){ cnt++; } });
     elT.textContent = "Sudah kamu ucapkan: " + cnt + " dari " + UNIT2_POTONGAN.length + " potongan.";
   }
+  var elKlip2 = document.getElementById("klip2-status");
+  if(elKlip2){
+    var stKlip2 = statusKlip("u2");
+    elKlip2.textContent = stKlip2.xp ? "Sudah ditonton, dan pertanyaan Tangkap Maksudnya sudah kamu jawab. Kamu bisa menontonnya lagi kapan pun." : (stKlip2.tonton ? "Sudah ditonton — tinggal jawab pertanyaan Tangkap Maksudnya di akhir klip." : "Satu menit: dengarkan percakapan di toko pakaian dari masuk sampai kasir, lalu tangkap maksud pertanyaan terakhir stafnya.");
+  }
   gambarLatihanUnit2();
 }
 var UNIT2_LATIHAN = [
@@ -3444,9 +3454,87 @@ var KLIP_U1 = {
     "Kalau sudah selesai bekerja, segera pulang saja"
   ],
   bener: 0,
+  kunci: "u1",
+  konteks: "Hari pertama di tempat kerja. Dengarkan baik-baik.",
+  soalSiapa: "Senior",
+  soalJp: "何かあったら、遠慮なく聞いてね。",
+  salah: "Belum tepat — coba dengarkan lagi kalimat terakhir seniornya, lalu pilih lagi.",
+  kembaliTeks: "← Kembali ke Unit 1",
+  kembaliKe: "unit",
+  alt: "Ilustrasi klip: Rina tiba di tempat kerja barunya",
   alas: "遠慮なく (enryonaku) artinya \u201Ctanpa sungkan\u201D. Senior itu mempersilakanmu bertanya kapan pun ada kesulitan — tawaran bantuan yang tulus."
 };
-var klipAudioObj = null, klipTimer = null, klipUri = null, klipModeTeks = false;
+
+// === Tonton Semenit: Unit 2 — Belanja di toko pakaian ===
+// Cermin klip Unit 1: dialog staf & pembeli dari masuk toko sampai kasir,
+// ditutup pertanyaan kartu poin sebagai soal Tangkap Maksudnya.
+// Audio gabungan: sora-klip/klip-u2.b64 (dihasilkan sora/bangun-klip-u2.py).
+var KLIP_U2 = {
+  audio: "sora-klip/klip-u2.b64?v=klip2",
+  bingkai: [
+    {src: "klip/c1.webp", t: 0},
+    {src: "klip/c2.webp", t: 2.688},
+    {src: "klip/c3.webp", t: 9.137},
+    {src: "klip/c4.webp", t: 14.079},
+    {src: "klip/c5.webp", t: 18.796}
+  ],
+  baris: [
+    {jp: "いらっしゃいませ。", ro: "irasshaimase", t: 0.5},
+    {jp: "すみません、これはいくらですか。", ro: "sumimasen, kore wa ikura desu ka", t: 2.688},
+    {jp: "ほかのサイズはありますか。", ro: "hoka no saizu wa arimasu ka", t: 6.209},
+    {jp: "しょうしょうおまちください。", ro: "shoushou omachi kudasai", t: 9.137},
+    {jp: "おまたせしました。", ro: "omatase shimashita", t: 11.727},
+    {jp: "しちゃくしてもいいですか。", ro: "shichaku shite mo ii desu ka", t: 14.079},
+    {jp: "これをください。", ro: "kore wo kudasai", t: 16.693},
+    {jp: "カードでおねがいします。", ro: "kaado de onegaishimasu", t: 18.796},
+    {jp: "ポイントカードはおもちですか。", ro: "pointo kaado wa omochi desu ka", t: 22.164}
+  ],
+  pilihan: [
+    "Staf bertanya apakah kamu punya kartu poin",
+    "Staf menawarkan kartu poin baru untuk dibeli",
+    "Staf bertanya kamu mau bayar pakai kartu atau tunai"
+  ],
+  bener: 0,
+  kunci: "u2",
+  konteks: "Di toko pakaian. Dengarkan baik-baik.",
+  soalSiapa: "Staf",
+  soalJp: "ポイントカードはおもちですか。",
+  salah: "Belum tepat — coba dengarkan lagi pertanyaan terakhir stafnya di kasir, lalu pilih lagi.",
+  kembaliTeks: "← Kembali ke Unit 2",
+  kembaliKe: "unit2",
+  alt: "Ilustrasi klip: berbelanja di toko pakaian",
+  alas: "おもちですか（お持ちですか） artinya \u201Capakah kamu punya/membawa\u201D — pertanyaan rutin di kasir; kalau tidak punya, jawab もっていません。"
+};
+var klipAudioObj = null, klipTimer = null, klipUri = null, klipUri2 = null, klipModeTeks = false;
+var klipAktif = KLIP_U1;
+var klip2JsNujuDimuat = false, klip2JsAntre = null;
+function klip2Src(jalur){
+  return (window.KLIP_BINGKAI2 && window.KLIP_BINGKAI2[jalur]) || jalur;
+}
+function muatKlip2Bingkai(lanjut){
+  if(window.KLIP_BINGKAI2){ lanjut(); return; }
+  klip2JsAntre = lanjut;
+  if(!klip2JsNujuDimuat){
+    klip2JsNujuDimuat = true;
+    var sc = document.createElement("script");
+    sc.src = "klip2.js?v=klip2";
+    sc.onload = function(){ if(klip2JsAntre){ var a = klip2JsAntre; klip2JsAntre = null; a(); } };
+    sc.onerror = function(){ klip2JsNujuDimuat = false; klip2JsAntre = null; bejaPesen("Gambar klip gagal dimuat — periksa sambungan internet."); };
+    document.body.appendChild(sc);
+  }
+}
+function srcKlipAktif(jalur){
+  return klipAktif.kunci === "u2" ? klip2Src(jalur) : klipSrc(jalur);
+}
+function muatBingkaiAktif(lanjut){
+  if(klipAktif.kunci === "u2"){ muatKlip2Bingkai(lanjut); } else { muatKlipBingkai(lanjut); }
+}
+function uriKlipAktif(){
+  return klipAktif.kunci === "u2" ? klipUri2 : klipUri;
+}
+function simpanUriKlipAktif(uri){
+  if(klipAktif.kunci === "u2"){ klipUri2 = uri; } else { klipUri = uri; }
+}
 var klipJsDimuat = false, klipJsNujuDimuat = false, klipJsAntre = null;
 function klipSrc(jalur){
   return (window.KLIP_BINGKAI && window.KLIP_BINGKAI[jalur]) || jalur;
@@ -3466,20 +3554,32 @@ function muatKlipBingkai(lanjut){
 function normalisasiKlip(){
   if(!progres.klip || typeof progres.klip !== "object"){ progres.klip = {}; }
 }
-function statusKlip(){
+function statusKlip(kunci){
   normalisasiKlip();
-  return progres.klip.u1 || {};
+  return progres.klip[kunci || klipAktif.kunci] || {};
 }
-function bukaKlip(){
+function bukaKlip(){ bukaKlipUmum(KLIP_U1); }
+function bukaKlip2(){ bukaKlipUmum(KLIP_U2); }
+function bukaKlipUmum(data){
+  klipAktif = data;
   berhentiKlip();
   bukaLayar("klip");
-  muatKlipBingkai(function(){
-    KLIP_U1.bingkai.forEach(function(b){ var im = new Image(); im.src = klipSrc(b.src); });
+  var tblK = document.getElementById("klip-kembali");
+  if(tblK){
+    tblK.textContent = data.kembaliTeks;
+    tblK.setAttribute("onclick", data.kembaliKe === "unit2" ? "bukaUnit2()" : "bukaUnit()");
+  }
+  var imgA = document.getElementById("klip-bingkai");
+  if(imgA){ imgA.src = data.bingkai[0].src; imgA.alt = data.alt; }
+  muatBingkaiAktif(function(){
+    data.bingkai.forEach(function(b){ var im = new Image(); im.src = srcKlipAktif(b.src); });
     var img = document.getElementById("klip-bingkai");
-    if(img){ img.src = klipSrc(KLIP_U1.bingkai[0].src); }
+    if(img){ img.src = srcKlipAktif(data.bingkai[0].src); }
   });
   var pg = document.getElementById("klip-panggung");
-  if(pg){ pg.textContent = "Hari pertama di tempat kerja. Dengarkan baik-baik."; }
+  if(pg){ pg.textContent = data.konteks; }
+  var elST = document.getElementById("klip-soal-teks");
+  if(elST){ elST.innerHTML = "<strong>Tangkap Maksudnya.</strong> " + data.soalSiapa + " bilang <span class=\"jp\">" + data.soalJp + "</span> Maksudnya?"; }
   var bt = document.getElementById("klip-baris-teks");
   if(bt){ bt.innerHTML = ""; }
   var st = statusKlip();
@@ -3503,7 +3603,7 @@ function putarKlip(pelan){
   if(bt){
     bt.innerHTML = "";
     if(klipModeTeks){
-      KLIP_U1.baris.forEach(function(b){
+      klipAktif.baris.forEach(function(b){
         var d = document.createElement("div");
         d.className = "klip-baris";
         d.innerHTML = "<span class='jp'>" + b.jp + "</span><small>" + b.ro + "</small>";
@@ -3520,13 +3620,14 @@ function putarKlip(pelan){
     klipTimer = setInterval(sinkronKlip, 120);
     klipAudioObj.play().catch(function(){ berhentiKlip(); bejaPesen("Suaranya tidak bisa diputar."); });
   }
-  if(klipUri){ mainkeun(klipUri); return; }
-  fetch(KLIP_U1.audio, {cache: "force-cache"}).then(function(r){
+  var uriS = uriKlipAktif();
+  if(uriS){ mainkeun(uriS); return; }
+  fetch(klipAktif.audio, {cache: "force-cache"}).then(function(r){
     if(!r.ok){ throw new Error("euweuh"); }
     return r.text();
   }).then(function(teks){
-    klipUri = "data:audio/mpeg;base64," + teks.trim();
-    mainkeun(klipUri);
+    simpanUriKlipAktif("data:audio/mpeg;base64," + teks.trim());
+    mainkeun(uriKlipAktif());
   }).catch(function(){ bejaPesen("Suaranya belum tersedia untuk klip ini."); });
 }
 function sinkronKlip(){
@@ -3534,16 +3635,16 @@ function sinkronKlip(){
   var ct = klipAudioObj.currentTime || 0;
   var img = document.getElementById("klip-bingkai");
   if(img){
-    var src = KLIP_U1.bingkai[0].src;
-    KLIP_U1.bingkai.forEach(function(b){ if(ct >= b.t){ src = b.src; } });
-    var uri = klipSrc(src);
+    var src = klipAktif.bingkai[0].src;
+    klipAktif.bingkai.forEach(function(b){ if(ct >= b.t){ src = b.src; } });
+    var uri = srcKlipAktif(src);
     if(img.getAttribute("src") !== uri){ img.src = uri; }
   }
   if(klipModeTeks){
     var bt = document.getElementById("klip-baris-teks");
     if(bt){
       var barudak = bt.children;
-      KLIP_U1.baris.forEach(function(b, i){
+      klipAktif.baris.forEach(function(b, i){
         if(barudak[i]){ barudak[i].classList.toggle("aktif", ct >= b.t); }
       });
     }
@@ -3554,9 +3655,9 @@ function klipBeres(){
   var st = statusKlip();
   if(!st.tonton){
     st.tonton = 1;
-    progres.klip.u1 = st;
+    progres.klip[klipAktif.kunci] = st;
     simpan();
-    kirimLaporan("klip-u1-tonton");
+    kirimLaporan("klip-" + klipAktif.kunci + "-tonton");
   }
   var tblP = document.getElementById("klip-tombol-pelan");
   if(tblP){ tblP.classList.remove("sembunyi"); }
@@ -3572,39 +3673,39 @@ function tampilSoalKlip(){
   if(!wadah){ return; }
   wadah.innerHTML = "";
   var st = statusKlip();
-  KLIP_U1.pilihan.forEach(function(pil, pi){
+  klipAktif.pilihan.forEach(function(pil, pi){
     var tbl = document.createElement("button");
     tbl.className = "tombol rangka";
     tbl.style.cssText = "display:block; width:100%; text-align:left; margin-top:6px;";
     tbl.textContent = pil;
-    if(st.xp && pi === KLIP_U1.bener){
+    if(st.xp && pi === klipAktif.bener){
       tbl.style.background = "#147D74"; tbl.style.color = "#FFFFFF"; tbl.style.borderColor = "#147D74";
     }
     (function(p2, el){ tbl.onclick = function(){ jawabKlip(p2, el); }; })(pi, tbl);
     wadah.appendChild(tbl);
   });
   var fb = document.getElementById("klip-umpan");
-  if(fb && st.xp){ fb.textContent = "\u2713 " + KLIP_U1.alas; }
+  if(fb && st.xp){ fb.textContent = "\u2713 " + klipAktif.alas; }
 }
 function jawabKlip(pi, el){
   var fb = document.getElementById("klip-umpan");
   var st = statusKlip();
-  if(pi === KLIP_U1.bener){
+  if(pi === klipAktif.bener){
     if(!st.xp){
       st.xp = 1;
-      progres.klip.u1 = st;
+      progres.klip[klipAktif.kunci] = st;
       progres.xp += 10;
       simpan(); segarkanProgres();
       bejaPesen("Benar! +10 XP");
-      kirimLaporan("klip-u1-benar");
+      kirimLaporan("klip-" + klipAktif.kunci + "-benar");
     }
-    if(fb){ fb.textContent = "\u2713 " + KLIP_U1.alas; }
+    if(fb){ fb.textContent = "\u2713 " + klipAktif.alas; }
     tampilSoalKlip();
   } else {
     el.style.background = "#F6DCD2";
     el.style.borderColor = "#E2725B";
     el.disabled = true;
-    if(fb){ fb.textContent = "Belum tepat — coba dengarkan lagi kalimat terakhir seniornya, lalu pilih lagi."; }
+    if(fb){ fb.textContent = klipAktif.salah; }
   }
 }
 
