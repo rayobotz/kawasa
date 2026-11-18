@@ -258,7 +258,7 @@
       <h2>Unit Belajar</h2>
       <p>Satu unit, satu situasi nyata.</p>
       <div class="jalur"><div class="no">1</div><div class="nama">Perkenalan<small style="display:block; font-weight:400; color:var(--teks-lembut);">memperkenalkan diri</small></div><button class="tombol" style="padding:6px 14px; font-size:13px;" onclick="bukaUnit()">Mulai</button></div>
-      <div class="jalur"><div class="no">2</div><div class="nama">Belanja<small style="display:block; font-weight:400; color:var(--teks-lembut);">tanya harga &amp; membayar</small></div><span class="lencana segera">Segera</span></div>
+      <div class="jalur"><div class="no">2</div><div class="nama">Belanja<small style="display:block; font-weight:400; color:var(--teks-lembut);">tanya harga &amp; membayar</small></div><span id="unit2-aksi"><span class="lencana segera">Terkunci</span></span></div>
       <div class="jalur"><div class="no">3</div><div class="nama">Naik Kereta<small style="display:block; font-weight:400; color:var(--teks-lembut);">tanya jalan &amp; arah</small></div><span class="lencana segera">Segera</span></div>
       <div class="jalur"><div class="no">4</div><div class="nama">Pesan Makanan<small style="display:block; font-weight:400; color:var(--teks-lembut);">memesan di restoran</small></div><span class="lencana segera">Segera</span></div>
         </div>
@@ -614,7 +614,7 @@
     </div>
     <div class="kartu">
       <p class="petunjuk" style="margin-top:0;">Unit berikutnya masih disiapkan — ini daftarnya.</p>
-      <button class="tombol aksen" style="width:100%;" onclick="bukaLayar('belajar')">Lanjut ke Unit 2 — Belanja →</button>
+      <button class="tombol aksen" style="width:100%;" onclick="keUnit2()">Lanjut ke Unit 2 — Belanja →</button>
     </div>
   </section>
   <section id="layar-unit-kata" class="sembunyi">
@@ -626,7 +626,64 @@
     </div>
     <div class="kartu">
       <p class="petunjuk" style="margin-top:0;">Unit berikutnya masih disiapkan — ini daftarnya.</p>
-      <button class="tombol aksen" style="width:100%;" onclick="bukaLayar('belajar')">Lanjut ke Unit 2 — Belanja →</button>
+      <button class="tombol aksen" style="width:100%;" onclick="keUnit2()">Lanjut ke Unit 2 — Belanja →</button>
+    </div>
+  </section>
+
+  <!-- UNIT TEMA: BELANJA -->
+  <section id="layar-unit2" class="sembunyi">
+    <div class="navigasi"><button onclick="bukaLayar('belajar')">← Kembali ke Belajar</button></div>
+    <div class="kartu">
+      <h2>Belanja</h2>
+      <p>Setelah unit ini, kamu bisa berbelanja di toko pakaian seperti yang benar-benar dipakai orang Jepang: tanya harga, minta ukuran lain, mencoba baju, lalu membayar di kasir. Dengarkan dulu contoh lengkapnya, ucapkan, lalu bedah penjelasannya satu-satu di bawahnya.</p>
+    </div>
+    <div class="kartu">
+      <h2>Contoh lengkapnya</h2>
+      <p class="jp" id="unit2-full-jp" style="font-size:17px; line-height:1.9;"></p>
+      <p style="margin-top:0;"><small id="unit2-full-ro"></small></p>
+      <button class="tombol-sora" onclick="putarUnit('u2-full', this)"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/><path d="M18.8 6a8.5 8.5 0 0 1 0 12"/></svg>Dengar contoh lengkap</button>
+        <button class="tombol-sora ikon" title="Dengarkan pelan-pelan" aria-label="Dengarkan contoh lengkap pelan-pelan" onclick="putarUnit('u2-full', this, true)"><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M5 17c0-4.5 3.1-8 7-8s7 3.5 7 8'/><path d='M3 17h18'/><circle cx='20' cy='14.6' r='1.5'/><path d='M8.5 17v2M15.5 17v2'/></svg></button>
+    </div>
+    <div class="kartu">
+      <h2>Penjelasannya, satu-satu</h2>
+      <div id="unit2-potongan"></div>
+      <p id="unit2-ucap-teks" class="petunjuk" style="margin-top:8px;"></p>
+      <button class="tombol rangka" style="width:100%; margin-top:10px;" onclick="bukaUnit2Kata()">Kosakata di unit ini →</button>
+    </div>
+    <div class="kartu">
+      <h2>Balasan yang akan kamu dengar</h2>
+      <div id="unit2-balas"></div>
+      <details style="margin-top:10px;">
+        <summary style="font-weight:700; cursor:pointer;">Catatan: yang tidak dipakai orang Jepang</summary>
+        <ul style="margin:8px 0 0; padding-left:18px; font-size:14px; line-height:1.7;">
+          <li><span class="jp">お会計お願いします</span> itu untuk meminta tagihan di restoran — di toko tidak dipakai. Di toko kamu cukup datang ke kasir; total harganya diumumkan staf kepadamu.</li>
+          <li>Jangan menawar harga di toko atau department store — di Jepang harga pas. <span class="jp">ちょっと高いですね</span> hanya reaksi spontan ("agak mahal, ya"), bukan pembuka tawar-menawar.</li>
+          <li><strong>Wawasan komunikasi:</strong> <span class="jp">いらっしゃいませ</span>, sapaan staf saat kamu masuk toko, memang tidak dirancang untuk dijawab. Orang Jepang cenderung cukup mengangguk kecil atau diam saja dan melanjutkan melihat-lihat. Jangan merasa tidak sopan karena tidak membalasnya.</li>
+        </ul>
+      </details>
+    </div>
+    <div class="kartu">
+      <h2>Latihan — langsung praktik</h2>
+      <p>Dengarkan dan pahami pesannya. Tanpa aturan, tanpa hafalan pola.</p>
+      <div id="unit2-latihan"></div>
+      <p id="unit2-latihan-teks" class="petunjuk" style="margin-top:8px;"></p>
+      <div id="unit2-latihan-beres"></div>
+    </div>
+    <div class="kartu">
+      <p class="petunjuk" style="margin-top:0;">Unit berikutnya masih disiapkan — ini daftarnya.</p>
+      <button class="tombol aksen" style="width:100%;" onclick="bukaLayar('belajar')">Lanjut ke Unit 3 — Naik Kereta →</button>
+    </div>
+  </section>
+  <section id="layar-unit2-kata" class="sembunyi">
+    <div class="navigasi"><button onclick="bukaUnit2()">← Kembali ke Unit 2</button></div>
+    <div class="kartu">
+      <h2>Kosakata Unit 2</h2>
+      <p>Kata baru untuk belanjamu sendiri — barang di toko pakaian dan kata yang terdengar di kasir. Dengarkan dan ucapkan satu-satu.</p>
+      <div id="unit2-kata-daftar" class="daftar-kata-baris"></div>
+    </div>
+    <div class="kartu">
+      <p class="petunjuk" style="margin-top:0;">Unit berikutnya masih disiapkan — ini daftarnya.</p>
+      <button class="tombol aksen" style="width:100%;" onclick="bukaLayar('belajar')">Lanjut ke Unit 3 — Naik Kereta →</button>
     </div>
   </section>
 
@@ -738,7 +795,7 @@ var SOKUON_PAIRS = [["\u304a\u3068","oto","suara","\u304a\u3063\u3068","otto","s
 
 var KUNCI = "aplikasi-umum-beginner:progress:v1";
 var TRACK_URL = "https://script.google.com/macros/s/AKfycbzt4lhJu00LrpG_4ped806sh393v0pIfl778SnO6r4gZ75P-FU8N3SFs7jjw2oVh5eI/exec";
-var progres = {xp:0, kuasai:{}, id:"", nama:"", kode:"", capBaris:{}, kenalan:{}, nulis:{}, frasaUcap:{}, frasaXp:{}, unitUcap:{}, unitXp:{}};
+var progres = {xp:0, kuasai:{}, id:"", nama:"", kode:"", capBaris:{}, kenalan:{}, nulis:{}, frasaUcap:{}, frasaXp:{}, unitUcap:{}, unitXp:{}, unit2Ucap:{}, unit2Xp:{}};
 try{ var tersimpan = localStorage.getItem(KUNCI); if(tersimpan){ progres = JSON.parse(tersimpan); } }catch(e){}
 if(!progres.id){ progres.id = "u" + Date.now().toString(36) + Math.floor(Math.random()*99999).toString(36); }
 function simpan(){ try{ localStorage.setItem(KUNCI, JSON.stringify(progres)); }catch(e){} }
@@ -1031,7 +1088,7 @@ function bukaLayar(nama){
       try{ history.back(); }catch(e){}
     }
   }
-  var layar = ["beranda","kana","latihan","ringkasan","detail","jalur","jalur-hira","jalur-kata","baris","kenalan","tentang","privasi","cerita","belajar","unit","unit-kata","klip","artikel"];
+  var layar = ["beranda","kana","latihan","ringkasan","detail","jalur","jalur-hira","jalur-kata","baris","kenalan","tentang","privasi","cerita","belajar","unit","unit-kata","unit2","unit2-kata","klip","artikel"];
   if(nama !== "detail"){ berhentiAnimasi(); }
   for(var i=0;i<layar.length;i++){
     document.getElementById("layar-"+layar[i]).classList.toggle("sembunyi", layar[i] !== nama);
@@ -1039,6 +1096,7 @@ function bukaLayar(nama){
   if(nama !== "klip" && typeof berhentiKlip === "function"){ berhentiKlip(); }
   if(nama === "beranda"){ segarkanProgres(); segarkanBeranda(); }
   if(nama === "jalur"){ gambarHub(); }
+  if(nama === "belajar"){ gambarBarisUnit2(); }
   if(nama === "beranda"){ gambarFrasa(); }
   if(nama === "jalur-hira"){ gambarJalurAksara("hira"); }
   if(nama === "jalur-kata"){ gambarJalurAksara("kata"); }
@@ -3066,6 +3124,295 @@ function tandaiUcapUnit(i){
   bejaPesen("Bagus! Potongan ini sudah kamu ucapkan. +5 XP");
 }
 
+
+
+// === Unit tema 2: Belanja ===
+// Eusina dumasar riset basa sapopoé (belanja): kalimat produksi ngan tina
+// pola anu terverifikasi, kalimat staf tina daptar anu bakal kadenge.
+// Misi: Unit 2 ngan kabuka sanggeus latihan Unit 1 beres kabéh.
+var UNIT2_POTONGAN = [
+  {konci:"u2-1", jp:"すみません、これはいくらですか。", ro:"sumimasen, kore wa ikura desu ka", arti:"Permisi, ini berapa harganya?", cat:"ucapkan sambil menunjuk barangnya",
+   varian:[{konci:"u2-v1", jp:"これ、いくらですか。", ro:"kore, ikura desu ka", arti:"versi pendek sambil menunjuk — yang paling sering terdengar"}]},
+  {konci:"u2-2", jp:"ほかのサイズはありますか。", ro:"hoka no saizu wa arimasu ka", arti:"Ada ukuran lain?", cat:"pola tanya stok: ほかの 〜は ありますか",
+   varian:[{konci:"u2-v2", jp:"ほかのいろはありますか。", ro:"hoka no iro wa arimasu ka", arti:"Ada warna lain?"}]},
+  {konci:"u2-3", jp:"しちゃくしてもいいですか。", ro:"shichaku shite mo ii desu ka", arti:"Boleh saya coba pakai?", cat:"khusus pakaian — minta izin dulu sebelum masuk ruang ganti"},
+  {konci:"u2-4", jp:"これをください。", ro:"kore wo kudasai", arti:"Saya beli yang ini", cat:"ucapan saat memutuskan membeli",
+   varian:[{konci:"u2-v3", jp:"これ、おねがいします。", ro:"kore, onegaishimasu", arti:"versi lebih lembut, biasa diucapkan di kasir"}]},
+  {konci:"u2-5", jp:"カードでおねがいします。", ro:"kaado de onegaishimasu", arti:"Bayar pakai kartu, tolong", cat:"jawaban untuk pertanyaan staf soal cara bayar",
+   varian:[{konci:"u2-v4", jp:"げんきんでおねがいします。", ro:"genkin de onegaishimasu", arti:"Bayar tunai, tolong"}]}
+];
+var UNIT2_FULL = {jp:"すみません、これはいくらですか。ほかのサイズはありますか。しちゃくしてもいいですか。これをください。カードでおねがいします。", ro:"sumimasen, kore wa ikura desu ka? hoka no saizu wa arimasu ka? shichaku shite mo ii desu ka? kore wo kudasai. kaado de onegaishimasu."};
+var UNIT2_BALAS = {konci:"u2-v5", jp:"ふくろはごりようですか。", ro:"fukuro wa goriyou desu ka", arti:"'Mau pakai kantong?' — pertanyaan staf di kasir (kantong di Jepang berbayar). Jawab dengan salah satu kalimat di bawah ini."};
+var UNIT2_JAWAB = [
+  {konci:"u2-v6", jp:"ふくろ、おねがいします。", ro:"fukuro, onegaishimasu", arti:"Ya, pakai kantong, tolong"},
+  {konci:"u2-v7", jp:"だいじょうぶです。", ro:"daijoubu desu", arti:"Tidak usah — penolakan halus yang biasa dipakai"}
+];
+function unit1Selesai(){
+  var cnt = 0;
+  UNIT1_LATIHAN.forEach(function(soal, qi){ if(progres.unitXp && progres.unitXp["q" + (qi + 1)]){ cnt++; } });
+  return cnt >= UNIT1_LATIHAN.length;
+}
+function gambarBarisUnit2(){
+  var el = document.getElementById("unit2-aksi");
+  if(!el){ return; }
+  if(unit1Selesai()){
+    el.innerHTML = "<button class=\"tombol\" style=\"padding:6px 14px; font-size:13px;\" onclick=\"bukaUnit2()\">Mulai</button>";
+  } else {
+    el.innerHTML = "<span class=\"lencana segera\">Terkunci</span>";
+  }
+}
+function keUnit2(){
+  if(unit1Selesai()){ bukaUnit2(); }
+  else { bejaPesen("Selesaikan dulu latihan Unit 1 — Unit 2 terbuka setelahnya."); bukaLayar("belajar"); }
+}
+function bukaUnit2(){
+  if(!unit1Selesai()){ keUnit2(); return; }
+  bukaLayar("unit2"); gambarUnit2();
+}
+function gambarUnit2(){
+  var wadah = document.getElementById("unit2-potongan");
+  if(!wadah){ return; }
+  wadah.innerHTML = "";
+  UNIT2_POTONGAN.forEach(function(f, i){
+    var blok = document.createElement("div");
+    blok.className = "unit-potongan";
+    var jajar = document.createElement("div");
+    jajar.className = "unit-jajar";
+    var nama = document.createElement("div");
+    nama.className = "nama";
+    nama.innerHTML = "<span class='jp' style='font-size:17px;'>" + f.jp + "</span><br><small>" + f.ro + " — " + f.arti + "</small>" + (f.cat ? "<br><small style='color:var(--toska-gelap);'>" + f.cat + "</small>" : "");
+    jajar.appendChild(nama);
+    var tblD = document.createElement("button");
+    tblD.className = "tombol-sora ikon"; tblD.innerHTML = IKON_SPK;
+    tblD.setAttribute("aria-label", "Dengarkan potongan ini");
+    (function(k, el){ tblD.onclick = function(){ putarUnit(k, el); }; })(f.konci, tblD);
+    var klpU = document.createElement("div");
+    klpU.className = "jajar-tombol";
+    klpU.appendChild(tblD);
+    var tblU = document.createElement("button");
+    var geusU = progres.unit2Ucap && progres.unit2Ucap["u2-" + i];
+    tblU.className = "tombol-sora ikon tombol-ucap" + (geusU ? " geus-ucap" : "");
+    tblU.innerHTML = IKON_CENTANG;
+    tblU.title = geusU ? "Sudah kamu ucapkan" : "Ucapkan sendiri, lalu ketuk";
+    tblU.setAttribute("aria-label", "Tandai potongan sudah saya ucapkan");
+    var tblDS = document.createElement("button");
+    tblDS.className = "tombol-sora ikon"; tblDS.innerHTML = IKON_SLOW; tblDS.title = "Dengarkan pelan-pelan";
+    tblDS.setAttribute("aria-label", "Dengarkan potongan ini pelan-pelan");
+    (function(k, el){ tblDS.onclick = function(){ putarUnit(k, el, true); }; })(f.konci, tblDS);
+    (function(idx){ tblU.onclick = function(){ tandaiUcapUnit2(idx); }; })(i);
+    klpU.appendChild(tblDS);
+    klpU.appendChild(tblU);
+    jajar.appendChild(klpU);
+    blok.appendChild(jajar);
+    (f.varian || []).forEach(function(v){
+      var barisV = document.createElement("div");
+      barisV.className = "unit-jajar unit-varian";
+      var namaV = document.createElement("div");
+      namaV.className = "nama";
+      namaV.innerHTML = "<small style='font-weight:700; color:var(--toska-gelap);'>Versi lain:</small> <span class='jp' style='font-size:15px;'>" + v.jp + "</span><br><small>" + v.ro + " — " + v.arti + "</small>";
+      barisV.appendChild(namaV);
+      var tblV = document.createElement("button");
+      tblV.className = "tombol-sora"; tblV.innerHTML = IKON_SPK + "Dengar";
+      tblV.setAttribute("aria-label", "Dengarkan versi lain ini");
+      tblV.onclick = function(){ putarUnit(v.konci, tblV); };
+      barisV.appendChild(tblV);
+      blok.appendChild(barisV);
+    });
+    wadah.appendChild(blok);
+  });
+  var elF = document.getElementById("unit2-full-jp"), elR = document.getElementById("unit2-full-ro");
+  if(elF){ elF.textContent = UNIT2_FULL.jp; }
+  if(elR){ elR.textContent = UNIT2_FULL.ro; }
+  var elB = document.getElementById("unit2-balas");
+  if(elB){
+    elB.innerHTML = "";
+    var jieunBaris = function(item){
+      var jajarB = document.createElement("div");
+      jajarB.className = "unit-jajar";
+      var namaB = document.createElement("div");
+      namaB.className = "nama";
+      namaB.innerHTML = "<span class='jp' style='font-size:16px;'>" + item.jp + "</span><br><small>" + item.ro + " — " + item.arti + "</small>";
+      jajarB.appendChild(namaB);
+      var tblB = document.createElement("button");
+      tblB.className = "tombol-sora"; tblB.innerHTML = IKON_SPK + "Dengar";
+      tblB.onclick = function(){ putarUnit(item.konci, tblB); };
+      jajarB.appendChild(tblB);
+      return jajarB;
+    };
+    elB.appendChild(jieunBaris(UNIT2_BALAS));
+    var labelJ = document.createElement("p");
+    labelJ.className = "petunjuk";
+    labelJ.style.margin = "10px 0 4px";
+    labelJ.textContent = "Jawabanmu untuk pertanyaan itu:";
+    elB.appendChild(labelJ);
+    UNIT2_JAWAB.forEach(function(jw){ elB.appendChild(jieunBaris(jw)); });
+  }
+  var elT = document.getElementById("unit2-ucap-teks");
+  if(elT){
+    var cnt = 0;
+    UNIT2_POTONGAN.forEach(function(f, i){ if(progres.unit2Ucap && progres.unit2Ucap["u2-" + i]){ cnt++; } });
+    elT.textContent = "Sudah kamu ucapkan: " + cnt + " dari " + UNIT2_POTONGAN.length + " potongan.";
+  }
+  gambarLatihanUnit2();
+}
+var UNIT2_LATIHAN = [
+  {audio:"u2-1", tanya:"Orang ini bilang apa?", pilihan:["Bertanya harga barang ini", "Bertanya apakah ada ukuran lain", "Minta izin mencoba baju"], bener:0, alas:"いくら artinya 'berapa harganya'."},
+  {audio:"u2-5", tanya:"Orang ini bilang apa?", pilihan:["Dia mau membayar tunai", "Dia mau membayar pakai kartu", "Dia minta diberi kantong"], bener:1, alas:"カードで = dengan kartu. Kalimat ini jawaban untuk pertanyaan kasir soal cara membayar."},
+  {audio:"u2-v5", tanya:"Staf ini bilang apa?", pilihan:["'Mau pakai kantong?'", "'Mau membayar dengan apa?'", "'Totalnya sekian yen'"], bener:0, alas:"ふくろ = kantong. Ini pertanyaan staf untuk didengar — jawab ふくろ、おねがいします atau だいじょうぶです."},
+  {audio:null, tanya:"Kamu mau mencoba baju di toko. Apa yang kamu katakan ke staf?", pilihan:["みているだけです", "しちゃくしても いいですか", "これをください"], bener:1, alas:"しちゃくしてもいいですか = 'boleh saya coba pakai?' — minta izin dulu sebelum masuk ruang ganti."},
+  {audio:"u2-tm1", tanya:"Apa maksud sebenarnya pertanyaan staf itu?", pilihan:["Staf bertanya apakah kamu punya kartu poin", "Staf menawarkan kartu poin baru untuk dibeli", "Staf bertanya kamu mau bayar pakai kartu atau tunai"], bener:0, alas:"お持ちですか = 'apakah kamu punya/membawa'. Pertanyaan rutin di kasir — kalau tidak punya, jawab もっていません."}
+];
+var UNIT2_KATA = [
+  {jp:"シャツ", ro:"shatsu", arti:"kemeja / kaus", kon:"u2k-1", g:"barang"},
+  {jp:"ズボン", ro:"zubon", arti:"celana panjang", kon:"u2k-2", g:"barang"},
+  {jp:"スカート", ro:"sukaato", arti:"rok", kon:"u2k-3", g:"barang"},
+  {jp:"くつ", ro:"kutsu", arti:"sepatu", kon:"u2k-4", g:"barang"},
+  {jp:"ぼうし", ro:"boushi", arti:"topi", kon:"u2k-5", g:"barang"},
+  {jp:"かばん", ro:"kaban", arti:"tas", kon:"u2k-6", g:"barang"},
+  {jp:"めがね", ro:"megane", arti:"kacamata", kon:"u2k-7", g:"barang"},
+  {jp:"とけい", ro:"tokei", arti:"jam / jam tangan", kon:"u2k-8", g:"barang"},
+  {jp:"いくら", ro:"ikura", arti:"berapa harganya", kon:"u2k-9", g:"belanja"},
+  {jp:"サイズ", ro:"saizu", arti:"ukuran", kon:"u2k-10", g:"belanja"},
+  {jp:"いろ", ro:"iro", arti:"warna", kon:"u2k-11", g:"belanja"},
+  {jp:"おかね", ro:"okane", arti:"uang", kon:"u2k-12", g:"belanja"},
+  {jp:"カード", ro:"kaado", arti:"kartu (bayar)", kon:"u2k-13", g:"belanja"},
+  {jp:"げんきん", ro:"genkin", arti:"uang tunai", kon:"u2k-14", g:"belanja"},
+  {jp:"ふくろ", ro:"fukuro", arti:"kantong (belanja)", kon:"u2k-15", g:"belanja"},
+  {jp:"レジ", ro:"reji", arti:"kasir / mesin kasir", kon:"u2k-16", g:"belanja"}
+];
+function bukaUnit2Kata(){ bukaLayar("unit2-kata"); gambarUnit2Kata(); }
+function gambarUnit2Kata(){
+  var wadah = document.getElementById("unit2-kata-daftar"); if(!wadah){ return; }
+  wadah.innerHTML = "";
+  var grupAyeuna = "";
+  UNIT2_KATA.forEach(function(w){
+    if(w.g !== grupAyeuna){
+      grupAyeuna = w.g;
+      var h = document.createElement("p");
+      h.style.cssText = "font-weight:700; margin:14px 0 2px;";
+      h.textContent = grupAyeuna === "barang" ? "Barang di toko" : "Kata belanja";
+      var hint = document.createElement("p");
+      hint.className = "petunjuk";
+      hint.style.margin = "0 0 8px";
+      hint.textContent = grupAyeuna === "barang" ? "Barang yang biasa kamu cari di toko pakaian." : "Dipakai di potongan unit ini dan terdengar di kasir.";
+      wadah.appendChild(h); wadah.appendChild(hint);
+    }
+    var baris = document.createElement("div");
+    baris.className = "kata-baris";
+    baris.innerHTML = "<span class='kw jp'>" + w.jp + "</span><span class='kr'>" + w.ro + "</span><span class='ka'>" + w.arti + "</span>";
+    var tbl = document.createElement("button");
+    tbl.className = "tombol-sora ikon"; tbl.innerHTML = IKON_SPK; tbl.setAttribute("aria-label", "Dengarkan kata ini");
+    (function(k, el){ tbl.onclick = function(){ putarUnit(k, el); }; })(w.kon, tbl);
+    baris.appendChild(tbl);
+    wadah.appendChild(baris);
+  });
+}
+var latihan2Ulang = false;
+var latihan2UlangBeres = {};
+function gambarLatihanUnit2(){
+  var wadah = document.getElementById("unit2-latihan");
+  if(!wadah){ return; }
+  wadah.innerHTML = "";
+  UNIT2_LATIHAN.forEach(function(soal, qi){
+    var blok = document.createElement("div");
+    blok.className = "unit-potongan";
+    var judul = document.createElement("p");
+    judul.style.margin = "0 0 8px";
+    judul.innerHTML = "<strong>Soal " + (qi + 1) + ".</strong> " + soal.tanya + " ";
+    blok.appendChild(judul);
+    if(soal.audio){
+      var tblD = document.createElement("button");
+      tblD.className = "tombol-sora"; tblD.innerHTML = IKON_SPK + "Dengar";
+      tblD.setAttribute("aria-label", "Dengarkan soal ini");
+      tblD.onclick = function(){ putarUnit(soal.audio, tblD); };
+      judul.appendChild(tblD);
+    }
+    var geusBener = !latihan2Ulang && progres.unit2Xp && progres.unit2Xp["q" + (qi + 1)];
+    soal.pilihan.forEach(function(pil, pi){
+      var tbl = document.createElement("button");
+      tbl.className = "tombol rangka";
+      tbl.style.cssText = "display:block; width:100%; text-align:left; margin-top:6px;";
+      tbl.textContent = pil;
+      if(geusBener && pi === soal.bener){
+        tbl.classList.add("geus-ucap");
+        tbl.style.background = "#147D74"; tbl.style.color = "#FFFFFF"; tbl.style.borderColor = "#147D74";
+      }
+      (function(q, p2, el){ tbl.onclick = function(){ jawabLatihanUnit2(q, p2, el); }; })(qi, pi, tbl);
+      blok.appendChild(tbl);
+    });
+    var fb = document.createElement("p");
+    fb.className = "petunjuk";
+    fb.id = "latihan2-fb-" + qi;
+    fb.style.marginTop = "6px";
+    if(geusBener){ fb.textContent = "✓ " + soal.alas; }
+    blok.appendChild(fb);
+    wadah.appendChild(blok);
+  });
+  var elT = document.getElementById("unit2-latihan-teks");
+  var cnt = 0;
+  UNIT2_LATIHAN.forEach(function(soal, qi){ if(progres.unit2Xp && progres.unit2Xp["q" + (qi + 1)]){ cnt++; } });
+  if(elT){ elT.textContent = latihan2Ulang ? "Mode ulangi — soal beres: " + Object.keys(latihan2UlangBeres).length + " dari " + UNIT2_LATIHAN.length + "." : "Soal beres: " + cnt + " dari " + UNIT2_LATIHAN.length + "."; }
+  var elBeres = document.getElementById("unit2-latihan-beres");
+  if(elBeres){
+    if(!latihan2Ulang && cnt >= UNIT2_LATIHAN.length){
+      elBeres.innerHTML = "<div style=\"background:#EAF4F1; border:1.5px solid #147D74; border-radius:12px; padding:12px; margin-top:10px;\"><p style=\"margin:0 0 6px; font-weight:700;\">Unit 2 selesai.</p><p style=\"margin:0 0 10px;\">Kamu sudah bisa berbelanja di toko pakaian dalam bahasa Jepang: bertanya harga, minta ukuran lain, mencoba baju sebelum membeli, dan membayar di kasir.</p><button class=\"tombol rangka\" onclick=\"ulangiLatihanUnit2()\">Ulangi latihan</button> <button class=\"tombol\" onclick=\"bukaLayar('beranda')\">Kembali ke Beranda</button></div>";
+    } else { elBeres.innerHTML = ""; }
+  }
+}
+function jawabLatihanUnit2(qi, pi, el){
+  var soal = UNIT2_LATIHAN[qi];
+  var fb = document.getElementById("latihan2-fb-" + qi);
+  if(!progres.unit2Xp){ progres.unit2Xp = {}; }
+  var konci = "q" + (qi + 1);
+  if(pi === soal.bener){
+    if(!progres.unit2Xp[konci]){
+      progres.unit2Xp[konci] = 1;
+      progres.xp += 10;
+      simpan(); segarkanProgres();
+      bejaPesen("Benar! +10 XP");
+    }
+    if(fb){ fb.textContent = "✓ " + soal.alas; }
+    if(latihan2Ulang){
+      latihan2UlangBeres[konci] = 1;
+      el.classList.add("geus-ucap"); el.style.background = "#147D74"; el.style.color = "#FFFFFF"; el.style.borderColor = "#147D74";
+      var elT2 = document.getElementById("unit2-latihan-teks");
+      if(elT2){ elT2.textContent = "Mode ulangi — soal beres: " + Object.keys(latihan2UlangBeres).length + " dari " + UNIT2_LATIHAN.length + "."; }
+      if(Object.keys(latihan2UlangBeres).length >= UNIT2_LATIHAN.length){
+        latihan2Ulang = false; latihan2UlangBeres = {};
+        bejaPesen("Ulangi selesai — belanjamu makin lancar.");
+        gambarLatihanUnit2();
+      }
+      return;
+    }
+    gambarLatihanUnit2();
+  } else {
+    el.style.background = "#F6DCD2";
+    el.style.borderColor = "#E2725B";
+    el.disabled = true;
+    if(fb){ fb.textContent = "Belum tepat — dengarkan lagi, lalu coba pilihan lain."; }
+  }
+}
+function ulangiLatihanUnit2(){
+  latihan2Ulang = true;
+  latihan2UlangBeres = {};
+  gambarLatihanUnit2();
+  var el = document.getElementById("unit2-latihan");
+  if(el && el.scrollIntoView){ el.scrollIntoView({behavior:"smooth", block:"start"}); }
+}
+function tandaiUcapUnit2(i){
+  if(!progres.unit2Ucap){ progres.unit2Ucap = {}; }
+  if(!progres.unit2Xp){ progres.unit2Xp = {}; }
+  var konci = "u2-" + i;
+  if(progres.unit2Ucap[konci]){
+    delete progres.unit2Ucap[konci];
+    simpan(); gambarUnit2();
+    return;
+  }
+  progres.unit2Ucap[konci] = 1;
+  if(!progres.unit2Xp[konci]){ progres.unit2Xp[konci] = 1; progres.xp += 5; }
+  simpan(); segarkanProgres(); gambarUnit2();
+  bejaPesen("Bagus! Potongan ini sudah kamu ucapkan. +5 XP");
+}
 
 // === Tonton Semenit: Unit 1 — Perkenalan di hari pertama kerja ===
 // Bukan video: 5 ilustrasi berganti mengikuti satu audio dialog VOICEVOX.
