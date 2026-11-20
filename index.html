@@ -156,6 +156,12 @@
   .batang-isi{height:100%; width:0%; background:linear-gradient(90deg,var(--toska),var(--toska-terang)); border-radius:999px; transition:width .6s ease;}
   .batang-teks{font-size:12.5px; color:var(--teks-lembut); margin-top:6px;}
   .kartu-langkah{border-left:5px solid var(--aksen);}
+  .kartu-langkah{position:relative;}
+  .maskot-kenalan{text-align:center; margin:8px 0 4px;}
+  .maskot-img{display:none; height:auto;}
+  .maskot-sapa{width:160px; margin:0 auto;}
+  .maskot-kenalan .maskot-balon{display:inline-block; background:#EAF4F1; border:1px solid #147D74; border-radius:12px; padding:8px 12px; margin:8px 0 0; font-size:14px; color:var(--teks);}
+  .maskot-tunjuk{position:absolute; right:10px; bottom:8px; width:68px; margin:0;}
   .kartu-cerita{background:#fffdf6; border-top:4px solid var(--toska);}
   .tombol-sora svg, .tombol svg{width:15px; height:15px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; vertical-align:-2px; margin-right:4px;}
   .tombol-sora.ikon{width:38px; padding:0; display:inline-flex; align-items:center; justify-content:center;}
@@ -192,6 +198,7 @@
       <p id="teks-langkah">Satu langkah kecil dulu — ikuti urutannya, tidak usah lompat-lompat.</p>
       <div class="koleksi-cap" id="koleksi-cap-beranda"></div>
       <button class="tombol aksen" id="tombol-langkah" onclick="keLangkahBerikutnya()">Mulai</button>
+      <img class="maskot-img maskot-tunjuk" data-maskot="tunjuk" alt="Kancil menunjuk langkah berikutnya">
     </div>
     <div class="kartu" id="kartu-frasa">
       <h2>Frasa Hari Ini</h2>
@@ -207,6 +214,10 @@
     </div>
     <div class="kartu" id="kartu-nama">
       <h2>Kenalan dulu, yuk</h2>
+      <div class="maskot-kenalan">
+        <img class="maskot-img maskot-sapa" data-maskot="sapa" alt="Kancil, maskot Kawasa">
+        <p class="maskot-balon">"Halo! Aku Kancil. Aku juga baru mulai dari nol — kita berangkat bareng."</p>
+      </div>
       <p>Tanpa kata sandi. Progresmu dicadangkan otomatis atas nama panggilan + kode 4 angka. Di alat lain, isi nama dan kode yang sama untuk memulihkan progresmu.</p>
       <input class="ketik" id="input-nama" placeholder="nama panggilan" autocomplete="off">
       <input class="ketik" id="input-kode" placeholder="kode 4 angka — isi kalau kamu sudah punya kode" autocomplete="off" inputmode="numeric" maxlength="4" style="margin-top:8px;">
@@ -782,6 +793,7 @@
 <footer>Kawasa — makin paham, bukan makin bingung. Dibangun pelan-pelan, dibuka untuk siapa pun yang mau mulai.</footer>
 
 <script src="hanzi-writer.min.js"></script>
+<script src="maskot.js?v=mk1"></script>
 <script>
 var HIRA = [["あ","a"],["い","i"],["う","u"],["え","e"],["お","o"],["か","ka"],["き","ki"],["く","ku"],["け","ke"],["こ","ko"],["さ","sa"],["し","shi"],["す","su"],["せ","se"],["そ","so"],["た","ta"],["ち","chi"],["つ","tsu"],["て","te"],["と","to"],["な","na"],["に","ni"],["ぬ","nu"],["ね","ne"],["の","no"],["は","ha"],["ひ","hi"],["ふ","fu"],["へ","he"],["ほ","ho"],["ま","ma"],["み","mi"],["む","mu"],["め","me"],["も","mo"],["や","ya"],["ゆ","yu"],["よ","yo"],["ら","ra"],["り","ri"],["る","ru"],["れ","re"],["ろ","ro"],["わ","wa"],["を","wo"],["ん","n"]];
 var KATA = [["ア","a"],["イ","i"],["ウ","u"],["エ","e"],["オ","o"],["カ","ka"],["キ","ki"],["ク","ku"],["ケ","ke"],["コ","ko"],["サ","sa"],["シ","shi"],["ス","su"],["セ","se"],["ソ","so"],["タ","ta"],["チ","chi"],["ツ","tsu"],["テ","te"],["ト","to"],["ナ","na"],["ニ","ni"],["ヌ","nu"],["ネ","ne"],["ノ","no"],["ハ","ha"],["ヒ","hi"],["フ","fu"],["ヘ","he"],["ホ","ho"],["マ","ma"],["ミ","mi"],["ム","mu"],["メ","me"],["モ","mo"],["ヤ","ya"],["ユ","yu"],["ヨ","yo"],["ラ","ra"],["リ","ri"],["ル","ru"],["レ","re"],["ロ","ro"],["ワ","wa"],["ヲ","wo"],["ン","n"]];
@@ -3024,6 +3036,26 @@ function gambarUnitKata(){
 }
 var latihanUlang = false;
 var latihanUlangBeres = {};
+function pasangMaskot(){
+  if(!window.MASKOT_POSE){ return; }
+  var imgs = document.querySelectorAll("img[data-maskot]");
+  for(var i = 0; i < imgs.length; i++){
+    var pose = window.MASKOT_POSE[imgs[i].getAttribute("data-maskot")];
+    if(pose){ imgs[i].src = pose; imgs[i].style.display = "block"; }
+  }
+}
+function kotakSelesaiUnit(judul, teks, garisKancil, fnUlangi){
+  var pose = (window.MASKOT_POSE && window.MASKOT_POSE.raya) ? window.MASKOT_POSE.raya : "";
+  var img = pose ? "<img src=\"" + pose + "\" alt=\"Kancil\" style=\"width:100px; height:auto; flex:none;\">" : "";
+  return "<div style=\"background:#EAF4F1; border:1.5px solid #147D74; border-radius:12px; padding:12px; margin-top:10px;\">"
+    + "<div style=\"display:flex; gap:12px; align-items:center;\">" + img
+    + "<div><p style=\"margin:0 0 6px; font-weight:700;\">" + judul + "</p>"
+    + "<p style=\"margin:0;\">" + teks + "</p></div></div>"
+    + "<div style=\"background:#FFFDF6; border:1px solid #DDD3BF; border-radius:10px; padding:8px 10px; margin:10px 0;\">"
+    + "<p style=\"margin:0 0 2px; font-size:12.5px; font-weight:700; color:#C2533C;\">Kancil sekarang:</p>"
+    + "<p class=\"jp\" style=\"margin:0; font-size:16px;\">" + garisKancil + "</p></div>"
+    + "<button class=\"tombol rangka\" onclick=\"" + fnUlangi + "\">Ulangi latihan</button> <button class=\"tombol\" onclick=\"bukaLayar('beranda')\">Kembali ke Beranda</button></div>";
+}
 function gambarLatihanUnit(){
   var wadah = document.getElementById("unit-latihan");
   if(!wadah){ return; }
@@ -3070,7 +3102,7 @@ function gambarLatihanUnit(){
   var elBeres = document.getElementById("unit-latihan-beres");
   if(elBeres){
     if(!latihanUlang && cnt >= UNIT1_LATIHAN.length){
-      elBeres.innerHTML = "<div style=\"background:#EAF4F1; border:1.5px solid #147D74; border-radius:12px; padding:12px; margin-top:10px;\"><p style=\"margin:0 0 6px; font-weight:700;\">Unit 1 selesai.</p><p style=\"margin:0 0 10px;\">Kamu sudah bisa memperkenalkan diri dalam bahasa Jepang: menyapa saat pertama bertemu, menyebut nama dan asalmu, dan bilang apa yang sedang kamu pelajari.</p><button class=\"tombol rangka\" onclick=\"ulangiLatihanUnit()\">Ulangi latihan</button> <button class=\"tombol\" onclick=\"bukaLayar('beranda')\">Kembali ke Beranda</button></div>";
+      elBeres.innerHTML = kotakSelesaiUnit("Unit 1 selesai.", "Kamu sudah bisa memperkenalkan diri dalam bahasa Jepang: menyapa saat pertama bertemu, menyebut nama dan asalmu, dan bilang apa yang sedang kamu pelajari.", "「はじめまして、カンチルです！」", "ulangiLatihanUnit()");
     } else { elBeres.innerHTML = ""; }
   }
 }
@@ -3365,7 +3397,7 @@ function gambarLatihanUnit2(){
   var elBeres = document.getElementById("unit2-latihan-beres");
   if(elBeres){
     if(!latihan2Ulang && cnt >= UNIT2_LATIHAN.length){
-      elBeres.innerHTML = "<div style=\"background:#EAF4F1; border:1.5px solid #147D74; border-radius:12px; padding:12px; margin-top:10px;\"><p style=\"margin:0 0 6px; font-weight:700;\">Unit 2 selesai.</p><p style=\"margin:0 0 10px;\">Kamu sudah bisa berbelanja di toko pakaian dalam bahasa Jepang: bertanya harga, minta ukuran lain, mencoba baju sebelum membeli, dan membayar di kasir.</p><button class=\"tombol rangka\" onclick=\"ulangiLatihanUnit2()\">Ulangi latihan</button> <button class=\"tombol\" onclick=\"bukaLayar('beranda')\">Kembali ke Beranda</button></div>";
+      elBeres.innerHTML = kotakSelesaiUnit("Unit 2 selesai.", "Kamu sudah bisa berbelanja di toko pakaian dalam bahasa Jepang: bertanya harga, minta ukuran lain, mencoba baju sebelum membeli, dan membayar di kasir.", "「これをください！」", "ulangiLatihanUnit2()");
     } else { elBeres.innerHTML = ""; }
   }
 }
@@ -3941,6 +3973,7 @@ function latihanDariKenalan(){
   mulaiSesi("baris", null);
 }
 
+pasangMaskot();
 muatCeritaFeed();
 muatGlosariumFeed();
 muatFrasaFeed();
