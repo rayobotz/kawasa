@@ -162,6 +162,29 @@
   .maskot-sapa{width:160px; margin:0 auto;}
   .maskot-kenalan .maskot-balon{display:inline-block; background:#EAF4F1; border:1px solid #147D74; border-radius:12px; padding:8px 12px; margin:8px 0 0; font-size:14px; color:var(--teks);}
   .maskot-tunjuk{position:absolute; right:10px; bottom:8px; width:68px; margin:0;}
+.maskot-mikir{width:72px;}
+.maskot-rak{width:56px;}
+.maskot-jalur{width:56px;}
+.maskot-peta{width:64px;}
+.strip-unit{position:relative; height:124px; border-radius:12px; overflow:hidden; margin-bottom:14px; background:#EAF4F1;}
+.strip-unit img.latar{width:100%; height:100%; object-fit:cover; display:block;}
+.strip-unit img.kancil-strip{position:absolute; right:10px; bottom:0; width:64px; height:auto;}
+.strip-unit::after{content:""; position:absolute; left:0; right:0; bottom:0; height:38px; background:linear-gradient(to top, rgba(255,249,240,.65), rgba(255,249,240,0)); pointer-events:none;}
+.peta-baris{display:flex; align-items:center; gap:12px;}
+.peta-simpul{width:34px; height:34px; border-radius:50%; flex:none; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:16px; background:#fff;}
+.peta-simpul.beres{background:#147D74; color:#fff;}
+.peta-simpul.biasa{border:2px solid #147D74; color:#147D74;}
+.peta-simpul.pudar{border:2px solid var(--garis); color:#C9BFA9;}
+.peta-simpul.posisi{border:3px solid #C2533C;}
+.peta-simpul.posisi span{width:12px; height:12px; border-radius:50%; background:#C2533C; display:block;}
+.peta-penghubung{height:26px; margin-left:16px; border-left:3px dotted #CFC4A6;}
+.peta-penghubung.kuat{border-color:#147D74;}
+.peta-teks{flex:1; display:flex; flex-direction:column; gap:1px;}
+.peta-teks small{color:var(--teks-lembut); font-size:14px;}
+.peta-baris.pudar .peta-teks{color:#B3A586;}
+.peta-baris.pudar .peta-teks small{color:#C2B696;}
+.peta-landmark{flex:none; color:#147D74;}
+.peta-baris.pudar .peta-landmark{color:#CFC4A6;}
   .kartu-cerita{background:#fffdf6; border-top:4px solid var(--toska);}
   .tombol-sora svg, .tombol svg{width:15px; height:15px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; vertical-align:-2px; margin-right:4px;}
   .tombol-sora.ikon{width:38px; padding:0; display:inline-flex; align-items:center; justify-content:center;}
@@ -201,6 +224,11 @@
       <div class="koleksi-cap" id="koleksi-cap-beranda"></div>
       <button class="tombol aksen" id="tombol-langkah" onclick="keLangkahBerikutnya()">Mulai</button>
       <img class="maskot-img maskot-tunjuk" data-maskot="tunjuk" alt="Kancil menunjuk langkah berikutnya">
+    </div>
+    <div class="kartu" style="cursor:pointer;" onclick="bukaLayar('peta')">
+      <h2>Peta Perjalananmu</h2>
+      <p>Lihat sejauh mana kamu dan Kancil sudah berjalan, dan apa isi tasnya sekarang.</p>
+      <button class="tombol rangka">Buka peta →</button>
     </div>
     <div class="kartu" id="kartu-frasa">
       <h2>Frasa Hari Ini</h2>
@@ -258,6 +286,20 @@
     </p>
   </section>
 
+  <!-- PETA PERJALANAN -->
+  <section id="layar-peta" class="sembunyi">
+    <div class="navigasi"><button onclick="bukaLayar('beranda')">← Beranda</button></div>
+    <div class="kartu">
+      <h2>Peta Perjalananmu</h2>
+      <p>Jalur yang kamu dan Kancil tempuh dari nol — tahap demi tahap.</p>
+      <div id="peta-isi"></div>
+    </div>
+    <div class="kartu">
+      <h2>Tas Kancil</h2>
+      <p id="peta-tas" style="margin:0;"></p>
+    </div>
+  </section>
+
   <!-- BELAJAR (TEMA) -->
   <section id="layar-belajar" class="sembunyi">
     <div class="kartu" id="kartu-bahas">
@@ -292,6 +334,10 @@
       <div id="glos-strip" class="sembunyi"></div>
       <button class="tombol" id="tombol-dengar-cerita" onclick="dengarCerita()" style="margin-top:10px;"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/><path d="M18.8 6a8.5 8.5 0 0 1 0 12"/></svg>Dengar cerita</button>
       <p id="arti-cerita" style="margin-top:10px; color:var(--teks-lembut); font-size:15px;"></p>
+      <div style="display:flex; gap:10px; align-items:center; margin-top:16px;">
+        <img class="maskot-img maskot-rak" data-maskot="sapa" alt="Kancil di rak cerita" style="flex:none;">
+        <p style="margin:0;"><strong>Rak Cerita</strong><br><small style="color:var(--teks-lembut); font-size:14px;">Semua cerita yang bisa kamu baca ada di rak ini.</small></p>
+      </div>
       <div id="cerita-arsip"></div>
     </div>
     <div class="kartu sembunyi" id="kartu-artikel">
@@ -351,6 +397,7 @@
   <section id="layar-jalur" class="sembunyi">
     <div class="navigasi"><button onclick="bukaLayar('beranda')">← Beranda</button></div>
     <div class="kartu">
+      <img class="maskot-img maskot-jalur" data-maskot="tunjuk" alt="Kancil menunjuk jalur kana" style="float:right; margin:2px 0 6px 10px;">
       <h2>Jalur Kana</h2>
       <p>Nilai 8/10 per baris = <strong>Cap Latihan</strong>. Semua jalur bebas dibuka — mulai dari baris mana pun yang kamu mau; urutan di sini hanya saran. Katakana banyak dipakai untuk kata serapan.</p>
     </div>
@@ -582,6 +629,7 @@
   <!-- UNIT TEMA: PERKENALAN DIRI -->
   <section id="layar-unit" class="sembunyi">
     <div class="navigasi"><button onclick="bukaLayar('belajar')">← Kembali ke Belajar</button></div>
+    <div class="strip-unit"><img class="latar" data-latar="u1" alt=""><img class="maskot-img kancil-strip" data-maskot="sapa" alt="Kancil menyapa di awal unit"></div>
     <div class="kartu">
       <h2>Tonton semenit</h2>
       <p id="klip-status">Satu menit: dengarkan Rina memperkenalkan diri di hari pertama bekerja, lalu tangkap maksud kalimat terakhir seniornya.</p>
@@ -620,7 +668,10 @@
     </div>
     <div class="kartu">
       <h2>Latihan — langsung praktik</h2>
-      <p>Dengarkan dan pahami pesannya. Tanpa aturan, tanpa hafalan pola.</p>
+      <div style="display:flex; gap:10px; align-items:flex-start;">
+        <p style="margin:0; flex:1;">Dengarkan dan pahami pesannya. Tanpa aturan, tanpa hafalan pola.</p>
+        <img class="maskot-img maskot-mikir" data-maskot="mikir" alt="Kancil berpikir sebelum latihan" style="flex:none;">
+      </div>
       <div id="unit-latihan"></div>
       <p id="unit-latihan-teks" class="petunjuk" style="margin-top:8px;"></p>
       <div id="unit-latihan-beres"></div>
@@ -646,6 +697,7 @@
   <!-- UNIT TEMA: BELANJA -->
   <section id="layar-unit2" class="sembunyi">
     <div class="navigasi"><button onclick="bukaLayar('belajar')">← Kembali ke Belajar</button></div>
+    <div class="strip-unit"><img class="latar" data-latar="u2" alt=""><img class="maskot-img kancil-strip" data-maskot="tunjuk" alt="Kancil menunjuk di awal unit"></div>
     <div class="kartu">
       <h2>Tonton semenit</h2>
       <p id="klip2-status">Satu menit: dengarkan percakapan di toko pakaian dari masuk sampai kasir, lalu tangkap maksud pertanyaan terakhir stafnya.</p>
@@ -682,7 +734,10 @@
     </div>
     <div class="kartu">
       <h2>Latihan — langsung praktik</h2>
-      <p>Dengarkan dan pahami pesannya. Tanpa aturan, tanpa hafalan pola.</p>
+      <div style="display:flex; gap:10px; align-items:flex-start;">
+        <p style="margin:0; flex:1;">Dengarkan dan pahami pesannya. Tanpa aturan, tanpa hafalan pola.</p>
+        <img class="maskot-img maskot-mikir" data-maskot="mikir" alt="Kancil berpikir sebelum latihan" style="flex:none;">
+      </div>
       <div id="unit2-latihan"></div>
       <p id="unit2-latihan-teks" class="petunjuk" style="margin-top:8px;"></p>
       <div id="unit2-latihan-beres"></div>
@@ -795,7 +850,7 @@
 <footer>Kawasa — makin paham, bukan makin bingung. Dibangun pelan-pelan, dibuka untuk siapa pun yang mau mulai.</footer>
 
 <script src="hanzi-writer.min.js"></script>
-<script src="maskot.js?v=mk1"></script>
+<script src="maskot.js?v=mk2"></script>
 <script>
 var HIRA = [["あ","a"],["い","i"],["う","u"],["え","e"],["お","o"],["か","ka"],["き","ki"],["く","ku"],["け","ke"],["こ","ko"],["さ","sa"],["し","shi"],["す","su"],["せ","se"],["そ","so"],["た","ta"],["ち","chi"],["つ","tsu"],["て","te"],["と","to"],["な","na"],["に","ni"],["ぬ","nu"],["ね","ne"],["の","no"],["は","ha"],["ひ","hi"],["ふ","fu"],["へ","he"],["ほ","ho"],["ま","ma"],["み","mi"],["む","mu"],["め","me"],["も","mo"],["や","ya"],["ゆ","yu"],["よ","yo"],["ら","ra"],["り","ri"],["る","ru"],["れ","re"],["ろ","ro"],["わ","wa"],["を","wo"],["ん","n"]];
 var KATA = [["ア","a"],["イ","i"],["ウ","u"],["エ","e"],["オ","o"],["カ","ka"],["キ","ki"],["ク","ku"],["ケ","ke"],["コ","ko"],["サ","sa"],["シ","shi"],["ス","su"],["セ","se"],["ソ","so"],["タ","ta"],["チ","chi"],["ツ","tsu"],["テ","te"],["ト","to"],["ナ","na"],["ニ","ni"],["ヌ","nu"],["ネ","ne"],["ノ","no"],["ハ","ha"],["ヒ","hi"],["フ","fu"],["ヘ","he"],["ホ","ho"],["マ","ma"],["ミ","mi"],["ム","mu"],["メ","me"],["モ","mo"],["ヤ","ya"],["ユ","yu"],["ヨ","yo"],["ラ","ra"],["リ","ri"],["ル","ru"],["レ","re"],["ロ","ro"],["ワ","wa"],["ヲ","wo"],["ン","n"]];
@@ -1107,7 +1162,7 @@ function bukaLayar(nama){
       try{ history.back(); }catch(e){}
     }
   }
-  var layar = ["beranda","kana","latihan","ringkasan","detail","jalur","jalur-hira","jalur-kata","baris","kenalan","tentang","privasi","cerita","belajar","unit","unit-kata","unit2","unit2-kata","klip","artikel"];
+  var layar = ["beranda","kana","latihan","ringkasan","detail","jalur","jalur-hira","jalur-kata","baris","kenalan","tentang","privasi","cerita","belajar","unit","unit-kata","unit2","unit2-kata","klip","artikel","peta"];
   if(nama !== "detail"){ berhentiAnimasi(); }
   for(var i=0;i<layar.length;i++){
     document.getElementById("layar-"+layar[i]).classList.toggle("sembunyi", layar[i] !== nama);
@@ -1115,6 +1170,7 @@ function bukaLayar(nama){
   if(nama !== "klip" && typeof berhentiKlip === "function"){ berhentiKlip(); }
   if(nama === "beranda"){ segarkanProgres(); segarkanBeranda(); }
   if(nama === "jalur"){ gambarHub(); }
+  if(nama === "peta"){ gambarPeta(); }
   if(nama === "belajar"){ gambarBarisUnit2(); }
   if(nama === "beranda"){ gambarFrasa(); }
   if(nama === "jalur-hira"){ gambarJalurAksara("hira"); }
@@ -3059,6 +3115,66 @@ function kotakSelesaiUnit(judul, teks, garisKancil, fnUlangi){
     + "<p class=\"jp\" style=\"margin:0; font-size:16px;\">" + garisKancil + "</p></div>"
     + "<button class=\"tombol rangka\" onclick=\"" + fnUlangi + "\">Ulangi latihan</button> <button class=\"tombol\" onclick=\"bukaLayar('beranda')\">Kembali ke Beranda</button></div>";
 }
+function unitBeres(n){
+  var p = (n === 1 ? progres.unitXp : progres.unit2Xp) || {};
+  var total = (n === 1 ? UNIT1_LATIHAN : UNIT2_LATIHAN).length;
+  var cnt = 0;
+  for(var i = 1; i <= total; i++){ if(p["q" + i]){ cnt++; } }
+  return cnt >= total;
+}
+function pasangLatarUnit(){
+  if(!window.UNIT_LATAR){ return; }
+  var imgs = document.querySelectorAll("img[data-latar]");
+  for(var i = 0; i < imgs.length; i++){
+    var src = window.UNIT_LATAR[imgs[i].getAttribute("data-latar")];
+    if(src){ imgs[i].src = src; }
+  }
+}
+var PETA_LANDMARK = {
+  imah: "<svg viewBox=\"0 0 32 32\" width=\"34\" height=\"34\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 17 L16 7 L27 17\"/><path d=\"M9 15 V26 H23 V15\"/><path d=\"M14 26 V20 H18 V26\"/></svg>",
+  stasion: "<svg viewBox=\"0 0 32 32\" width=\"34\" height=\"34\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"8\" y=\"5\" width=\"16\" height=\"17\" rx=\"3\"/><path d=\"M8 14 H24\"/><circle cx=\"12.5\" cy=\"18.5\" r=\"1.1\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"19.5\" cy=\"18.5\" r=\"1.1\" fill=\"currentColor\" stroke=\"none\"/><path d=\"M11 22 L8 27 M21 22 L24 27\"/></svg>",
+  kantor: "<svg viewBox=\"0 0 32 32\" width=\"34\" height=\"34\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M10 27 V6 H22 V27\"/><path d=\"M6 27 H26\"/><path d=\"M13.5 10.5 h2 M17.5 10.5 h2 M13.5 14.5 h2 M17.5 14.5 h2 M13.5 18.5 h2 M17.5 18.5 h2\"/></svg>"
+};
+function gambarPeta(){
+  var isi = document.getElementById("peta-isi");
+  var tas = document.getElementById("peta-tas");
+  if(!isi){ return; }
+  var u1 = unitBeres(1), u2 = unitBeres(2);
+  var tahap1Beres = u1 && u2;
+  var caption = tahap1Beres ? "Tahap pertama tuntas — tahap berikutnya sedang disiapkan."
+    : (!u1 ? "Menuju Unit 1 — Perkenalan" : "Menuju Unit 2 — Belanja");
+  var simpul1 = tahap1Beres ? "<div class=\"peta-simpul beres\">\\u2713</div>"
+    : "<div class=\"peta-simpul biasa\"></div>";
+  var html = "";
+  html += "<div class=\"peta-baris\">" + simpul1
+    + "<div class=\"peta-teks\"><strong>Hari-hari Pertama</strong><small>Perkenalan · Belanja</small></div>"
+    + "<div class=\"peta-landmark\">" + PETA_LANDMARK.imah + "</div></div>";
+  html += "<div class=\"peta-penghubung" + (tahap1Beres ? " kuat" : "") + "\"></div>";
+  html += "<div class=\"peta-baris\"><div class=\"peta-simpul posisi\"><span></span></div>"
+    + "<img id=\"peta-kancil\" class=\"maskot-img maskot-peta\" alt=\"Kancil di posisimu\">"
+    + "<div class=\"peta-teks\"><strong>Kamu di sini</strong><small>" + caption + "</small></div></div>";
+  html += "<div class=\"peta-penghubung\"></div>";
+  html += "<div class=\"peta-baris pudar\"><div class=\"peta-simpul pudar\"></div>"
+    + "<div class=\"peta-teks\"><strong>Hidup Sehari-hari</strong><small>Naik Kereta · Pesan Makanan</small></div>"
+    + "<div class=\"peta-landmark\">" + PETA_LANDMARK.stasion + "</div></div>";
+  html += "<div class=\"peta-penghubung\"></div>";
+  html += "<div class=\"peta-baris pudar\"><div class=\"peta-simpul pudar\"></div>"
+    + "<div class=\"peta-teks\"><strong>Tempat Kerja &amp; Pergaulan</strong><small>Tahap berikutnya — menyusul</small></div>"
+    + "<div class=\"peta-landmark\">" + PETA_LANDMARK.kantor + "</div></div>";
+  isi.innerHTML = html;
+  var imgP = document.getElementById("peta-kancil");
+  if(imgP && window.MASKOT_POSE && window.MASKOT_POSE.tunjuk){
+    imgP.src = window.MASKOT_POSE.tunjuk; imgP.style.display = "block";
+  }
+  if(tas){
+    var isiTas = [];
+    if(u1){ isiTas.push("cara memperkenalkan diri"); }
+    if(u2){ isiTas.push("cara berbelanja"); }
+    tas.textContent = isiTas.length
+      ? "Tas Kancil sekarang berisi " + isiTas.length + " hal: " + isiTas.join(" · ") + "."
+      : "Tasnya masih kosong — selesaikan Unit 1 untuk mulai mengisinya.";
+  }
+}
 function gambarLatihanUnit(){
   var wadah = document.getElementById("unit-latihan");
   if(!wadah){ return; }
@@ -3977,6 +4093,7 @@ function latihanDariKenalan(){
 }
 
 pasangMaskot();
+pasangLatarUnit();
 muatCeritaFeed();
 muatGlosariumFeed();
 muatFrasaFeed();
