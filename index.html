@@ -2532,6 +2532,7 @@ function gambarKoleksiCap(wadah, aksara){
     var ada = !!progres.capBaris[semua[i].kunci];
     var sp = document.createElement("span");
     sp.className = "cap-mini jp" + (ada ? "" : " cap-kosong");
+    if(semua[i].huruf.length > 1){ sp.style.fontSize = "10px"; sp.style.letterSpacing = "-1px"; }
     sp.textContent = semua[i].huruf;
     sp.title = semua[i].kunci;
     wadah.appendChild(sp);
