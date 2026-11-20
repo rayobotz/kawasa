@@ -34,8 +34,8 @@
   .kartu p{margin:0 0 8px; font-size:14px; color:var(--teks-lembut);}
   .progres{display:flex; gap:10px;}
   .progres .kotak{flex:1; background:var(--pasir); border-radius:12px; padding:10px; text-align:center;}
-  .progres .angka{font-size:20px; font-weight:700; color:#c2533c;}
-  .progres .label{font-size:12px; color:var(--teks-lembut);}
+  .progres .angka{font-size:20px; font-weight:700; color:#8C351B;}
+  .progres .label{font-size:14px; color:var(--teks-lembut);}
   .tombol{display:block; width:100%; padding:13px; border:none; border-radius:12px;
     background:var(--aksen); color:#fff; font-size:16px; font-weight:600; cursor:pointer; margin-top:8px;}
   .tombol.aksen{background:#cf5a41;}
@@ -44,9 +44,9 @@
   .jalur{display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px dashed var(--garis);}
   .jalur:last-child{border-bottom:none;}
   .jalur .no{width:28px; height:28px; border-radius:50%; background:var(--pasir);
-    display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; flex:none;}
+    display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; flex:none;}
   .jalur .nama{flex:1; font-size:15px;}
-  .lencana{font-size:11px; padding:3px 8px; border-radius:99px; background:#fdeee9; color:#c2533c; font-weight:600;}
+  .lencana{font-size:11px; padding:3px 8px; border-radius:99px; background:#fdeee9; color:#8C351B; font-weight:600;}
   .lencana.segera{background:#f0e8d8; color:#8d8271;}
   .tab{display:flex; gap:8px; margin-bottom:12px;}
   .tab button{flex:1; padding:10px; border-radius:10px; border:2px solid var(--toska);
@@ -56,7 +56,7 @@
   .sel-kana{background:#fff; border:1px solid var(--garis); border-radius:10px; padding:7px 2px;
     text-align:center; cursor:pointer;}
   .sel-kana .k{font-size:21px; display:block;}
-  .sel-kana .r{font-size:11px; color:var(--teks-lembut);}
+  .sel-kana .r{font-size:14px; color:var(--teks-lembut);}
   .sel-kana.kuasai{border-color:var(--toska); background:#e0f2f1;}
   .soal-besar{text-align:center; padding:14px 0 6px;}
   .soal-besar .huruf{font-size:56px; font-weight:700;}
@@ -71,7 +71,7 @@
   #beja{position:fixed; left:50%; bottom:26px; transform:translateX(-50%); background:#0a5f5e; color:#fff9f0; padding:11px 18px; border-radius:999px; font-size:14px; z-index:60; box-shadow:0 6px 22px rgba(55,49,42,.28); max-width:88vw; text-align:center;}
 .umpan-balik{text-align:center; font-size:15px; min-height:24px; margin-top:8px; font-weight:600;}
   .sembunyi{display:none;}
-  .indikator-sesi{text-align:center; font-size:13px; font-weight:700; color:var(--toska-gelap); margin-bottom:2px;}
+  .indikator-sesi{text-align:center; font-size:14px; font-weight:700; color:var(--toska-gelap); margin-bottom:2px;}
   .kelompok-bor{display:flex; flex-wrap:wrap; gap:8px; margin-top:4px;}
   .kelompok-bor button{padding:9px 12px; border-radius:10px; border:2px solid var(--toska);
     background:#fff; color:var(--toska-gelap); font-size:17px; font-weight:600; cursor:pointer;}
@@ -102,7 +102,7 @@
   #tabbar.sembunyi{display:none;}
   #tabbar-sorot{position:absolute; top:6px; bottom:6px; left:6px; width:calc((100% - 12px) / 3); background:#147D74; border-radius:999px; transition:transform .32s cubic-bezier(.35,1.3,.4,1);}
   #tabbar button{position:relative; z-index:1; flex:1; background:none; border:none; font-size:20px; line-height:1.15; display:flex; flex-direction:column; align-items:center; gap:1px; color:var(--teks-lembut); padding:5px 0; border-radius:999px; cursor:pointer; transition:color .25s;}
-  #tabbar button span{font-size:12px; font-weight:700;}
+  #tabbar button span{font-size:14px; font-weight:700;}
   #tabbar button.aktif{color:#FFFFFF;}
   #tabbar button svg{width:25px; height:25px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round;}
   #tabbar button.aktif svg{fill:currentColor;}
@@ -114,11 +114,11 @@
   body.tab-aktif main{padding-bottom:106px;}
   #cerita-arsip .arsip-item{border-left:6px solid #147D74; background:#FFFDF6;}
   .grup-kana{display:flex; gap:10px; align-items:center; margin:16px 0 4px; padding:8px 10px; background:#F3EDE0; border-radius:10px;}
-  .grup-kana-kana{font-size:19px; font-weight:700; color:#147D74; white-space:nowrap;}
+  .grup-kana-kana{font-size:19px; font-weight:700; color:#0E5F57; white-space:nowrap;}
   .grup-kana b{font-size:14px;}
   .grup-kana span{font-size:12px; color:var(--teks-lembut);}
   .tanda-kana{display:inline-flex; flex-wrap:wrap; gap:3px; vertical-align:middle;}
-  .chip-kana{display:inline-block; min-width:20px; text-align:center; padding:1px 4px; font-size:12px; line-height:1.5; background:#E7F2F0; color:#0E5F57; border-radius:6px;}
+  .chip-kana{display:inline-block; min-width:20px; text-align:center; padding:1px 4px; font-size:14px; line-height:1.5; background:#E7F2F0; color:#0E5F57; border-radius:6px;}
   .arsip-item .tanda-kana{display:flex; margin-top:5px;}
   .navigasi{display:flex; gap:8px; margin-bottom:14px;}
   .navigasi button{flex:1; padding:9px; border-radius:10px; border:1px solid var(--garis);
@@ -127,26 +127,26 @@
   .kotak-goresan{background:var(--krem); border:1px solid var(--garis); border-radius:12px;
     padding:12px; margin-top:6px;}
   .kotak-goresan svg{display:block; width:100%; max-width:260px; margin:0 auto;}
-  .atribusi{font-size:11px; color:#a79b84; text-align:center; margin:8px 0 0;}
+  .atribusi{font-size:14px; color:#a79b84; text-align:center; margin:8px 0 0;}
   .baris-jalur{display:flex; align-items:center; gap:10px; width:100%; padding:11px 10px; margin:0 0 8px;
     background:#fff; border:1px solid var(--garis); border-radius:12px; cursor:pointer; text-align:left; font-family:inherit; color:var(--teks);}
-  .baris-jalur .no{width:28px; height:28px; border-radius:50%; background:var(--pasir); color:#c2533c;
-    display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; flex:none;}
+  .baris-jalur .no{width:28px; height:28px; border-radius:50%; background:var(--pasir); color:#8C351B;
+    display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; flex:none;}
   .baris-jalur .isi{flex:1; min-width:0;}
   .baris-jalur .nama-baris{font-size:15px; font-weight:600; color:var(--teks);}
   .baris-jalur .kana-baris{font-size:17px; color:var(--teks-lembut); letter-spacing:2px;}
   .baris-jalur.redup{opacity:.62;}
   .cap-mini{display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; flex:none;
-    border:2px solid var(--aksen); color:var(--aksen); border-radius:50%; font-size:16px; font-weight:700; background:#fdeee9;}
+    border:2px solid var(--aksen); color:#8C351B; border-radius:50%; font-size:16px; font-weight:700; background:#fdeee9;}
   .daftar-kata-baris{display:flex; flex-direction:column; gap:6px;}
   .kata-baris{display:flex; align-items:baseline; gap:10px; padding:8px 10px; background:var(--krem); border-radius:10px;}
   .kata-baris .kw{font-size:20px; font-weight:600;}
-  .kata-baris .kr{font-size:13px; color:var(--teks-lembut);}
+  .kata-baris .kr{font-size:14px; color:var(--teks-lembut);}
   .kata-baris .ka{flex:1; text-align:right; font-size:14px;}
   .koleksi-cap{display:flex; flex-wrap:wrap; gap:6px; margin-top:4px;}
-  .koleksi-cap .cap-mini{width:26px; height:26px; font-size:13px;}
+  .koleksi-cap .cap-mini{width:26px; height:26px; font-size:14px;}
   .koleksi-cap .cap-kosong{border-color:var(--garis); color:#ddd3bf; background:#fff;}
-  .angka-hub{font-size:20px; font-weight:700; color:#c2533c;}
+  .angka-hub{font-size:20px; font-weight:700; color:#8C351B;}
   .kata-besar{font-size:32px; text-align:center; padding:4px 0 2px;}
   .kata-info{text-align:center; margin:0;}
   .kartu{border-radius:16px; box-shadow:0 2px 10px rgba(94,64,40,.08);}
@@ -154,7 +154,7 @@
   .batang-bungkus{margin:12px 0 4px;}
   .batang{height:12px; background:#efe4d0; border-radius:999px; overflow:hidden;}
   .batang-isi{height:100%; width:0%; background:linear-gradient(90deg,var(--toska),var(--toska-terang)); border-radius:999px; transition:width .6s ease;}
-  .batang-teks{font-size:12.5px; color:var(--teks-lembut); margin-top:6px;}
+  .batang-teks{font-size:14px; color:var(--teks-lembut); margin-top:6px;}
   .kartu-langkah{border-left:5px solid var(--aksen);}
   .kartu-langkah{position:relative;}
   .maskot-kenalan{text-align:center; margin:8px 0 4px;}
@@ -170,10 +170,12 @@
   .panah-frasa{width:34px; height:34px; border-radius:50%; border:1.5px solid var(--toska); background:#fff; color:var(--toska-gelap); font-size:17px; font-weight:700; cursor:pointer; flex:none; line-height:1; font-family:inherit;}
   .tombol-sora{flex:none; height:30px; padding:0 12px; border-radius:999px; border:1.5px solid var(--toska); background:#fff; font-size:12.5px; font-weight:600; color:var(--toska-gelap); cursor:pointer; font-family:inherit;}
   .tumpuk-tombol{display:flex; flex-direction:column; gap:6px; flex:none; align-items:stretch;}
-  .pil-sora{padding:6px 14px; border-radius:999px; border:2px solid var(--toska); background:#fff; color:var(--toska-gelap); font-size:13px; font-weight:600; cursor:pointer; font-family:inherit;}
+  .pil-sora{padding:6px 14px; border-radius:999px; border:2px solid var(--toska); background:#fff; color:var(--toska-gelap); font-size:14px; font-weight:600; cursor:pointer; font-family:inherit;}
   .pil-sora.aktif{background:var(--toska); color:#fff;}
   .lencana-baru{background:var(--aksen); color:#fff; font-size:10px; font-weight:700; padding:2px 7px; border-radius:999px; vertical-align:middle; margin-left:6px;}
-  footer{text-align:center; font-size:12px; color:#a79b84; padding:0 16px 28px;}
+  footer{text-align:center; font-size:14px; color:#a79b84; padding:0 16px 28px;}
+  /* Poles visual 2026-11-20: kartu statis/informatif leuwih hampang — tanpa garis teuas & bayangan */
+  #kartu-progres, #layar-tentang .kartu, #layar-privasi .kartu:not(:last-of-type){border-color:transparent; box-shadow:none;}
 </style>
 </head>
 <body>
@@ -204,12 +206,12 @@
       <h2>Frasa Hari Ini</h2>
       <p>Satu frasa untuk hari ini. Ketuk tombol speaker untuk mendengar, ucapkan keras-keras, lalu ketuk tombol centang.</p>
       <div style="display:flex; gap:8px; align-items:center; margin:10px 0;">
-        <span style="font-size:13px; color:var(--teks-lembut);">Suara:</span>
+        <span style="font-size:14px; color:var(--teks-lembut);">Suara:</span>
         <button class="pil-sora" id="pil-sora-awewe" onclick="pilihSora('awewe')">Perempuan</button>
         <button class="pil-sora" id="pil-sora-lalaki" onclick="pilihSora('lalaki')">Laki-laki</button>
       </div>
       <div id="daftar-frasa"></div>
-      <p id="frasa-ucap-teks" style="margin-top:10px; font-size:13.5px; color:var(--teks-lembut);"></p>
+      <p id="frasa-ucap-teks" style="margin-top:10px; font-size:14px; color:var(--teks-lembut);"></p>
       <p id="frasa-konci" style="margin-top:8px;"></p>
     </div>
     <div class="kartu" id="kartu-nama">
@@ -221,7 +223,7 @@
       <p>Tanpa kata sandi. Progresmu dicadangkan otomatis atas nama panggilan + kode 4 angka. Di alat lain, isi nama dan kode yang sama untuk memulihkan progresmu.</p>
       <input class="ketik" id="input-nama" placeholder="nama panggilan" autocomplete="off">
       <input class="ketik" id="input-kode" placeholder="kode 4 angka — isi kalau kamu sudah punya kode" autocomplete="off" inputmode="numeric" maxlength="4" style="margin-top:8px;">
-      <p style="font-size:13px; color:var(--teks-lembut); margin-top:6px;">Baru pertama kali? Kosongkan kolom kode — kode akan dibuatkan untukmu dan ditampilkan setelah kamu menyimpan nama.</p>
+      <p style="font-size:14px; color:var(--teks-lembut); margin-top:6px;">Baru pertama kali? Kosongkan kolom kode — kode akan dibuatkan untukmu dan ditampilkan setelah kamu menyimpan nama.</p>
       <button class="tombol rangka" onclick="simpanNama()">Simpan</button>
     </div>
     <div class="kartu sembunyi" id="kartu-kode">
@@ -233,7 +235,7 @@
     <div class="kartu">
       <h2>Huruf Kana</h2>
       <button class="tombol" style="width:100%;" onclick="bukaJalur()">Mulai Jalur Kana</button>
-      <p style="text-align:center; margin:10px 0 0; font-size:13.5px;"><a href="#" onclick="bukaLayar('kana'); return false;" style="color:var(--toska-gelap); font-weight:600;">Lihat tabel kana (rujukan)</a></p>
+      <p style="text-align:center; margin:10px 0 0; font-size:14px;"><a href="#" onclick="bukaLayar('kana'); return false;" style="color:var(--toska-gelap); font-weight:600;">Lihat tabel kana (rujukan)</a></p>
     </div>
     <div class="kartu kartu-utama" id="kartu-progres" style="display:none;">
       <h2>Progresmu</h2>
@@ -249,7 +251,7 @@
       <button class="tombol" onclick="pakaiProgresServer()">Pakai progres itu</button>
       <button class="tombol rangka" onclick="tetapProgresIni()">Tetap yang ini</button>
     </div>
-    <p style="text-align:center; margin:18px 0 6px; font-size:13px;">
+    <p style="text-align:center; margin:18px 0 6px; font-size:14px;">
       <a href="#" onclick="bukaLayar('tentang'); return false;" style="color:var(--toska-gelap); font-weight:600;">Tentang Kawasa</a>
       &nbsp;·&nbsp;
       <a href="#" onclick="bukaLayar('privasi'); return false;" style="color:var(--toska-gelap); font-weight:600;">Kebijakan Privasi</a>
@@ -425,11 +427,11 @@
     <div class="kartu">
       <h2>Sudah kenal huruf &amp; kata-katanya?</h2>
       <div id="baris-kenalan-kotak" class="sembunyi">
-        <p style="font-size:13px;">Kenalan satu per satu: jangkar ingat, cara menulis, contoh kata. Tanpa nilai.</p>
+        <p style="font-size:14px;">Kenalan satu per satu: jangkar ingat, cara menulis, contoh kata. Tanpa nilai.</p>
         <button class="tombol" id="tombol-kenalan" onclick="mulaiKenalan()">① Kenalan dulu</button>
       </div>
       <button class="tombol aksen" id="tombol-latihan-baris" onclick="mulaiLatihanBaris()">② Latihan Baris (10 soal)</button>
-      <p style="margin-top:8px; font-size:13px;">Campuran: pilih kana, ketik romaji, baca kata. Nilai 8/10 = <strong>Cap Latihan</strong>.</p>
+      <p style="margin-top:8px; font-size:14px;">Campuran: pilih kana, ketik romaji, baca kata. Nilai 8/10 = <strong>Cap Latihan</strong>.</p>
     </div>
   </section>
 
@@ -742,7 +744,7 @@
     </div>
     <div class="kartu">
       <p style="text-align:center; font-weight:700;">Dari nol, jadi kawasa.</p>
-      <p style="text-align:center; font-size:12px; color:var(--teks-lembut); margin-top:4px;">Versi 2026.11</p>
+      <p style="text-align:center; font-size:14px; color:var(--teks-lembut); margin-top:4px;">Versi 2026.11</p>
     </div>
     <div class="kartu">
       <h2>Kredit & Sumber</h2>
@@ -1565,7 +1567,7 @@ function gambarCerita(){
   }).join("<br>");
   document.getElementById("arti-cerita").textContent = c.id;
   var tc = document.getElementById("tanda-cerita");
-  if(tc) tc.innerHTML = '<span style="font-size:13px; color:var(--teks-lembut);">Kana di cerita ini:</span> ' + tandaKanaHTML(kanaAnalisis(c.jp));
+  if(tc) tc.innerHTML = '<span style="font-size:14px; color:var(--teks-lembut);">Kana di cerita ini:</span> ' + tandaKanaHTML(kanaAnalisis(c.jp));
   gambarArsip();
 }
 var kataAktifEl = null;
@@ -1589,7 +1591,7 @@ function gambarArsip(){
   var html = "";
   if(ceritaManual != null) html += '<button class="tombol rangka arsip-item" onclick="pilihCerita(null)">↩ Cerita hari ini</button>';
   if(CERITA_HARI.length > 1){
-    html += '<p style="margin:14px 0 2px; font-size:13px; color:var(--teks-lembut);">Cerita-cerita lain, dikelompokkan dari kana yang paling sedikit. Tanda kecil di tiap cerita menunjukkan kana yang dipakai di dalamnya:</p>';
+    html += '<p style="margin:14px 0 2px; font-size:14px; color:var(--teks-lembut);">Cerita-cerita lain, dikelompokkan dari kana yang paling sedikit. Tanda kecil di tiap cerita menunjukkan kana yang dipakai di dalamnya:</p>';
     var grup = [[], [], [], []];
     CERITA_HARI.forEach(function(c, i){
       if(i === idxAktif) return;
@@ -1781,7 +1783,7 @@ function gambarFrasa(){
   if(u.length > 1){
     var nav = document.createElement("div");
     nav.style.cssText = "display:flex; align-items:center; justify-content:center; gap:14px; margin-top:10px;";
-    nav.innerHTML = "<button class='panah-frasa' onclick='frasaGeser(-1)' aria-label='Frasa sebelumnya'>\u2039</button><span style='font-size:13px; color:var(--teks-lembut);'>Frasa " + (frasaPilih + 1) + " dari " + u.length + "</span><button class='panah-frasa' onclick='frasaGeser(1)' aria-label='Frasa berikutnya'>\u203a</button>";
+    nav.innerHTML = "<button class='panah-frasa' onclick='frasaGeser(-1)' aria-label='Frasa sebelumnya'>\u2039</button><span style='font-size:14px; color:var(--teks-lembut);'>Frasa " + (frasaPilih + 1) + " dari " + u.length + "</span><button class='panah-frasa' onclick='frasaGeser(1)' aria-label='Frasa berikutnya'>\u203a</button>";
     wadah.appendChild(nav);
   }
   var tblB = document.createElement("button");
@@ -1884,14 +1886,14 @@ function gambarBahas(){
   }
   if(f.contoh && f.contoh.length){
     var lc = document.createElement("p");
-    lc.style.cssText = "margin-top:12px; font-size:13px; color:var(--teks-lembut);";
+    lc.style.cssText = "margin-top:12px; font-size:14px; color:var(--teks-lembut);";
     lc.textContent = "Contoh pemakaian:";
     wadah.appendChild(lc);
     f.contoh.forEach(function(c, ci){ barisBahas(wadah, c.jp, c.ro, c.arti, dasar + "c" + (ci + 1), false, false); });
   }
   if(f.balas){
     var lb = document.createElement("p");
-    lb.style.cssText = "margin-top:12px; font-size:13px; color:var(--teks-lembut);";
+    lb.style.cssText = "margin-top:12px; font-size:14px; color:var(--teks-lembut);";
     lb.textContent = "Balasan yang biasa terdengar:";
     wadah.appendChild(lb);
     barisBahas(wadah, f.balas.jp, f.balas.ro, f.balas.arti, dasar + "b", false, false);
@@ -1901,7 +1903,7 @@ function gambarBahas(){
     dft.innerHTML = "";
     if(u.length > 1){
       var jm = document.createElement("p");
-      jm.style.cssText = "font-size:13px; color:var(--teks-lembut); margin-bottom:6px;";
+      jm.style.cssText = "font-size:14px; color:var(--teks-lembut); margin-bottom:6px;";
       jm.textContent = "Frasa lain:";
       dft.appendChild(jm);
       u.forEach(function(it, ix){
@@ -3052,7 +3054,7 @@ function kotakSelesaiUnit(judul, teks, garisKancil, fnUlangi){
     + "<div><p style=\"margin:0 0 6px; font-weight:700;\">" + judul + "</p>"
     + "<p style=\"margin:0;\">" + teks + "</p></div></div>"
     + "<div style=\"background:#FFFDF6; border:1px solid #DDD3BF; border-radius:10px; padding:8px 10px; margin:10px 0;\">"
-    + "<p style=\"margin:0 0 2px; font-size:12.5px; font-weight:700; color:#C2533C;\">Kancil sekarang:</p>"
+    + "<p style=\"margin:0 0 2px; font-size:14px; font-weight:700; color:#8C351B;\">Kancil sekarang:</p>"
     + "<p class=\"jp\" style=\"margin:0; font-size:16px;\">" + garisKancil + "</p></div>"
     + "<button class=\"tombol rangka\" onclick=\"" + fnUlangi + "\">Ulangi latihan</button> <button class=\"tombol\" onclick=\"bukaLayar('beranda')\">Kembali ke Beranda</button></div>";
 }
