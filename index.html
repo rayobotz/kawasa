@@ -58,6 +58,8 @@
   .sel-kana .k{font-size:21px; display:block;}
   .sel-kana .r{font-size:14px; color:var(--teks-lembut);}
   .sel-kana.kuasai{border-color:var(--toska); background:#e0f2f1;}
+  .sel-kana.hampir{position:relative;}
+  .sel-kana.hampir::after{content:""; position:absolute; top:5px; right:5px; width:8px; height:8px; border-radius:50%; background:var(--toska);}
   .soal-besar{text-align:center; padding:14px 0 6px;}
   .soal-besar .huruf{font-size:56px; font-weight:700;}
   .soal-besar .petunjuk{font-size:14px; color:var(--teks-lembut);}
@@ -166,9 +168,9 @@
 .maskot-rak{width:56px;}
 .maskot-jalur{width:56px;}
 .maskot-peta{width:64px;}
-.strip-unit{position:relative; height:124px; border-radius:12px; overflow:hidden; margin-bottom:14px; background:#EAF4F1;}
-.strip-unit img.latar{width:100%; height:100%; object-fit:cover; display:block;}
-.strip-unit img.kancil-strip{position:absolute; right:10px; bottom:0; width:64px; height:auto;}
+.strip-unit{position:relative; height:124px; border-radius:12px; overflow:visible; margin-bottom:26px; background:#EAF4F1;}
+.strip-unit img.latar{width:100%; height:100%; object-fit:cover; display:block; border-radius:12px;}
+.strip-unit img.kancil-strip{position:absolute; right:10px; bottom:-12px; width:64px; height:auto; z-index:2; filter:drop-shadow(0 2px 3px rgba(94,64,40,.25));}
 .strip-unit::after{content:""; position:absolute; left:0; right:0; bottom:0; height:38px; background:linear-gradient(to top, rgba(255,249,240,.65), rgba(255,249,240,0)); pointer-events:none;}
 .peta-baris{display:flex; align-items:center; gap:12px;}
 .peta-simpul{width:34px; height:34px; border-radius:50%; flex:none; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:16px; background:#fff;}
@@ -271,7 +273,7 @@
         <div class="kotak"><div class="angka" id="xp">0</div><div class="label">XP</div></div>
         <div class="kotak"><div class="angka"><span id="kana-kuasai">0</span>/92</div><div class="label">Kana dikuasai</div></div>
       </div>
-      <div class="batang-bungkus"><div class="batang"><div class="batang-isi" id="batang-kana"></div></div><div class="batang-teks" id="batang-kana-teks">Perjalanan kana: 0%</div></div>
+      <div class="batang-bungkus"><div class="batang"><div class="batang-isi" id="batang-kana"></div></div><div class="batang-teks" id="batang-kana-teks">Perjalanan kana: 0%</div><div class="batang-teks" id="kana-hampir-teks"></div></div>
     </div>
     <div class="kartu sembunyi" id="kartu-konfirmasi-progres">
       <h2>Progres ditemukan</h2>
@@ -363,7 +365,7 @@
     <div class="kartu" style="padding:10px 16px;"><p style="margin:0;">Tabel lengkap kana — untuk berlatih bebas.</p></div>
     <div class="kartu">
       <h2>Kana — huruf dasar bahasa Jepang</h2>
-      <p>Ketuk huruf untuk detail, suara, dan cara menulisnya. Huruf berubah hijau (<b>dikuasai</b>) setelah kamu menjawabnya benar di dua hari berbeda.</p>
+      <p>Ketuk huruf untuk detail, suara, dan cara menulisnya. Huruf berubah hijau (<b>dikuasai</b>) setelah kamu menjawabnya benar di dua hari berbeda. Titik tosca di sudut huruf berarti huruf itu <b>tinggal satu hari lagi</b> — jawab benar sekali lagi di hari lain untuk menguasainya. Kalau huruf yang sudah dikuasai dijawab salah, ia tidak mulai dari nol: ia turun jadi tinggal satu hari lagi.</p>
       <div class="tab">
         <button id="tab-hira" class="aktif" onclick="setModeKana('hira')">Hiragana</button>
         <button id="tab-kata" onclick="setModeKana('kata')">Katakana</button>
@@ -415,6 +417,12 @@
       <div class="koleksi-cap" id="koleksi-cap-hub-kata"></div>
       <p id="hub-kata-kunci" style="display:none"></p>
       <button class="tombol" id="hub-kata-tombol" onclick="bukaJalurAksara('kata')">Buka Jalur Katakana →</button>
+    </div>
+    <div class="kartu">
+      <h2>Ulangi yang Kemarin</h2>
+      <p>Huruf yang kemarin sudah dijawab benar tinggal satu hari lagi menuju dikuasai. Jawab benar hari ini untuk menguncinya.</p>
+      <p id="kemarin-info" style="margin:0 0 10px;"></p>
+      <button class="tombol" id="tombol-kemarin" onclick="mulaiKemarin()">Mulai ulangan</button>
     </div>
     <div class="kartu">
       <h2>Tabel lengkap</h2>
@@ -879,7 +887,8 @@ function simpan(){ try{ localStorage.setItem(KUNCI, JSON.stringify(progres)); }c
 // (YYYY-MM-DD, tanggal lokal alat), kuat: bool}. Kana jadi kuat ("dikuasai")
 // hanya bila dijawab benar pada DUA TANGGAL BERBEDA; benar berulang di hari
 // yang sama tidak menguatkan. Salah pada kana yang sudah kuat mencabut
-// kuat-nya, dan bukti harinya mulai dari nol lagi.
+// kuat-nya, tetapi bukti hari ini tetap tercatat — besok benar sekali lagi
+// sudah kuat lagi ("tinggal satu hari lagi"), bukan mulai dari nol.
 function tanggalHariIni(){
   var d = new Date();
   var m = ("0" + (d.getMonth() + 1)).slice(-2);
@@ -909,6 +918,18 @@ function sudahKuat(kunciKana){ return catatanKana(kunciKana).kuat; }
 function jumlahKuat(){
   var n = 0; for(var k in progres.kuasai){ if(catatanKana(k).kuat){ n++; } }
   return n;
+}
+function hampirKuat(kunciKana){
+  // "Tinggal satu hari lagi": sudah punya bukti satu hari, belum kuat.
+  var rec = catatanKana(kunciKana);
+  return !rec.kuat && !!rec.hari;
+}
+function jumlahHampirKuat(){
+  var n = 0; for(var k in progres.kuasai){ if(hampirKuat(k)){ n++; } }
+  return n;
+}
+function kelasSelKana(kunciKana){
+  return "sel-kana" + (sudahKuat(kunciKana) ? " kuasai" : (hampirKuat(kunciKana) ? " hampir" : ""));
 }
 function normalisasiCap(){
   // Progres lama belum punya capBaris — buat kosong, jangan sampai error.
@@ -1135,12 +1156,21 @@ function segarkanProgres(){
   var kp = document.getElementById("kartu-progres");
   if(kp){ kp.style.display = progres.xp > 0 ? "" : "none"; }
   document.getElementById("xp").textContent = progres.xp;
-  document.getElementById("kana-kuasai").textContent = jumlahKuat();
+  var nj = jumlahKuat();
+  var nh = jumlahHampirKuat();
+  document.getElementById("kana-kuasai").textContent = nj;
   var bk = document.getElementById("batang-kana");
   if(bk){
-    var nj = jumlahKuat();
     bk.style.width = (nj / 92 * 100) + "%";
-    document.getElementById("batang-kana-teks").textContent = "Perjalanan kana: " + Math.round(nj / 92 * 100) + "% — " + nj + " dari 92 huruf dikuasai";
+    var teksBatang = "Perjalanan kana: " + Math.round(nj / 92 * 100) + "% — " + nj + " dari 92 huruf dikuasai";
+    if(nh > 0){ teksBatang += " · " + nh + " tinggal satu hari lagi"; }
+    document.getElementById("batang-kana-teks").textContent = teksBatang;
+  }
+  var elHampir = document.getElementById("kana-hampir-teks");
+  if(elHampir){
+    if(nh > 0){ elHampir.textContent = nh + " huruf tinggal satu hari lagi"; }
+    else if(nj === 0){ elHampir.textContent = "Jawab benar di dua hari berbeda untuk menguasai huruf"; }
+    else { elHampir.textContent = "Semua huruf yang mulai dipelajari sudah dikuasai"; }
   }
 }
 
@@ -1218,7 +1248,7 @@ function gambarGrid(){
   for(var i=0;i<data.length;i++){
     (function(item, idx){
       var div = document.createElement("div");
-      div.className = "sel-kana" + (sudahKuat(modeKana+":"+item[0]) ? " kuasai" : "");
+      div.className = kelasSelKana(modeKana+":"+item[0]);
       div.innerHTML = "<span class='k jp'>" + item[0] + "</span><span class='r'>" + item[1] + "</span>";
       div.onclick = function(){ bukaDetail(idx); };
       grid.appendChild(div);
@@ -1231,7 +1261,7 @@ function gambarGrid(){
     for(var d = 0; d < daku.length; d++){
       (function(item){
         var div = document.createElement("div");
-        div.className = "sel-kana" + (sudahKuat(modeKana + ":" + item[0]) ? " kuasai" : "");
+        div.className = kelasSelKana(modeKana + ":" + item[0]);
         div.innerHTML = "<span class='k jp'>" + item[0] + "</span><span class='r'>" + item[1] + "</span>";
         div.onclick = function(){ bukaDetailTambahan(item); };
         gd.appendChild(div);
@@ -1245,7 +1275,7 @@ function gambarGrid(){
     for(var y = 0; y < yoon.length; y++){
       (function(item){
         var div = document.createElement("div");
-        div.className = "sel-kana" + (sudahKuat(modeKana + ":" + item[0]) ? " kuasai" : "");
+        div.className = kelasSelKana(modeKana + ":" + item[0]);
         div.innerHTML = "<span class='k jp'>" + item[0] + "</span><span class='r'>" + item[1] + "</span>";
         div.onclick = function(){ bukaDetailTambahan(item); };
         gy.appendChild(div);
@@ -1306,17 +1336,48 @@ function bangunSesiBor(kelompok){
   while(antrean.length < 10 && isi.length){ antrean.push(acak(isi)); }
   return antrean;
 }
+function kolamKemarin(){
+  // Semua kunci kana dasar (hira:/kata:) yang buktinya dari hari lain dan
+  // belum kuat — kandidat sesi "Ulangi yang Kemarin".
+  var hariIni = tanggalHariIni();
+  var kolam = [];
+  var aksaras = ["hira", "kata"];
+  for(var a = 0; a < aksaras.length; a++){
+    var data = dataAksara(aksaras[a]);
+    for(var i = 0; i < data.length; i++){
+      var rec = catatanKana(aksaras[a] + ":" + data[i][0]);
+      if(rec.hari && rec.hari !== hariIni && !rec.kuat){
+        kolam.push({aksara: aksaras[a], huruf: data[i]});
+      }
+    }
+  }
+  return kolam;
+}
+function bangunSesiKemarin(){
+  var kolam = acakSusunan(kolamKemarin()).slice(0, 10);
+  var soal = [];
+  for(var i = 0; i < kolam.length; i++){
+    soal.push({tipe: Math.random() < 0.5 ? "pilih" : "ketik", huruf: kolam[i].huruf, aksara: kolam[i].aksara});
+  }
+  return soal;
+}
+function mulaiKemarin(){
+  if(!kolamKemarin().length){ return; }
+  bukaLayar("latihan");
+  mulaiSesi("kemarin", null);
+}
 function mulaiSesi(jenis, kelompok){
   sesi = {
     jenis: jenis,
     kelompok: kelompok || null,
-    antrean: jenis === "bor" ? bangunSesiBor(kelompok) : (jenis === "baris" ? bangunSesiBaris() : (jenis === "jebakan" ? bangunSesiJebakan() : bangunSesiBiasa())),
+    antrean: jenis === "bor" ? bangunSesiBor(kelompok) : (jenis === "baris" ? bangunSesiBaris() : (jenis === "jebakan" ? bangunSesiJebakan() : (jenis === "kemarin" ? bangunSesiKemarin() : bangunSesiBiasa()))),
     indeks: 0, benar: 0, salah: [], baruKuat: [],
     kunciCap: jenis === "baris" ? (barisAktif.indeks === "sokuon" ? "sokuon" : barisAktif.aksara + ":" + barisAktif.indeks) : (jenis === "jebakan" ? "jebakan" : null),
     labelCap: jenis === "baris" ? ((typeof barisAktif.indeks === "number" ? "Baris " : "") + namaBaris(barisAktif.aksara, barisAktif.indeks)) : (jenis === "jebakan" ? "Jebakan Bunyi" : "")
   };
+  if(jenis === "kemarin" && sesi.antrean.length === 0){ sesi = null; bukaLayar("jalur"); return; }
   var tbl = document.getElementById("tombol-balik-latihan");
-  if(tbl){ tbl.textContent = jenis === "baris" ? "← Kembali ke halaman baris" : (jenis === "jebakan" ? "← Kembali ke jalur hiragana" : "← Kembali ke tabel kana"); }
+  if(tbl){ tbl.textContent = jenis === "baris" ? "← Kembali ke halaman baris" : (jenis === "jebakan" ? "← Kembali ke jalur hiragana" : (jenis === "kemarin" ? "← Kembali ke jalur kana" : "← Kembali ke tabel kana")); }
   tampilSoal();
 }
 function mulaiLatihan(){ bukaLayar("latihan"); mulaiSesi("biasa", null); }
@@ -1374,6 +1435,7 @@ function tampilSoal(){
   document.getElementById("tombol-lanjut").classList.add("sembunyi");
   var kotakPilihan = document.getElementById("kotak-pilihan");
   var kotakKetik = document.getElementById("kotak-ketik");
+  if(sesi && sesi.jenis === "kemarin"){ tampilSoalKemarin(); return; }
   if(sesi && (sesi.jenis === "baris" || sesi.jenis === "jebakan")){ tampilSoalCampuran(); return; }
   if(modeLatihan === "pilih"){
     kotakPilihan.classList.remove("sembunyi");
@@ -1441,8 +1503,10 @@ function catatHasil(kunciKana, benar){
     }
     progres.kuasai[kunciKana] = rec;
   } else if(rec.kuat){
-    // Salah pada kana yang sudah kuat: kuat dicabut, bukti hari dari nol lagi.
-    rec.kuat = false; rec.hari = null;
+    // Salah pada kana yang sudah kuat: kuat dicabut, tapi bukti hari ini
+    // tetap tercatat — turun jadi "tinggal satu hari lagi", bukan nol:
+    // benar sekali lagi di hari lain sudah menguatkan kembali.
+    rec.kuat = false; rec.hari = tanggalHariIni();
     progres.kuasai[kunciKana] = rec;
   }
   if(sesi){
@@ -1515,12 +1579,14 @@ function tampilRingkasan(){
   segarkanProgres();
 }
 function kembaliDariLatihan(){
-  if(sesi && sesi.jenis === "jebakan"){ bukaJalurAksara("hira"); }
+  if(sesi && sesi.jenis === "kemarin"){ bukaLayar("jalur"); }
+  else if(sesi && sesi.jenis === "jebakan"){ bukaJalurAksara("hira"); }
   else if(sesi && sesi.jenis === "baris" && barisAktif){ bukaHalamanBaris(barisAktif.aksara, barisAktif.indeks); }
   else { bukaLayar("kana"); }
 }
 function kembaliDariRingkasan(){
-  if(sesi && sesi.jenis === "jebakan"){ bukaJalurAksara("hira"); }
+  if(sesi && sesi.jenis === "kemarin"){ bukaLayar("jalur"); }
+  else if(sesi && sesi.jenis === "jebakan"){ bukaJalurAksara("hira"); }
   else if(sesi && sesi.jenis === "baris" && barisAktif){ bukaHalamanBaris(barisAktif.aksara, barisAktif.indeks); }
   else { bukaLayar("kana"); }
 }
@@ -2507,6 +2573,20 @@ function gambarHub(){
       kunciKata.textContent = "Jalur ini terbuka setelah semua Cap Latihan hiragana di tangan. Sekarang: " + jumlah + " dari 11 — kurang " + (11 - jumlah) + " lagi.";
     }
   }
+  var kolamK = kolamKemarin();
+  var infoK = document.getElementById("kemarin-info");
+  var tblK = document.getElementById("tombol-kemarin");
+  if(infoK && tblK){
+    if(kolamK.length){
+      tblK.disabled = false;
+      tblK.textContent = "Mulai ulangan (" + kolamK.length + " huruf)";
+      infoK.textContent = "Ada " + kolamK.length + " huruf yang menunggu hari keduanya.";
+    } else {
+      tblK.disabled = true;
+      tblK.textContent = "Mulai ulangan";
+      infoK.textContent = "Belum ada huruf yang menunggu hari kedua — mainkan satu sesi dulu hari ini.";
+    }
+  }
 }
 function gambarJalurAksara(aksara){
   if(aksara === "hira"){
@@ -2618,7 +2698,7 @@ function bukaHalamanBaris(aksara, indeks){
       var idxGlobal = -1;
       for(var j = 0; j < dataSemua.length; j++){ if(dataSemua[j][0] === item[0]){ idxGlobal = j; } }
       var div = document.createElement("div");
-      div.className = "sel-kana" + (sudahKuat(aksara + ":" + item[0]) ? " kuasai" : "");
+      div.className = kelasSelKana(aksara + ":" + item[0]);
       div.innerHTML = "<span class='k jp'>" + item[0] + "</span><span class='r'>" + item[1] + "</span>";
       div.onclick = function(){
         var simpanMode = modeKana; modeKana = aksara;
@@ -2824,6 +2904,51 @@ function tampilSoalCampuran(){
       })(opsiJ[c]);
     }
     return; // grid kolom & ukuran huruf dipulihkan di awal soal berikutnya (lihat bawah)
+  }
+  hurufEl.style.fontSize = "";
+  kotakPilihan.style.gridTemplateColumns = "";
+}
+function tampilSoalKemarin(){
+  // Renderer sesi "Ulangi yang Kemarin": soal huruf pilih/ketik seperti sesi
+  // baris, tetapi aksaranya per soal (kolam campuran hiragana + katakana).
+  var q = sesi.antrean[sesi.indeks];
+  document.getElementById("tab-latihan-umum").style.display = "none";
+  document.getElementById("label-sesi-khusus").textContent = "Ulangi yang Kemarin — kunci huruf yang tinggal satu hari lagi";
+  document.getElementById("indikator-sesi").textContent = "Soal " + (sesi.indeks + 1) + " dari " + sesi.antrean.length;
+  document.getElementById("umpan-balik").textContent = "";
+  dijawabSoalIni = false;
+  document.getElementById("tombol-lanjut").classList.add("sembunyi");
+  var petunjuk = document.getElementById("petunjuk-soal");
+  var hurufEl = document.getElementById("soal-huruf");
+  var kotakPilihan = document.getElementById("kotak-pilihan");
+  soalSaatIni = q.huruf;
+  var kunciHuruf = q.aksara + ":" + q.huruf[0];
+  if(q.tipe === "pilih"){
+    setModeSoalUI("pilih");
+    petunjuk.textContent = "Kana apa yang dibaca seperti ini?";
+    hurufEl.textContent = q.huruf[1];
+    var sumber = dataAksara(q.aksara);
+    var pilihan = [q.huruf];
+    var peng = acakSusunan(sumber.filter(function(x){ return x[0] !== q.huruf[0]; }));
+    for(var i = 0; i < peng.length && pilihan.length < 4; i++){ pilihan.push(peng[i]); }
+    pilihan = acakSusunan(pilihan);
+    kotakPilihan.innerHTML = "";
+    for(var j = 0; j < pilihan.length; j++){
+      (function(item){
+        var b = document.createElement("button");
+        b.className = "jp"; b.textContent = item[0];
+        b.onclick = function(){ jawabPilih(item, b, kunciHuruf); };
+        kotakPilihan.appendChild(b);
+      })(pilihan[j]);
+    }
+  } else {
+    setModeSoalUI("ketik");
+    petunjuk.textContent = "Bagaimana romaji huruf ini?";
+    hurufEl.textContent = q.huruf[0];
+    var inpH = document.getElementById("input-romaji");
+    inpH.value = ""; inpH.focus();
+    var btnCekH = document.querySelector("#kotak-ketik button");
+    if(btnCekH){ btnCekH.onclick = function(){ cekKetikHuruf(kunciHuruf); }; }
   }
   hurufEl.style.fontSize = "";
   kotakPilihan.style.gridTemplateColumns = "";
