@@ -304,12 +304,6 @@
 
   <!-- BELAJAR (TEMA) -->
   <section id="layar-belajar" class="sembunyi">
-    <div class="kartu" id="kartu-bahas">
-      <h2>Ruang Frasa</h2>
-      <p>Ruang khusus frasa harian — bukan bagian unit. Satu frasa baru tiap hari, dibahas tuntas di sini: penjelasan, contoh, dan balasan.</p>
-      <div id="bahas-isi"></div>
-      <div id="bahas-daftar" style="margin-top:12px;"></div>
-    </div>
 
 <div class="kartu">
       <h2>Unit Belajar</h2>
@@ -319,6 +313,23 @@
       <div class="jalur"><div class="no">3</div><div class="nama">Naik Kereta<small style="display:block; font-weight:400; color:var(--teks-lembut);">tanya jalan &amp; arah</small></div><span class="lencana segera">Segera</span></div>
       <div class="jalur"><div class="no">4</div><div class="nama">Pesan Makanan<small style="display:block; font-weight:400; color:var(--teks-lembut);">memesan di restoran</small></div><span class="lencana segera">Segera</span></div>
         </div>
+
+    <div class="kartu">
+      <h2>Ruang Frasa</h2>
+      <p>Frasa harian dibahas tuntas di ruangnya sendiri — penjelasan, contoh, dan balasan.</p>
+      <button class="tombol rangka" style="width:100%;" onclick="bukaBahas()">Masuk ke Ruang Frasa →</button>
+    </div>
+  </section>
+
+  <!-- RUANG FRASA -->
+  <section id="layar-frasa" class="sembunyi">
+    <div class="navigasi"><button onclick="bukaLayar('belajar')">← Belajar</button></div>
+    <div class="kartu" id="kartu-bahas">
+      <h2>Ruang Frasa</h2>
+      <p>Ruang khusus frasa harian — bukan bagian unit. Satu frasa baru tiap hari, dibahas tuntas di sini: penjelasan, contoh, dan balasan.</p>
+      <div id="bahas-isi"></div>
+      <div id="bahas-daftar" style="margin-top:12px;"></div>
+    </div>
   </section>
 
   <!-- RUANG CERITA -->
@@ -1192,7 +1203,7 @@ function bukaLayar(nama){
       try{ history.back(); }catch(e){}
     }
   }
-  var layar = ["beranda","kana","latihan","ringkasan","detail","jalur","jalur-hira","jalur-kata","baris","kenalan","tentang","privasi","cerita","belajar","unit","unit-kata","unit2","unit2-kata","klip","artikel","peta"];
+  var layar = ["beranda","kana","latihan","ringkasan","detail","jalur","jalur-hira","jalur-kata","baris","kenalan","tentang","privasi","cerita","belajar","unit","unit-kata","unit2","unit2-kata","klip","artikel","peta","frasa"];
   if(nama !== "detail"){ berhentiAnimasi(); }
   for(var i=0;i<layar.length;i++){
     document.getElementById("layar-"+layar[i]).classList.toggle("sembunyi", layar[i] !== nama);
@@ -1966,10 +1977,8 @@ var bahasItem = null;
 function bukaBahas(){
   var u = urutanFrasa();
   if(u.length){ bahasItem = u[Math.min(Math.max(frasaPilih, 0), u.length - 1)]; }
-  bukaLayar("belajar");
+  bukaLayar("frasa");
   gambarBahas();
-  var k = document.getElementById("kartu-bahas");
-  if(k && k.scrollIntoView){ setTimeout(function(){ try{ k.scrollIntoView({behavior:"smooth", block:"start"}); }catch(e){} }, 80); }
 }
 function barisBahas(wadah, jp, ro, arti, konci, bawaanUtama, gede){
   var blok = document.createElement("div");
