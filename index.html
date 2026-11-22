@@ -1975,6 +1975,7 @@ function tandaiUcapFeed(kode){
 }
 var bahasItem = null;
 var bahasTampilSemua = false;
+var bahasTampilDasar = false;
 function bukaBahas(){
   var u = urutanFrasa();
   if(u.length){ bahasItem = u[Math.min(Math.max(frasaPilih, 0), u.length - 1)]; }
@@ -2066,10 +2067,10 @@ function gambarBahas(){
       dft.appendChild(judulGrup("Frasa harian"));
       feed.forEach(function(it, ix){
         var b = buatBaris(it);
-        if(ix >= 7 && !bahasTampilSemua){ b.style.display = "none"; }
+        if(ix >= 5 && !bahasTampilSemua){ b.style.display = "none"; }
         dft.appendChild(b);
       });
-      if(feed.length > 7){
+      if(feed.length > 5){
         var tblS = document.createElement("button");
         tblS.className = "tombol rangka";
         tblS.style.cssText = "margin-top:10px; width:100%;";
@@ -2080,7 +2081,17 @@ function gambarBahas(){
     }
     if(dasar.length){
       dft.appendChild(judulGrup("Frasa dasar"));
-      dasar.forEach(function(it){ dft.appendChild(buatBaris(it)); });
+      dasar.forEach(function(it){
+        var b2 = buatBaris(it);
+        if(!bahasTampilDasar){ b2.style.display = "none"; }
+        dft.appendChild(b2);
+      });
+      var tblD = document.createElement("button");
+      tblD.className = "tombol rangka";
+      tblD.style.cssText = "margin-top:10px; width:100%;";
+      tblD.textContent = bahasTampilDasar ? "Sembunyikan frasa dasar" : ("Tampilkan frasa dasar (" + dasar.length + " frasa)");
+      tblD.onclick = function(){ bahasTampilDasar = !bahasTampilDasar; gambarBahas(); };
+      dft.appendChild(tblD);
     }
   }
 }
