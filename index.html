@@ -1974,6 +1974,7 @@ function tandaiUcapFeed(kode){
   bejaPesen("Bagus! Frasa ini sudah kamu ucapkan. +5 XP");
 }
 var bahasItem = null;
+var bahasTampilSemua = false;
 function bukaBahas(){
   var u = urutanFrasa();
   if(u.length){ bahasItem = u[Math.min(Math.max(frasaPilih, 0), u.length - 1)]; }
@@ -2032,21 +2033,54 @@ function gambarBahas(){
   var dft = document.getElementById("bahas-daftar");
   if(dft){
     dft.innerHTML = "";
-    if(u.length > 1){
+    var buatBaris = function(it){
+      var ff = it.t === "f" ? it.f : FRASA[it.i];
+      var geus = it.t === "f" ? !!((progres.frasaFeedUcap || {})[it.f.kode]) : !!(progres.frasaUcap && progres.frasaUcap[it.i]);
+      var baris = document.createElement("div");
+      baris.className = "jalur";
+      baris.style.cursor = "pointer";
+      if(bahasItem === it){ baris.style.cssText += "background:rgba(14,95,87,.07); border-radius:8px; padding-left:8px; padding-right:8px;"; }
+      var nm = document.createElement("div");
+      nm.className = "nama";
+      nm.innerHTML = "<span class='jp' style='font-size:16px;'>" + ff.jp + "</span><br><small>" + ff.arti + "</small>";
+      baris.appendChild(nm);
+      if(geus){
+        var ck = document.createElement("span");
+        ck.textContent = "\u2713";
+        ck.style.cssText = "color:var(--toska-gelap); font-weight:700; flex:none;";
+        ck.setAttribute("aria-label", "Sudah diucapkan");
+        baris.appendChild(ck);
+      }
+      (function(itemRef){ baris.onclick = function(){ bahasItem = itemRef; gambarBahas(); window.scrollTo(0,0); }; })(it);
+      return baris;
+    };
+    var judulGrup = function(teks){
       var jm = document.createElement("p");
-      jm.style.cssText = "font-size:14px; color:var(--teks-lembut); margin-bottom:6px;";
-      jm.textContent = "Frasa lain:";
-      dft.appendChild(jm);
-      u.forEach(function(it, ix){
-        var ff = it.t === "f" ? it.f : FRASA[it.i];
-        var tb = document.createElement("button");
-        tb.className = "tombol rangka";
-        tb.style.cssText = "margin:0 6px 6px 0; padding:6px 12px; font-size:13px;";
-        tb.textContent = ff.jp;
-        if(bahasItem === it){ tb.classList.add("aksen"); }
-        (function(itemRef){ tb.onclick = function(){ bahasItem = itemRef; gambarBahas(); }; })(it);
-        dft.appendChild(tb);
+      jm.style.cssText = "font-size:14px; color:var(--teks-lembut); margin:14px 0 2px;";
+      jm.textContent = teks;
+      return jm;
+    };
+    var feed = u.filter(function(x){ return x.t === "f"; });
+    var dasar = u.filter(function(x){ return x.t === "b"; });
+    if(feed.length){
+      dft.appendChild(judulGrup("Frasa harian"));
+      feed.forEach(function(it, ix){
+        var b = buatBaris(it);
+        if(ix >= 7 && !bahasTampilSemua){ b.style.display = "none"; }
+        dft.appendChild(b);
       });
+      if(feed.length > 7){
+        var tblS = document.createElement("button");
+        tblS.className = "tombol rangka";
+        tblS.style.cssText = "margin-top:10px; width:100%;";
+        tblS.textContent = bahasTampilSemua ? "Sembunyikan lagi" : ("Tampilkan semuanya (" + feed.length + " frasa)");
+        tblS.onclick = function(){ bahasTampilSemua = !bahasTampilSemua; gambarBahas(); };
+        dft.appendChild(tblS);
+      }
+    }
+    if(dasar.length){
+      dft.appendChild(judulGrup("Frasa dasar"));
+      dasar.forEach(function(it){ dft.appendChild(buatBaris(it)); });
     }
   }
 }
