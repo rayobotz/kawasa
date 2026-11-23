@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-19",
+ "updated": "2026-11-23",
  "kata": {
   "でんしゃに": "kereta (naik…)",
   "のります": "naik (kendaraan)",
@@ -49,6 +49,15 @@
   "あげます": "memberi; menyiram (air)",
   "はなが": "bunga (subjek)",
   "さくと": "kalau mekar; ketika mekar",
-  "うれしいです": "senang; gembira"
+  "うれしいです": "senang; gembira",
+  "あさです": "sudah pagi",
+  "いぬと": "dengan anjing",
+  "さんぽに": "jalan-jalan (ke…)",
+  "いぬは": "anjing (topik)",
+  "はしります": "berlari",
+  "こうえんで": "di taman",
+  "ボールを": "bola (objek)",
+  "なげます": "melempar",
+  "とても": "sangat"
  }
 }
