@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-24",
+  "updated": "2026-11-25",
   "kata": {
     "でんしゃに": "kereta (naik…)",
     "のります": "naik (kendaraan)",
@@ -65,6 +65,14 @@
     "まきます": "membungkus; menggulung",
     "おにぎりは": "onigiri (topik)",
     "おべんとうに": "ke kotak bekal",
-    "いれます": "memasukkan"
+    "いれます": "memasukkan",
+    "きょうは": "hari ini (topik)",
+    "てんきが": "cuaca (subjek)",
+    "いいです": "bagus; baik",
+    "じてんしゃに": "sepeda (naik…)",
+    "みちに": "di jalan; di pinggir jalan",
+    "さいています": "sedang mekar; bermekaran",
+    "じてんしゃで": "dengan sepeda; naik sepeda",
+    "がっこうに": "ke sekolah"
   }
 }
