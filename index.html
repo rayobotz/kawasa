@@ -822,7 +822,7 @@
     </div>
     <div class="kartu">
       <h2>Kredit & Sumber</h2>
-      <p>Suara pengucapan: VOICEVOX：波音リツ (perempuan) dan VOICEVOX：剣崎雌雄 (laki-laki).</p>
+      <p>Suara pengucapan: VOICEVOX：波音リツ (perempuan), VOICEVOX：剣崎雌雄 (laki-laki), dan VOICEVOX：猫使アル (suara Kancil).</p>
       <p style="margin-top:8px;">Data urutan goresan huruf kana: KanjiVG (CC BY-SA 3.0).</p>
       <p style="margin-top:8px;">Latihan menulis kana: Hanzi Writer (MIT).</p>
     </div>
@@ -3759,24 +3759,24 @@ function tandaiUcapUnit2(i){
 // Alur: pembuka (teks) -> dialog kecepatan alami TANPA teks -> pertanyaan
 // Tangkap Maksudnya (+10 XP sekali) -> putar ulang pelan + teks per baris.
 // Waktu baris & bingkai dalam detik terhadap berkas audio gabungan
-// (sora-klip/klip-u1.b64; dihasilkeun ku sora/bangun-klip-u1.py).
+// (sora-klip/klip-u1.b64; versi Kancil: sora/bangun-klip-u1-kancil.py).
 var KLIP_U1 = {
-  audio: "sora-klip/klip-u1.b64?v=klip1",
+  audio: "sora-klip/klip-u1.b64?v=kk1",
   bingkai: [
     {src: "klip/b1.webp", t: 0},
-    {src: "klip/b2.webp", t: 2.603},
-    {src: "klip/b3.webp", t: 4.577},
-    {src: "klip/b4.webp", t: 10.455},
-    {src: "klip/b5.webp", t: 14.111}
+    {src: "klip/b2.webp", t: 2.581},
+    {src: "klip/b3.webp", t: 4.513},
+    {src: "klip/b4.webp", t: 10.284},
+    {src: "klip/b5.webp", t: 13.961}
   ],
   baris: [
     {jp: "はじめまして。", ro: "hajimemashite", t: 0.5},
-    {jp: "リナです。", ro: "Rina desu", t: 2.603},
-    {jp: "インドネシアからきました。", ro: "Indoneshia kara kimashita", t: 4.577},
-    {jp: "にほんごをべんきょうしています。", ro: "nihongo wo benkyou shite imasu", t: 7.431},
-    {jp: "どうぞよろしくおねがいします。", ro: "douzo yoroshiku onegaishimasu", t: 10.455},
-    {jp: "こちらこそ、よろしくおねがいします。", ro: "kochira koso, yoroshiku onegaishimasu", t: 14.111},
-    {jp: "何かあったら、遠慮なく聞いてね。", ro: "nanika attara, enryonaku kiite ne", t: 17.681}
+    {jp: "リナです。", ro: "Rina desu", t: 2.581},
+    {jp: "インドネシアからきました。", ro: "Indoneshia kara kimashita", t: 4.513},
+    {jp: "にほんごをべんきょうしています。", ro: "nihongo wo benkyou shite imasu", t: 7.292},
+    {jp: "どうぞよろしくおねがいします。", ro: "douzo yoroshiku onegaishimasu", t: 10.284},
+    {jp: "こちらこそ、よろしくおねがいします。", ro: "kochira koso, yoroshiku onegaishimasu", t: 13.961},
+    {jp: "何かあったら、遠慮なく聞いてね。", ro: "nanika attara, enryonaku kiite ne", t: 17.532}
   ],
   pilihan: [
     "Kalau ada kesulitan, tanya saja tanpa sungkan",
@@ -3791,33 +3791,33 @@ var KLIP_U1 = {
   salah: "Belum tepat — coba dengarkan lagi kalimat terakhir seniornya, lalu pilih lagi.",
   kembaliTeks: "← Kembali ke Unit 1",
   kembaliKe: "unit",
-  alt: "Ilustrasi klip: Rina tiba di tempat kerja barunya",
+  alt: "Ilustrasi klip: Kancil tiba di tempat kerja barunya",
   alas: "遠慮なく (enryonaku) artinya \u201Ctanpa sungkan\u201D. Senior itu mempersilakanmu bertanya kapan pun ada kesulitan — tawaran bantuan yang tulus."
 };
 
 // === Tonton Semenit: Unit 2 — Belanja di toko pakaian ===
 // Cermin klip Unit 1: dialog staf & pembeli dari masuk toko sampai kasir,
 // ditutup pertanyaan kartu poin sebagai soal Tangkap Maksudnya.
-// Audio gabungan: sora-klip/klip-u2.b64 (dihasilkan sora/bangun-klip-u2.py).
+// Audio gabungan: sora-klip/klip-u2.b64 (versi Kancil: sora/bangun-klip-u2-kancil.py).
 var KLIP_U2 = {
-  audio: "sora-klip/klip-u2.b64?v=klip2",
+  audio: "sora-klip/klip-u2.b64?v=kk2",
   bingkai: [
     {src: "klip/c1.webp", t: 0},
     {src: "klip/c2.webp", t: 2.688},
-    {src: "klip/c3.webp", t: 9.137},
-    {src: "klip/c4.webp", t: 14.079},
-    {src: "klip/c5.webp", t: 18.796}
+    {src: "klip/c3.webp", t: 8.817},
+    {src: "klip/c4.webp", t: 13.759},
+    {src: "klip/c5.webp", t: 18.529}
   ],
   baris: [
     {jp: "いらっしゃいませ。", ro: "irasshaimase", t: 0.5},
     {jp: "すみません、これはいくらですか。", ro: "sumimasen, kore wa ikura desu ka", t: 2.688},
-    {jp: "ほかのサイズはありますか。", ro: "hoka no saizu wa arimasu ka", t: 6.209},
-    {jp: "しょうしょうおまちください。", ro: "shoushou omachi kudasai", t: 9.137},
-    {jp: "おまたせしました。", ro: "omatase shimashita", t: 11.727},
-    {jp: "しちゃくしてもいいですか。", ro: "shichaku shite mo ii desu ka", t: 14.079},
-    {jp: "これをください。", ro: "kore wo kudasai", t: 16.693},
-    {jp: "カードでおねがいします。", ro: "kaado de onegaishimasu", t: 18.796},
-    {jp: "ポイントカードはおもちですか。", ro: "pointo kaado wa omochi desu ka", t: 22.164}
+    {jp: "ほかのサイズはありますか。", ro: "hoka no saizu wa arimasu ka", t: 5.975},
+    {jp: "しょうしょうおまちください。", ro: "shoushou omachi kudasai", t: 8.817},
+    {jp: "おまたせしました。", ro: "omatase shimashita", t: 11.407},
+    {jp: "しちゃくしてもいいですか。", ro: "shichaku shite mo ii desu ka", t: 13.759},
+    {jp: "これをください。", ro: "kore wo kudasai", t: 16.363},
+    {jp: "カードでおねがいします。", ro: "kaado de onegaishimasu", t: 18.529},
+    {jp: "ポイントカードはおもちですか。", ro: "pointo kaado wa omochi desu ka", t: 21.876}
   ],
   pilihan: [
     "Staf bertanya apakah kamu punya kartu poin",
@@ -3847,7 +3847,7 @@ function muatKlip2Bingkai(lanjut){
   if(!klip2JsNujuDimuat){
     klip2JsNujuDimuat = true;
     var sc = document.createElement("script");
-    sc.src = "klip2.js?v=klip2";
+    sc.src = "klip2.js?v=kk2";
     sc.onload = function(){ if(klip2JsAntre){ var a = klip2JsAntre; klip2JsAntre = null; a(); } };
     sc.onerror = function(){ klip2JsNujuDimuat = false; klip2JsAntre = null; bejaPesen("Gambar klip gagal dimuat — periksa sambungan internet."); };
     document.body.appendChild(sc);
@@ -3875,7 +3875,7 @@ function muatKlipBingkai(lanjut){
   if(!klipJsNujuDimuat){
     klipJsNujuDimuat = true;
     var sc = document.createElement("script");
-    sc.src = "klip.js?v=klip1";
+    sc.src = "klip.js?v=kk1";
     sc.onload = function(){ klipJsDimuat = true; if(klipJsAntre){ var a = klipJsAntre; klipJsAntre = null; a(); } };
     sc.onerror = function(){ klipJsNujuDimuat = false; klipJsAntre = null; bejaPesen("Gambar klip gagal dimuat — periksa sambungan internet."); };
     document.body.appendChild(sc);
