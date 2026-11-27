@@ -232,7 +232,7 @@
     </div>
     <div class="kartu" style="cursor:pointer;" onclick="bukaLayar('peta')">
       <h2>Peta Perjalananmu</h2>
-      <p>Lihat sejauh mana kamu dan Kancil sudah berjalan, dan apa isi tasnya sekarang.</p>
+      <p>Lihat sejauh mana kamu dan Kanchiru-kun sudah berjalan, dan apa isi tasnya sekarang.</p>
       <button class="tombol rangka">Buka peta →</button>
     </div>
     <div class="kartu" id="kartu-frasa">
@@ -251,7 +251,7 @@
       <h2>Kenalan dulu, yuk</h2>
       <div class="maskot-kenalan">
         <img class="maskot-img maskot-sapa" data-maskot="sapa" alt="Kancil, maskot Kawasa">
-        <p class="maskot-balon">"Halo! Aku Kancil. Aku juga baru mulai dari nol — kita berangkat bareng. Mau langsung coba dulu? Ketuk tombol Langkah Berikutnya di atas — nama bisa diisi belakangan."</p>
+        <p class="maskot-balon">"Halo! Aku Kanchiru-kun. Aku juga baru mulai dari nol — kita berangkat bareng. Mau langsung coba dulu? Ketuk tombol Langkah Berikutnya di atas — nama bisa diisi belakangan."</p>
       </div>
       <p>Kamu bisa langsung mulai tanpa mengisi apa pun — progresmu tersimpan otomatis di perangkat ini. Isi nama panggilan + kode 4 angka di sini supaya progresmu juga dicadangkan: di alat lain, isi nama dan kode yang sama untuk memulihkannya. Tanpa kata sandi.</p>
       <input class="ketik" id="input-nama" placeholder="nama panggilan" autocomplete="off">
@@ -296,11 +296,11 @@
     <div class="navigasi"><button onclick="bukaLayar('beranda')">← Beranda</button></div>
     <div class="kartu">
       <h2>Peta Perjalananmu</h2>
-      <p>Jalur yang kamu dan Kancil tempuh dari nol — tahap demi tahap.</p>
+      <p>Jalur yang kamu dan Kanchiru-kun tempuh dari nol — tahap demi tahap.</p>
       <div id="peta-isi"></div>
     </div>
     <div class="kartu">
-      <h2>Tas Kancil</h2>
+      <h2>Tas Kanchiru-kun</h2>
       <p id="peta-tas" style="margin:0;"></p>
     </div>
   </section>
@@ -825,7 +825,7 @@
     </div>
     <div class="kartu">
       <h2>Kredit & Sumber</h2>
-      <p>Suara pengucapan: VOICEVOX：波音リツ (perempuan), VOICEVOX：剣崎雌雄 (laki-laki), dan VOICEVOX：猫使アル (suara Kancil).</p>
+      <p>Suara pengucapan: VOICEVOX：波音リツ (perempuan), VOICEVOX：剣崎雌雄 (laki-laki), dan VOICEVOX：猫使アル (suara Kanchiru-kun).</p>
       <p style="margin-top:8px;">Data urutan goresan huruf kana: KanjiVG (CC BY-SA 3.0).</p>
       <p style="margin-top:8px;">Latihan menulis kana: Hanzi Writer (MIT).</p>
     </div>
@@ -3385,7 +3385,7 @@ function kotakSelesaiUnit(judul, teks, garisKancil, fnUlangi){
     + "<div><p style=\"margin:0 0 6px; font-weight:700;\">" + judul + "</p>"
     + "<p style=\"margin:0;\">" + teks + "</p></div></div>"
     + "<div style=\"background:#FFFDF6; border:1px solid #DDD3BF; border-radius:10px; padding:8px 10px; margin:10px 0;\">"
-    + "<p style=\"margin:0 0 2px; font-size:14px; font-weight:700; color:#8C351B;\">Kancil sekarang:</p>"
+    + "<p style=\"margin:0 0 2px; font-size:14px; font-weight:700; color:#8C351B;\">Kanchiru-kun sekarang:</p>"
     + "<p class=\"jp\" style=\"margin:0; font-size:16px;\">" + garisKancil + "</p></div>"
     + "<button class=\"tombol rangka\" onclick=\"" + fnUlangi + "\">Ulangi latihan</button> <button class=\"tombol\" onclick=\"bukaLayar('beranda')\">Kembali ke Beranda</button></div>";
 }
@@ -3445,7 +3445,7 @@ function gambarPeta(){
     if(u1){ isiTas.push("cara memperkenalkan diri"); }
     if(u2){ isiTas.push("cara berbelanja"); }
     tas.textContent = isiTas.length
-      ? "Tas Kancil sekarang berisi " + isiTas.length + " hal: " + isiTas.join(" · ") + "."
+      ? "Tas Kanchiru-kun sekarang berisi " + isiTas.length + " hal: " + isiTas.join(" · ") + "."
       : "Tasnya masih kosong — selesaikan Unit 1 untuk mulai mengisinya.";
   }
 }
