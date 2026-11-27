@@ -963,10 +963,30 @@ normalisasiKode();
 normalisasiKlip();
 simpan();
 
+function unitSelesaiTeks(){
+  // Unit terhitung selesai bila semua soal latihannya pernah dijawab benar
+  // (kunci q1..qN terisi di unitXp/unit2Xp). Hasil: "", "1", "2", atau "1,2".
+  // Kolom unit_selesai di Sheet diisi dari sini \u2014 dulu terkirim "" terus.
+  var selesai = [];
+  var n1 = (typeof UNIT1_LATIHAN !== "undefined") ? UNIT1_LATIHAN.length : 0;
+  var c1 = 0; for(var i = 0; i < n1; i++){ if(progres.unitXp && progres.unitXp["q" + (i + 1)]){ c1++; } }
+  if(n1 && c1 >= n1){ selesai.push("1"); }
+  var n2 = (typeof UNIT2_LATIHAN !== "undefined") ? UNIT2_LATIHAN.length : 0;
+  var c2 = 0; for(var j = 0; j < n2; j++){ if(progres.unit2Xp && progres.unit2Xp["q" + (j + 1)]){ c2++; } }
+  if(n2 && c2 >= n2){ selesai.push("2"); }
+  return selesai.join(",");
+}
+function tandaiJawabanPertama(){
+  // Acara ukur pintu depan (B1): jawaban pertama pengguna di sesi/latihan
+  // mana pun \u2014 terkirim sekali saja per perangkat.
+  if(progres.sesiPertama){ return; }
+  progres.sesiPertama = 1; simpan();
+  kirimLaporan("sesi_pertama");
+}
 var timerKirim = null;
 function kirimLaporan(acara){
   if(!TRACK_URL){ return; }
-  var muatan = {id:progres.id, nama:progres.nama || "", xp:progres.xp, kana:jumlahKuat(), unit:"", acara:acara || "snapshot"};
+  var muatan = {id:progres.id, nama:progres.nama || "", xp:progres.xp, kana:jumlahKuat(), unit:unitSelesaiTeks(), acara:acara || "snapshot"};
   try{
     fetch(TRACK_URL, {method:"POST", mode:"no-cors", headers:{"Content-Type":"text/plain"}, body:JSON.stringify(muatan)});
   }catch(e){}
@@ -1015,6 +1035,7 @@ function simpanNama(){
     if(kodeIsi){ progres.kode = kodeIsi; }
     else if(!progres.kode){ progres.kode = buatKode(); kodeBaru = true; }
     progres.nama = v; simpan(); gambarSapaan();
+    kirimLaporan("nama_disimpan");
   }
   document.getElementById("kartu-nama").classList.add("sembunyi");
   kirimLaporan("daftar");
@@ -1498,6 +1519,7 @@ function tampilSoal(){
 function catatHasil(kunciKana, benar){
   if(dijawabSoalIni){ return; } // satu soal hanya boleh dicatat sekali
   dijawabSoalIni = true;
+  tandaiJawabanPertama();
   var rec = catatanKana(kunciKana);
   var sebelumKuat = rec.kuat;
   if(benar){
@@ -3409,8 +3431,10 @@ function jawabLatihanUnit(qi, pi, el){
   var fb = document.getElementById("latihan-fb-" + qi);
   if(!progres.unitXp){ progres.unitXp = {}; }
   var konci = "q" + (qi + 1);
+  tandaiJawabanPertama();
   if(pi === soal.bener){
-    if(!progres.unitXp[konci]){
+    var konciBaru = !progres.unitXp[konci];
+    if(konciBaru){
       progres.unitXp[konci] = 1;
       progres.xp += 10;
       simpan(); segarkanProgres();
@@ -3429,6 +3453,7 @@ function jawabLatihanUnit(qi, pi, el){
       }
       return;
     }
+    if(konciBaru && unitSelesaiTeks().split(",").indexOf("1") >= 0){ kirimLaporan("unit1-selesai"); }
     gambarLatihanUnit();
   } else {
     el.style.background = "#F6DCD2";
@@ -3704,8 +3729,10 @@ function jawabLatihanUnit2(qi, pi, el){
   var fb = document.getElementById("latihan2-fb-" + qi);
   if(!progres.unit2Xp){ progres.unit2Xp = {}; }
   var konci = "q" + (qi + 1);
+  tandaiJawabanPertama();
   if(pi === soal.bener){
-    if(!progres.unit2Xp[konci]){
+    var konciBaru = !progres.unit2Xp[konci];
+    if(konciBaru){
       progres.unit2Xp[konci] = 1;
       progres.xp += 10;
       simpan(); segarkanProgres();
@@ -3724,6 +3751,7 @@ function jawabLatihanUnit2(qi, pi, el){
       }
       return;
     }
+    if(konciBaru && unitSelesaiTeks().split(",").indexOf("2") >= 0){ kirimLaporan("unit2-selesai"); }
     gambarLatihanUnit2();
   } else {
     el.style.background = "#F6DCD2";
@@ -4285,6 +4313,7 @@ gambarGrid();
 gambarKelompokBor();
 segarkanProgres();
 if(progres.nama){ document.getElementById("kartu-nama").classList.add("sembunyi"); }
+else{ kirimLaporan("kenalan_ditampilkan"); }
 migrasiKode();
 pulihkanDiamDiam();
 kirimLaporan("buka");
